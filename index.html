@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+        <link href="style.css" rel="stylesheet">
+        <script src="jquery.js"></script>
+        <script src="LocalServer.js"></script>
+        <script src="DataServer.js"></script>
+        <script src="TritonLoader.js"></script>
+        <script src="TritonEditor.js"></script>
+    </head>
+    <body>
+        <div id="log"></div>
+        <script>
+            var dataStore = DataServer(LocalServer(window.localStorage));
+            var triton = TritonLoader(dataStore, TritonEditor(dataStore, jQuery));
+            triton.init();
+
+
+        </script>
+    </body>
+</html>

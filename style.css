@@ -1,0 +1,22 @@
+body{
+    font-family: sans-serif;
+}
+
+section{
+    background-color: #EEEEEF;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 5px;
+    -webkit-border-radius: 10px;
+}
+
+section h1{
+    color: #666;
+    margin: 0;
+}
+
+section textarea{
+    width: 100%;
+    min-height: 200px;
+}
