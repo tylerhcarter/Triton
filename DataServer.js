@@ -1,49 +1,11 @@
-var DataServer = (function(localSever){
+var DataServer = (function(localServer, JSON){
     var obj = {};
-
-    var data = [
-    {
-        id: "GUID121",
-        title: "An Inspirational Title",
-        owner: "USERUGID123",
-        content: {
-            plain: "An Inspirational Title",
-            html: "<h1>An Inspirational Title</h1>"
-        }
-    },
-    {
-        id: "GUID122",
-        title: "An Inspirational Title2",
-        owner: "USERUGID123",
-        content: {
-            plain: "An Inspirational Title",
-            html: "<h1>An Inspirational Title</h1>"
-        }
-    },
-    {
-        id: "GUID123",
-        title: "An Inspirational Title3",
-        owner: "USERUGID123",
-        content: {
-            plain: "An Inspirational Title",
-            html: "<h1>An Inspirational Title</h1>"
-        }
-    },
-    {
-        id: "GUID124",
-        title: "An Inspirational Title4",
-        owner: "USERUGID123",
-        content: {
-            plain: "An Inspirational Title",
-            html: "<h1>An Inspirational Title</h1>"
-        }
-    }
-    ];
+    var data;
+    load();
 
     obj.get = function(id){
 
         var l = data.length;
-
         for(var i=0; i < l; i++){
 
             if(data[i].id == id){
@@ -59,11 +21,42 @@ var DataServer = (function(localSever){
         return data;
     }
 
-    obj.set = function(data){
-
-      localServer.set("posts", data);
-
+    obj.set = function(id, newData){
+        set(id, newData);
+        save();
     };
+
+    function set(id, newData){
+
+        console.log("Setting Entry: " + id);
+
+        // First Check for Existing Entry
+        var l = data.length;
+        for(var i=0; i < l; i++){
+
+            if(data[i].id == id){
+                data[i] = newData;
+                console.log("Modifyng Entry: " + id);
+                return;
+            }
+        }
+
+        // Create a new entry
+        data.push(newData);
+        console.log("Creating Entry: " + id);
+        return;
+    }
+
+    function save(){
+        console.log("Saving " + data.length + " Entries");
+        localServer.set("posts", JSON.stringify(data));
+    }
+
+    function load(){
+        data = JSON.parse(localServer.get('posts'));
+        console.log("Loading " + data.length + " Entries");
+        save();
+    }
 
     return obj;
 });

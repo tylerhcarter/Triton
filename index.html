@@ -5,6 +5,7 @@
         <title></title>
         <link href="style.css" rel="stylesheet">
         <script src="jquery.js"></script>
+        <script src="json.js"></script>
         <script src="LocalServer.js"></script>
         <script src="DataServer.js"></script>
         <script src="TritonLoader.js"></script>
@@ -12,12 +13,24 @@
     </head>
     <body>
         <div id="log"></div>
+        <div id="add">Add</div>
         <script>
-            var dataStore = DataServer(LocalServer(window.localStorage));
-            var triton = TritonLoader(dataStore, TritonEditor(dataStore, jQuery));
-            triton.init();
-
-
+            window.localStorage.setItem("posts", JSON.stringify([]));
+            var dataStore = DataServer(LocalServer(window.localStorage), window.JSON);
+            if(typeof dataStore.get("posts") == "object"){
+                var triton = TritonLoader(dataStore, TritonEditor(dataStore, jQuery));
+                triton.init();
+            }
+            
+            $("#add").click(function(){
+               dataStore.set("testID", {
+                   "id" : "testID",
+                   "content":{
+                       "plain" : "plain data",
+                       "html" : "html data"
+                   }
+               }); 
+            });
         </script>
     </body>
 </html>
