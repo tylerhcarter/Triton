@@ -1,41 +1,54 @@
-var TritonEditor = (function(localStorage, jQuery){
+var TritonEditor = (function(thread, threadEncoder){
     var obj = {};
-    var $ = jQuery;
+    var loader;
 
-    obj.init = function(){
-        obj.bind();
-    };
+    obj.start = function(){
 
-    obj.bind = function(){
-        $("section").click(function(){
-            var data = localStorage.get($(this).attr("id"));
+        // Create the user interface
+        loader = TritonUI(thread, threadEncoder, obj);
 
-            var newHTML = createEdit(data);
-            $(this).replaceWith(newHTML);
-            $("#" + $(this).attr("id") + " textarea").focus();
-            $("#" + $(this).attr("id") + " textarea").blur(function(){
+        // Draw the Window
+        obj.draw();
 
-                data.content.html = $(this).val();
-
-                var newHTML = createView(data);
-                $(this).replaceWith(newHTML);
-                obj.bind();
-            })
-        });
     }
 
-    function createEdit(data){
-        var newHTML = "<section id=\""+data.id+"\">";
-        newHTML += "<textarea>" + data.content.plain + "</textarea>";
-        newHTML += "</textarea>"
-
-        return newHTML;
+    obj.draw = function(){
+        draw();
     }
 
-    function createView(data){
-        var newHTML = data.content.html;
-        return newHTML
+    function draw(){
+        $("#posts").html("");
+
+        var posts = thread.getPosts();
+        var l = posts.length;
+
+        var html = $([]);
+
+        for(var i=0; i<l; i++){
+            var current = posts[i];
+            html.append("<section id=\""+ current.post_id +"\">"
+                                        + current.post_content.html + "</section>");
+        }
+        $("#posts").replaceWith(html);
+        loader.init();
     }
 
+    obj.createNewPost = function(){
+
+        // Leave any currently open textareas
+        $('textarea').blur();
+
+        // Create the new post and save
+        var id = thread.createPost("");
+        threadEncoder.sleep("thread", thread);
+
+        // Redraw the window
+        draw();
+
+        // Select the new textarea
+        $("#" + id).click();
+    }
+
+    
     return obj;
 });

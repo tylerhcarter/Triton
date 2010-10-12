@@ -4,33 +4,72 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title></title>
         <link href="style.css" rel="stylesheet">
+        <script src="lib.js"></script>
         <script src="jquery.js"></script>
         <script src="json.js"></script>
-        <script src="LocalServer.js"></script>
-        <script src="DataServer.js"></script>
-        <script src="TritonLoader.js"></script>
+        <script src="autogrow.js"></script>
+        <script src="hotkeys.js"></script>
+        <script src="Thread.js"></script>
+        <script src="ThreadEncoder.js"></script>
+        <script src="TritonUI.js"></script>
         <script src="TritonEditor.js"></script>
     </head>
     <body>
-        <div id="log"></div>
-        <div id="add">Add</div>
+        <nav>
+            <header>
+                Triton
+                <div class="meta">
+                    v 0.1. &copy 2010 Tyler Carter
+                </div>
+            </header>
+            <ul>
+                <li><a href="#" id="create_new">Create New</a></li>
+                <li><a href="#" id="redraw">Redraw</a></li>
+                <li><a href="#" id="delete_all">Delete All</a></li>
+            </ul>
+        </nav>
+        <div id="posts"></div>
+        <pre id="object"></pre>
         <script>
-            window.localStorage.setItem("posts", JSON.stringify([]));
-            var dataStore = DataServer(LocalServer(window.localStorage), window.JSON);
-            if(typeof dataStore.get("posts") == "object"){
-                var triton = TritonLoader(dataStore, TritonEditor(dataStore, jQuery));
-                triton.init();
-            }
-            
-            $("#add").click(function(){
-               dataStore.set("testID", {
-                   "id" : "testID",
-                   "content":{
-                       "plain" : "plain data",
-                       "html" : "html data"
-                   }
-               }); 
-            });
+            (function(){
+
+                // Start Up
+
+                // Configuration
+                var post_key = "thread";
+
+                // Create the Encoder
+                var threadEncoder = Encoder();
+                
+                // Retrieve the Thread
+                if(typeof window.localStorage.getItem(post_key) != "string"){
+                    var thread = threadEncoder.create();
+                }else{
+                    var thread = threadEncoder.restore(post_key);
+                }
+
+                // Start up the editor
+                var editor = TritonEditor(thread, threadEncoder);
+                editor.start();
+
+                // Special Case Items
+                $("#delete_all").click(function(){
+                    thread.deleteAll();
+                    threadEncoder.sleep(post_key, thread);
+                    editor.draw();
+                });
+
+                $("#create_new").click(function(){
+                   editor.createNewPost();
+                });
+
+
+                $("#redraw").click(function(){
+                    editor.draw();
+                })
+                
+            })();
+
         </script>
     </body>
 </html>
