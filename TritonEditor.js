@@ -22,14 +22,11 @@ var TritonEditor = (function(thread, threadEncoder){
         var posts = thread.getPosts();
         var l = posts.length;
 
-        var html = $([]);
-
         for(var i=0; i<l; i++){
             var current = posts[i];
-            html.append("<section id=\""+ current.post_id +"\">"
+            $("#posts").append("<section id=\""+ current.post_id +"\">"
                                         + current.post_content.html + "</section>");
         }
-        $("#posts").replaceWith(html);
         loader.init();
     }
 
