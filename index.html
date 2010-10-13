@@ -11,7 +11,8 @@
         <script src="hotkeys.js"></script>
         <script src="Thread.js"></script>
         <script src="ThreadEncoder.js"></script>
-        <script src="TritonUI.js"></script>
+        <script src="TritonSidebar.js"></script>
+        <script src="TritonKUI.js"></script>
         <script src="TritonEditor.js"></script>
     </head>
     <body>
@@ -27,6 +28,12 @@
                 <li><a href="#" id="redraw">Redraw</a></li>
                 <li><a href="#" id="delete_all">Delete All</a></li>
             </ul>
+            <div id="overview">
+                <header>
+                    Overview
+                </header>
+                <ul id="overview-list"></ul>
+            </div>
         </nav>
         <div id="posts"></div>
         <pre id="object"></pre>
@@ -42,15 +49,26 @@
                 var threadEncoder = Encoder();
                 
                 // Retrieve the Thread
+
+                // Check if a thread has already been saved
                 if(typeof window.localStorage.getItem(post_key) != "string"){
+
+                    // If not, create one
                     var thread = threadEncoder.create();
+
                 }else{
+
+                    // Retrieve the saved thread
                     var thread = threadEncoder.restore(post_key);
+                    
                 }
 
                 // Start up the editor
                 var editor = TritonEditor(thread, threadEncoder);
-                editor.start();
+                editor.init();
+
+                var sidebar = TritonSidebar(thread);
+                sidebar.init();
 
                 // Special Case Items
                 $("#delete_all").click(function(){
@@ -60,13 +78,17 @@
                 });
 
                 $("#create_new").click(function(){
-                   editor.createNewPost();
+                   editor.createPost();
                 });
 
 
                 $("#redraw").click(function(){
                     editor.draw();
                 })
+
+                $("section").mouseover(function(){
+                    
+                });
                 
             })();
 

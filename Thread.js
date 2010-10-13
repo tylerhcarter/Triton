@@ -1,7 +1,6 @@
-var Thread = (function(data){
+var Thread = (function(data, encoder){
 
    var obj = {};
-   var data = data;
 
    obj.createPost = function(text){
        
@@ -17,7 +16,8 @@ var Thread = (function(data){
        };
 
        data.thread_posts.push(newPost);
-
+       
+       save();
        return newPost.post_id;
 
    }
@@ -33,6 +33,13 @@ var Thread = (function(data){
                 var html = text;
                 var plain = text;
 
+                var title = getTitle(html);
+                if(title != false){
+                    posts[i].post_title = title
+                }else{
+                    posts[i].post_title = "";
+                }
+
                 html = getHTML(html);
 
                 posts[i].post_content = {
@@ -40,6 +47,8 @@ var Thread = (function(data){
                     "plain" : plain
                 };
                 //console.log("Item Found (Searched: " + len +")");
+
+                save();
                 return true;
             }
         }
@@ -53,20 +62,18 @@ var Thread = (function(data){
         var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.jpg)/ig;
         html = html.replace(exp,"<img src='$1'>");
 
-       // break the textblock into an array of lines
-        var lines = html.split('\n');
+       var title = getTitle(html);
+       if(title != false){
+           // break the textblock into an array of lines
+            var lines = html.split('\n');
 
-        if(lines.length != 1){
             // remove one line, starting at the first position
-            var first = lines.splice(0,1);
+            lines.splice(0,1);
+
             // join the array back into a single string
             var newtext = lines.join('\n');
 
-            console.log(first[0].length);
-
-            if(first[0].length < 130){
-                html = "<h4>" + first[0] + "</h4>" + newtext;
-            }
+            html = "<h4>" + title + "</h4>" + newtext;
        }
 
        // Change newlines to <br>
@@ -77,19 +84,49 @@ var Thread = (function(data){
        return html;
    }
 
+   function getTitle(html){
+        // break the textblock into an array of lines
+        var lines = html.split('\n');
+
+        if(lines.length != 1){
+            // remove one line, starting at the first position
+            var title = lines.splice(0,1);
+            // join the array back into a single string
+            var newtext = lines.join('\n');
+
+            if(title[0].length < 130){
+
+                return title[0];
+
+            }else{
+
+                return false;
+                
+            }
+       } else{
+           return false;
+       }
+   }
+
    obj.remove = function(id){
        var posts = data.thread_posts;
        var len = posts.length;
        for(var i=0; i < len; i++){
             if(posts[i].post_id == id){
                 posts.splice(i, 1);
+                save();
             }
         }
         return false;
    }
 
+   obj.count = function(){
+       return data.thread_posts.length;
+   }
+
    obj.deleteAll = function(){
        data.thread_posts = [];
+       save();
    }
 
    obj.getPost = function(id){
@@ -109,6 +146,10 @@ var Thread = (function(data){
 
    obj.returnData = function(){
        return data;
+   }
+
+   function save(){
+       encoder.sleep(window.thread_key, obj);
    }
 
    return obj;

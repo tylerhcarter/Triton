@@ -10,12 +10,12 @@ var Encoder = (function(){
             "thread_posts" : []
         };
 
-        return window.Thread(baseObj);
+        return window.Thread(baseObj, obj);
 
     }
 
     obj.restore = function(key){
-        return window.Thread(load(key));
+        return window.Thread(load(key), obj);
     }
 
     obj.sleep = function(key, thread){

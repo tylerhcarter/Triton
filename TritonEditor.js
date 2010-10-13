@@ -1,36 +1,48 @@
 var TritonEditor = (function(thread, threadEncoder){
     var obj = {};
-    var loader;
+    var ui;
 
-    obj.start = function(){
+    // Initializes the Editor
+    obj.init = function(){
 
         // Create the user interface
-        loader = TritonUI(thread, threadEncoder, obj);
+        ui = TritonKUI(thread, threadEncoder, obj);
+        ui.init();
+
+        // Check if this is the first time
+        if(thread.count() == 0){
+            thread.createPost("(Click to Edit)");
+        }
 
         // Draw the Window
         obj.draw();
 
     }
 
+    // Draws the HTML
+    // Note: The sidebar needs to be redrawn as well
     obj.draw = function(){
-        draw();
-    }
-
-    function draw(){
-        $("#posts").html("");
 
         var posts = thread.getPosts();
         var l = posts.length;
 
+        var div = $("<div />",{
+            "id" : "posts"
+        });
+
         for(var i=0; i<l; i++){
             var current = posts[i];
-            $("#posts").append("<section id=\""+ current.post_id +"\">"
-                                        + current.post_content.html + "</section>");
+            var post = $("<section />", {
+                "html" : current.post_content.html,
+                "id" : current.post_id
+            })
+            $(post).appendTo(div);
         }
-        loader.init();
+        $("#posts").replaceWith(div);
+        ui.init();
     }
 
-    obj.createNewPost = function(){
+    obj.createPost = function(){
 
         // Leave any currently open textareas
         $('textarea').blur();
@@ -40,7 +52,7 @@ var TritonEditor = (function(thread, threadEncoder){
         threadEncoder.sleep("thread", thread);
 
         // Redraw the window
-        draw();
+        obj.draw();
 
         // Select the new textarea
         $("#" + id).click();
