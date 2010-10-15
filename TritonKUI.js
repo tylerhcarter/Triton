@@ -40,7 +40,6 @@ var TritonKUI = (function(thread, threadEncoder, editor){
 
            // Remove the post
            thread.remove(id);
-           threadEncoder.sleep("thread", thread);
            editor.draw();
            
            return;
@@ -58,7 +57,6 @@ var TritonKUI = (function(thread, threadEncoder, editor){
 
                 // Refresh the Post
                 var post = thread.getPost(id);
-                threadEncoder.sleep("thread", thread);
                 editor.draw();
                 
            }
@@ -67,11 +65,46 @@ var TritonKUI = (function(thread, threadEncoder, editor){
 
     // Sets the bindings on the general page
     var resetBindings = function(){
+        $("section").unbind("click");
         $("section").click(openPost);
+        $(document).unbind("keypress");
         $(document).bind("keypress", "n", function(){
             editor.createPost();
             return false;
         })
+
+        var bind = function(){
+
+           var title = $(this).text();
+           var header = $("<header />", {
+               "id" : "title"
+           });
+
+           $("<input>", {
+                "val" : title,
+                "type" : "text"
+           }).appendTo(header);
+
+           $("#title").replaceWith(header);
+           $("#title input").focus();
+           $("#title input").blur(function(){
+
+               var title = $("#title input").val();
+               thread.modifyTitle(title);
+               var header = $("<header />", {
+                  "id" : "title",
+                  "html" : title
+               });
+
+               $("#title").replaceWith(header);
+               $("#title").click(bind);
+               editor.draw();
+           })
+
+        };
+        $("#title").click(bind);
+
+
     }
 
     return obj;

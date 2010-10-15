@@ -1,13 +1,23 @@
-var TritonEditor = (function(thread, threadEncoder){
+var TritonEditor = (function(window){
     var obj = {};
     var ui;
+    var thread;
+    var sidebar;
+    var encoder;
 
     // Initializes the Editor
     obj.init = function(){
 
+        encoder = window.Encoder(window.localStorage);
+
+        thread = getCurrentThread();
+        
         // Create the user interface
-        ui = TritonKUI(thread, threadEncoder, obj);
+        ui = TritonKUI(thread, encoder, obj);
         ui.init();
+
+        // Create the sidebar
+        sidebar = TritonSidebar(thread);
 
         // Check if this is the first time
         if(thread.count() == 0){
@@ -17,7 +27,57 @@ var TritonEditor = (function(thread, threadEncoder){
         // Draw the Window
         obj.draw();
 
+        // Draw the sidebar
+        sidebar.init();
+
     }
+
+    obj.getThread = function(){
+        return thread;
+    }
+
+    obj.getEncoder = function(){
+        return encoder;
+    }
+
+    var getCurrentThread = (function(){
+
+        var thread;
+        var post_key = window.location.hash.substr(1);
+
+        // Check if a thread has already been saved
+        if(post_key == "new"){
+
+            // If not, create one
+            thread = encoder.create();
+
+            // Add it to the index
+            if(typeof window.localStorage.getItem("thread_index") != "string"){
+                window.localStorage.setItem("thread_index", JSON.stringify([]));
+            }
+
+            var threads = JSON.parse(window.localStorage.getItem("thread_index"));
+            threads.push({
+                "id" : thread.getID(),
+                "title" : thread.getTitle()
+            });
+            window.localStorage.setItem("thread_index", JSON.stringify(threads));
+
+
+        }else if(typeof window.localStorage.getItem(post_key) != "string"){
+
+            alert("Post Not Found");
+
+        }else{
+
+            // Retrieve the saved thread
+            thread = encoder.restore(post_key);
+
+        }
+
+        return thread;
+
+    });
 
     // Draws the HTML
     // Note: The sidebar needs to be redrawn as well
@@ -30,6 +90,13 @@ var TritonEditor = (function(thread, threadEncoder){
             "id" : "posts"
         });
 
+        // Add the title
+        $("<header />", {
+           "html": thread.getTitle(),
+           "id" : "title"
+        }).appendTo(div);
+        
+        // Add each post
         for(var i=0; i<l; i++){
             var current = posts[i];
             var post = $("<section />", {
@@ -40,6 +107,7 @@ var TritonEditor = (function(thread, threadEncoder){
         }
         $("#posts").replaceWith(div);
         ui.init();
+        sidebar.draw();
     }
 
     obj.createPost = function(){
@@ -49,7 +117,6 @@ var TritonEditor = (function(thread, threadEncoder){
 
         // Create the new post and save
         var id = thread.createPost("");
-        threadEncoder.sleep("thread", thread);
 
         // Redraw the window
         obj.draw();

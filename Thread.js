@@ -1,6 +1,19 @@
 var Thread = (function(data, encoder){
 
    var obj = {};
+   
+   obj.modifyTitle = function(text){
+       data.thread_title = text;
+       save();
+   }
+
+   obj.getTitle = function(){
+       return data.thread_title;
+   }
+
+   obj.getID = function(){
+       return data.thread_id;
+   }
 
    obj.createPost = function(text){
        
@@ -116,7 +129,7 @@ var Thread = (function(data, encoder){
                 posts.splice(i, 1);
                 save();
             }
-        }
+        } 
         return false;
    }
 
@@ -149,7 +162,7 @@ var Thread = (function(data, encoder){
    }
 
    function save(){
-       encoder.sleep(window.thread_key, obj);
+       encoder.sleep(data.thread_id, obj);
    }
 
    return obj;

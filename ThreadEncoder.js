@@ -1,4 +1,4 @@
-var Encoder = (function(){
+var Encoder = (function(localStorage){
 
     var obj = {};
 
@@ -23,11 +23,12 @@ var Encoder = (function(){
     }
 
     function load(key){
-        return JSON.parse(window.localStorage.getItem(key));
+        return JSON.parse(localStorage.getItem(key));
     }
 
     function save(key, thread){
-        window.localStorage.setItem(key, JSON.stringify(thread.returnData()));
+        console.log("Saved")
+        localStorage.setItem(key, JSON.stringify(thread.returnData()));
     }
 
 

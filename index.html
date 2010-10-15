@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title></title>
+        <title>Triton</title>
         <link href="style.css" rel="stylesheet">
         <script src="lib.js"></script>
         <script src="jquery.js"></script>
@@ -16,23 +16,25 @@
         <script src="TritonEditor.js"></script>
     </head>
     <body>
+        <div id="wash">&nbsp;</div>
         <nav>
+            <div id="advanced">
+                <header>
+                    Documents
+                </header>
+                <ul id="documents">
+                </ul>
+            </div>
             <header>
-                Triton
+                <a id="logo">Triton</a>
                 <div class="meta">
                     v 0.1. &copy 2010 Tyler Carter
                 </div>
             </header>
-            <ul>
+            <ul id="links">
                 <li><a href="#" id="create_new">Create New</a></li>
-                <li><a href="#" id="redraw">Redraw</a></li>
-                <li><a href="#" id="delete_all">Delete All</a></li>
             </ul>
             <div id="overview">
-                <header>
-                    Overview
-                </header>
-                <ul id="overview-list"></ul>
             </div>
         </nav>
         <div id="posts"></div>
@@ -40,40 +42,19 @@
         <script>
             (function(){
 
-                // Start Up
-
-                // Configuration
-                var post_key = "thread";
-
-                // Create the Encoder
-                var threadEncoder = Encoder();
+                // Get the Thread
+                var post_key = window.location.hash.substr(1);
                 
-                // Retrieve the Thread
-
-                // Check if a thread has already been saved
-                if(typeof window.localStorage.getItem(post_key) != "string"){
-
-                    // If not, create one
-                    var thread = threadEncoder.create();
-
-                }else{
-
-                    // Retrieve the saved thread
-                    var thread = threadEncoder.restore(post_key);
-                    
-                }
-
                 // Start up the editor
-                var editor = TritonEditor(thread, threadEncoder);
+                var editor = TritonEditor(window);
                 editor.init();
-
-                var sidebar = TritonSidebar(thread);
-                sidebar.init();
+                var thread = editor.getThread();
+                var encoder = editor.getEncoder();
 
                 // Special Case Items
                 $("#delete_all").click(function(){
                     thread.deleteAll();
-                    threadEncoder.sleep(post_key, thread);
+                    encoder.sleep(post_key, thread);
                     editor.draw();
                 });
 
@@ -89,6 +70,25 @@
                 $("section").mouseover(function(){
                     
                 });
+
+
+                var openNav = function(){
+                    $("nav").animate({"right": "0px"});
+                    $("#wash").show()
+                    $("#logo").unbind("click");
+                    $("#logo").click(closeNav);
+                    $("#wash").click(closeNav);
+                }
+
+                var closeNav = function(){
+                    $("nav").animate({"right": "-320px"});
+                    $("#wash").hide()
+                    $("#logo").unbind("click");
+                    $("#logo").click(openNav);
+                }
+                $("#logo").click(openNav);
+                   
+                
                 
             })();
 

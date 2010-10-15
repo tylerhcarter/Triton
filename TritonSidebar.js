@@ -3,12 +3,22 @@ var TritonSidebar = (function(thread){
 
     obj.init = function(){
         overview.init();
+        nav.init();
+    }
+
+    obj.draw = function(){
+        overview.draw();
+        nav.init();
     }
 
     var overview = (function(){
         var obj = {};
 
         obj.init = function(){
+            loadThreads();
+        }
+
+        obj.draw = function(){
             loadThreads();
         }
 
@@ -19,7 +29,7 @@ var TritonSidebar = (function(thread){
             var posts = thread.getPosts();
             var postsLength = posts.length;
             for(var i=0; i < postsLength; i++){
-                if(posts[i].post_title != ""){
+                if(posts[i].post_title != "" && posts[i].post_title != null){
                     titles.push({
                         "title" : posts[i].post_title,
                         "id" : posts[i].post_id
@@ -28,9 +38,17 @@ var TritonSidebar = (function(thread){
             }
 
             if(titles.length > 0){
-
-                var html = $("<ul />",{
+                
+                var html = $("<div />", {
                     "id" : "overview"
+                });
+
+                $("<header />", {
+                    "html" : "Overview"
+                }).appendTo(html);
+
+                var list = $("<ul />",{
+                    "id" : "overview-list"
                 });
 
                 var titlesLength = titles.length;
@@ -40,15 +58,61 @@ var TritonSidebar = (function(thread){
                             "href" : "#" + titles[i].id,
                             "text" : titles[i].title
                         })
-                    }).appendTo(html);
+                    }).appendTo(list);
                 }
 
-                $("#overview-list").replaceWith(html);
+                $(list).appendTo(html);
 
+                $("#overview").replaceWith(html);
+
+            }
+            else
+            {
+                $("#overview").replaceWith($("<div />", {
+                    "id" : "overview"
+                }));
             }
         }
 
         return obj;
+    })();
+
+    var nav = (function(){
+
+        var obj = {};
+
+        obj.init = function(){
+            draw();
+        }
+
+        obj.draw = function(){
+            draw();
+        }
+
+        var draw = function(){
+            var encoder = window.Encoder(window.localStorage);
+
+            $("#documents").html("");
+
+            var threads = JSON.parse(window.localStorage.getItem("thread_index"));
+            var len = threads.length;
+            for(var i=0; i < len; i++){
+                var obj = encoder.restore(threads[i].id);
+
+                $("#documents").append("<li><a href=\"#"+threads[i].id+"\">" + obj.getTitle() + "</a></li>")
+            }
+
+            $("#documents a").click(function(){
+               location.hash = $(this).attr("href");
+               location.reload(true);
+            });
+            
+        }
+
+
+
+        return obj;
+
     })();
 
     return obj;
