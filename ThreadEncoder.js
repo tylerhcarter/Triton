@@ -15,15 +15,28 @@ var Encoder = (function(localStorage){
     }
 
     obj.restore = function(key){
-        return window.Thread(load(key), obj);
+        var obj = load(key);
+        if(obj == false){
+            return false;
+        }else{
+            return window.Thread(obj);
+        }
     }
 
     obj.sleep = function(key, thread){
         save(key, thread);
     }
 
+    obj.remove = function(key){
+        localStorage.removeItem(key);
+    }
+
     function load(key){
-        return JSON.parse(localStorage.getItem(key));
+        if(localStorage.getItem(key)){
+            return JSON.parse(localStorage.getItem(key));
+        }else{
+            return false;
+        }
     }
 
     function save(key, thread){

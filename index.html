@@ -19,11 +19,13 @@
         <div id="wash">&nbsp;</div>
         <nav>
             <div id="advanced">
-                <header>
-                    Documents
-                </header>
-                <ul id="documents">
-                </ul>
+                <div id="documents">
+                    <header>
+                        Documents
+                    </header>
+                    <ul id="document-list">
+                    </ul>
+                </div>
             </div>
             <header>
                 <a id="logo">Triton</a>
@@ -32,7 +34,9 @@
                 </div>
             </header>
             <ul id="links">
-                <li><a href="#" id="create_new">Create New</a></li>
+                <li><a href="#" id="create_new">New Post</a></li>
+                <li><a href="#new" id="new_doc">New Document</a></li>
+                <li><a href="#" id="delete_doc">Delete Document</a></li>
             </ul>
             <div id="overview">
             </div>
@@ -69,6 +73,15 @@
 
                 $("section").mouseover(function(){
                     
+                });
+
+                $("#new_doc").click(function(){
+                    location.hash = "new";
+                    location.reload(true);
+                })
+
+                $("#delete_doc").click(function(){
+                    encoder.remove(thread.getID())
                 });
 
 

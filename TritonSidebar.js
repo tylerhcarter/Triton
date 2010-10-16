@@ -92,17 +92,18 @@ var TritonSidebar = (function(thread){
         var draw = function(){
             var encoder = window.Encoder(window.localStorage);
 
-            $("#documents").html("");
+            $("#document-list").html("");
 
             var threads = JSON.parse(window.localStorage.getItem("thread_index"));
             var len = threads.length;
             for(var i=0; i < len; i++){
                 var obj = encoder.restore(threads[i].id);
-
-                $("#documents").append("<li><a href=\"#"+threads[i].id+"\">" + obj.getTitle() + "</a></li>")
+                if(obj != false){
+                    $("#document-list").append("<li><a href=\"#"+threads[i].id+"\">" + obj.getTitle() + "</a></li>")
+                }
             }
 
-            $("#documents a").click(function(){
+            $("#document-list a").click(function(){
                location.hash = $(this).attr("href");
                location.reload(true);
             });

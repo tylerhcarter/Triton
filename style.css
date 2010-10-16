@@ -40,6 +40,7 @@ nav{
     top: 0;
     padding: 10px;
     padding-top: 0px;
+    padding-right: 0;
     height: 100%;
     min-width: 500px;
     z-index: 2;
@@ -124,19 +125,32 @@ textarea{
 }
 
 #advanced{
-    background-color: white;
-    border: 1px solid #EEEEEF;
-    -webkit-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
-    height: 70%;
-    overflow-y: auto;
-    overflow-x: hidden;
     float: right;
-    padding-left: 10px;
     width: 280px;
+    height: 100%;
+    margin: 0;
 }
 
 #advanced header{
     color: #9CF;
+}
+
+#documents{
+    background-color: white;
+    border: 1px solid #EEEEEF;
+    -webkit-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
+    padding-left: 10px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#document-list {
+    height: 100%;
+}
+
+#actions{
+    padding-top: 10px;
 }
 
 #wash{

@@ -62,11 +62,13 @@ var TritonEditor = (function(window){
                 "title" : thread.getTitle()
             });
             window.localStorage.setItem("thread_index", JSON.stringify(threads));
+            location.hash = thread.getID();
 
 
         }else if(typeof window.localStorage.getItem(post_key) != "string"){
 
-            alert("Post Not Found");
+            location.hash = "new";
+            location.reload(true);
 
         }else{
 
