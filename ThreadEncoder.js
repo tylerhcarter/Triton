@@ -15,11 +15,11 @@ var Encoder = (function(localStorage){
     }
 
     obj.restore = function(key){
-        var obj = load(key);
-        if(obj == false){
+        var baseObj = load(key);
+        if(baseObj == false){
             return false;
         }else{
-            return window.Thread(obj);
+            return window.Thread(baseObj, obj);
         }
     }
 
@@ -40,7 +40,6 @@ var Encoder = (function(localStorage){
     }
 
     function save(key, thread){
-        console.log("Saved")
         localStorage.setItem(key, JSON.stringify(thread.returnData()));
     }
 

@@ -1,4 +1,4 @@
-var TritonKUI = (function(thread, threadEncoder, editor){
+var TritonKUI = (function(editor){
     var obj = {};
 
     obj.init = function(){
@@ -6,7 +6,8 @@ var TritonKUI = (function(thread, threadEncoder, editor){
     };
 
     var openPost = function(){
-
+        var thread = editor.current();
+        
         // Grab information about the post
        var id = $(this).attr("id");
        var post = thread.getPost(id);
@@ -34,6 +35,7 @@ var TritonKUI = (function(thread, threadEncoder, editor){
        var section = $(this).parent();
        var id = $(section).attr("id");
        var text = $(this).val();
+       var thread = editor.current();
 
        // Check if the post is empty
        if(text == ""){
@@ -65,6 +67,7 @@ var TritonKUI = (function(thread, threadEncoder, editor){
 
     // Sets the bindings on the general page
     var resetBindings = function(){
+        var thread = editor.current();
         $("section").unbind("click");
         $("section").click(openPost);
         $(document).unbind("keypress");

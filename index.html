@@ -11,11 +11,19 @@
         <script src="hotkeys.js"></script>
         <script src="Thread.js"></script>
         <script src="ThreadEncoder.js"></script>
+        <script src="ThreadIndex.js"></script>
         <script src="TritonSidebar.js"></script>
         <script src="TritonKUI.js"></script>
         <script src="TritonEditor.js"></script>
+        <script src="ThreadManager.js"></script>
     </head>
     <body>
+        <div id="dev">
+            <form>
+            <input type="submit" id="dev-button">
+            <input type="text" id="dev-box">
+            </form>
+        </div>
         <div id="wash">&nbsp;</div>
         <nav>
             <div id="advanced">
@@ -37,6 +45,7 @@
                 <li><a href="#" id="create_new">New Post</a></li>
                 <li><a href="#new" id="new_doc">New Document</a></li>
                 <li><a href="#" id="delete_doc">Delete Document</a></li>
+                <li><a href="#" id="delete_all">Delete All</a></li>
             </ul>
             <div id="overview">
             </div>
@@ -52,37 +61,81 @@
                 // Start up the editor
                 var editor = TritonEditor(window);
                 editor.init();
-                var thread = editor.getThread();
+                var thread = editor.current();
                 var encoder = editor.getEncoder();
+                var index = editor.getIndex();
+
+                var $t = function(message){
+
+                    var commands = {
+                        "reload" : function(){
+                            location.reload(true);
+                        },
+                        "redraw" : function(){
+                            editor.draw();
+                        },
+                        "create post" : function(){
+                            editor.createPost();
+                        },
+                        "create doc" : function(){
+                            location.hash = "new";
+                            location.reload(true);
+                        },
+                        "delete doc" : function(){
+                            index.deleteIndex(thread.getID())
+                        },
+                        "delete docs" : function(){
+                            index.deleteAll();
+                        }
+                    }
+
+                    if(arguments.length > 1){
+
+                        var len = arguments.length;
+                        for(var i=0; i < len; i++){
+                            $t(arguments[i])
+                        }
+
+                        console.log(len + " commands executed.");
+                    }else{
+                        if(typeof commands[message] == "function"){
+                            console.log(message);
+                            commands[message]();
+                            return true;
+                        }else{
+                            return false;
+                        }
+                    }                    
+                }
+                window.$t = $t;
+
+                $("#dev-button").click(function(){
+                    var text = $("#dev-box").val();
+                    var commands = text.split(",");
+                    $t.apply(null, commands);
+                    $("#dev-box").val("");
+                    return false;
+                })
 
                 // Special Case Items
                 $("#delete_all").click(function(){
-                    thread.deleteAll();
-                    encoder.sleep(post_key, thread);
-                    editor.draw();
+                    $t("delete docs");
                 });
 
                 $("#create_new").click(function(){
-                   editor.createPost();
-                });
-
-
-                $("#redraw").click(function(){
-                    editor.draw();
-                })
-
-                $("section").mouseover(function(){
-                    
+                   $t("create post");
                 });
 
                 $("#new_doc").click(function(){
-                    location.hash = "new";
-                    location.reload(true);
+                    $t("create doc");
                 })
 
                 $("#delete_doc").click(function(){
-                    encoder.remove(thread.getID())
+                    $t("delete doc");
+                    return false;
                 });
+
+                
 
 
                 var openNav = function(){
@@ -100,6 +153,10 @@
                     $("#logo").click(openNav);
                 }
                 $("#logo").click(openNav);
+
+                if(editor.current() == false){
+                    $("#logo").click();
+                }
                    
                 
                 

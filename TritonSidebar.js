@@ -1,13 +1,18 @@
-var TritonSidebar = (function(thread){
+var TritonSidebar = (function(editor){
     var obj = {};
 
     obj.init = function(){
-        overview.init();
+
+        if(editor.current()){
+            overview.init();
+        }
         nav.init();
     }
 
     obj.draw = function(){
-        overview.draw();
+        if(editor.current()){
+            overview.draw();
+        }
         nav.init();
     }
 
@@ -25,7 +30,8 @@ var TritonSidebar = (function(thread){
         var loadThreads = function(){
             var len;
             var titles = [];
-
+            var thread = editor.current();
+            
             var posts = thread.getPosts();
             var postsLength = posts.length;
             for(var i=0; i < postsLength; i++){
@@ -94,12 +100,15 @@ var TritonSidebar = (function(thread){
 
             $("#document-list").html("");
 
-            var threads = JSON.parse(window.localStorage.getItem("thread_index"));
+            var index = editor.getIndex();
+            index.refresh();
+
+            var threads = index.getIndex();
             var len = threads.length;
             for(var i=0; i < len; i++){
-                var obj = encoder.restore(threads[i].id);
+                var obj = threads[i];
                 if(obj != false){
-                    $("#document-list").append("<li><a href=\"#"+threads[i].id+"\">" + obj.getTitle() + "</a></li>")
+                    $("#document-list").append("<li><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
                 }
             }
 

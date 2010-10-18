@@ -4,40 +4,69 @@ var TritonEditor = (function(window){
     var thread;
     var sidebar;
     var encoder;
+    var index;
+    var manager;
 
     // Initializes the Editor
     obj.init = function(){
 
-        encoder = window.Encoder(window.localStorage);
+        index = ThreadIndex(window.localStorage);
+        index.init();
 
-        thread = getCurrentThread();
-        
+        // Create the Thread Manager
+        manager = window.ThreadManager(window.localStorage);
+        manager.init();
+
         // Create the user interface
-        ui = TritonKUI(thread, encoder, obj);
-        ui.init();
+        ui = TritonKUI(obj);
 
         // Create the sidebar
-        sidebar = TritonSidebar(thread);
+        sidebar = TritonSidebar(obj);
 
-        // Check if this is the first time
-        if(thread.count() == 0){
-            thread.createPost("(Click to Edit)");
+        // Get the current thread
+        thread = getCurrentThread();
+        if(thread != false){
+
+            // Check if there are no items
+            if(thread.count() == 0){
+                thread.createPost("(Click to Edit)");
+            }
+
+            // Draw the Window
+            obj.draw();
+
         }
 
-        // Draw the Window
-        obj.draw();
+        // Initialize the UI
+        ui.init();
 
-        // Draw the sidebar
+        // Draw the Sidebar
         sidebar.init();
 
+    }
+
+    obj.setThread = function(newThread){
+        thread = newThread;
     }
 
     obj.getThread = function(){
         return thread;
     }
 
+    obj.current = function(){
+        if(typeof thread.getID == "function"){
+            return thread;
+        }else{
+            return false;
+        }
+    }
+
     obj.getEncoder = function(){
-        return encoder;
+        return manager.getEncoder();
+    }
+
+    obj.getIndex = function(){
+        return manager.getIndex();
     }
 
     var getCurrentThread = (function(){
@@ -49,31 +78,17 @@ var TritonEditor = (function(window){
         if(post_key == "new"){
 
             // If not, create one
-            thread = encoder.create();
-
-            // Add it to the index
-            if(typeof window.localStorage.getItem("thread_index") != "string"){
-                window.localStorage.setItem("thread_index", JSON.stringify([]));
-            }
-
-            var threads = JSON.parse(window.localStorage.getItem("thread_index"));
-            threads.push({
-                "id" : thread.getID(),
-                "title" : thread.getTitle()
-            });
-            window.localStorage.setItem("thread_index", JSON.stringify(threads));
+            thread = manager.createThread();
             location.hash = thread.getID();
-
 
         }else if(typeof window.localStorage.getItem(post_key) != "string"){
 
-            location.hash = "new";
-            location.reload(true);
+            return false;
 
         }else{
 
             // Retrieve the saved thread
-            thread = encoder.restore(post_key);
+            thread = manager.getThread(post_key);
 
         }
 

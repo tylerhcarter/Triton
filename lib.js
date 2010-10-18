@@ -19,7 +19,7 @@ function pp(obj, indent)
       {
         // Recursive dump
         // (replace "  " by "\t" or something else if you prefer)
-        var od = DumpObjectIndented(value, indent + "  ");
+        var od = pp(value, indent + "  ");
         // If you like { on the same line as the key
         //value = "{\n" + od + "\n" + indent + "}";
         // If you prefer { and } to be aligned
