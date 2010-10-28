@@ -67,6 +67,7 @@ nav ul{
 nav ul a{
     color: #06C;
     text-decoration: none;
+    cursor: pointer;
 }
 
 #posts header{
@@ -105,7 +106,7 @@ textarea{
     margin: 0;
 }
 
-.active{
+section.active{
     background-color: white;
     padding: 8px;
     border: 2px solid #39f;
@@ -139,14 +140,20 @@ textarea{
     background-color: white;
     border: 1px solid #EEEEEF;
     -webkit-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
+    margin: 0;
+    padding: 0;
     padding-left: 10px;
     height: 100%;
+    padding-top: 0;
     overflow-y: auto;
     overflow-x: hidden;
 }
 
 #document-list {
-    height: 100%;
+}
+
+#document-list .active a{
+    font-weight: bold;
 }
 
 #actions{
@@ -166,6 +173,7 @@ textarea{
 }
 
 #dev{
+    display: none;
     position: fixed;
     bottom: 0;
     left: 0;

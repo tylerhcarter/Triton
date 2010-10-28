@@ -2,19 +2,45 @@ var TritonSidebar = (function(editor){
     var obj = {};
 
     obj.init = function(){
-
+        obj.register.notify();
         if(editor.current()){
             overview.init();
         }
-        nav.init();
+        documents.init();
     }
 
     obj.draw = function(){
+        obj.register.notify();
         if(editor.current()){
             overview.draw();
         }
-        nav.init();
+        documents.init();
     }
+
+    obj.register = (function(editor){
+
+        var obj = {};
+        var nodes = [];
+
+        obj.register = function(node){
+            if(typeof node.update == "function"){
+                nodes.push(node);
+                return true;
+            }else{
+                return false;
+            }
+        }
+
+        obj.notify = function(){
+            var len = nodes.length;
+            for(var i = 0; i < len; i++){
+                nodes[i].update(editor);
+            }
+        }
+
+        return obj;
+
+    })(editor);
 
     var overview = (function(){
         var obj = {};
@@ -83,7 +109,7 @@ var TritonSidebar = (function(editor){
         return obj;
     })();
 
-    var nav = (function(){
+    var documents = (function(){
 
         var obj = {};
 
@@ -103,18 +129,33 @@ var TritonSidebar = (function(editor){
             var index = editor.getIndex();
             index.refresh();
 
+            var currentThread = editor.current();
+            var currentID;
+            if(currentThread != false){
+                currentID = currentThread.getID();
+            }else{
+                currentID = false;
+            }
+            
+
             var threads = index.getIndex();
             var len = threads.length;
             for(var i=0; i < len; i++){
                 var obj = threads[i];
                 if(obj != false){
-                    $("#document-list").append("<li><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
+
+                    if(obj.id == currentID){
+                        $("#document-list").append("<li class=\"active\"><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
+                    }else{
+                        $("#document-list").append("<li><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
+                    }
                 }
             }
 
             $("#document-list a").click(function(){
                location.hash = $(this).attr("href");
-               location.reload(true);
+               editor.loadThread($(this).attr("href").substr(1));
+               editor.draw();
             });
             
         }
@@ -127,3 +168,51 @@ var TritonSidebar = (function(editor){
 
     return obj;
 });
+
+window.TritonNav = (function(sidebar){
+    var obj = {};
+    var editor = false;
+
+    obj.init = function(){
+        sidebar.register.register(obj);
+    }
+
+    obj.draw = function(){
+
+        var list = $("<ul />", {
+            "id" : "links"
+        });
+
+        // Make Basic Menu Items
+        $(makeItem("new_doc", "New Document")).appendTo(list);
+
+        // Make Per-Thread Items (if a thread is open)
+        if(editor.current()){
+
+            $(makeItem("new_post", "New Post")).appendTo(list);
+            $(makeItem("delete_doc", "Delete Document")).appendTo(list);
+            
+        }
+
+        $("#links").replaceWith(list);
+
+    }
+
+    function makeItem(id, text){
+        var e = $("<li />");
+        $("<a />", {
+            "id" : id,
+            "text" : text
+        }).appendTo(e);
+
+        return e;
+    }
+
+    obj.update = function(editorObj){
+        editor = editorObj;
+        obj.draw();
+    }
+
+    return obj;
+})
+

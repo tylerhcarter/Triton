@@ -41,12 +41,18 @@ var TritonEditor = (function(window){
         ui.init();
 
         // Draw the Sidebar
+        TritonNav(sidebar).init();
         sidebar.init();
+        
 
     }
 
     obj.setThread = function(newThread){
         thread = newThread;
+    }
+
+    obj.loadThread = function(id){
+        thread = manager.getThread(id);
     }
 
     obj.getThread = function(){
