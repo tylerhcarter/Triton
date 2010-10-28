@@ -15,7 +15,6 @@ var ThreadIndex = (function(localStorage, thread_key){
 
         // Update the Data
         refreshData();
-        $("#object").text(pp(data));
     }
 
     obj.load = function(){
