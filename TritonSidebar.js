@@ -195,7 +195,15 @@ window.TritonNav = (function(sidebar){
         }
 
         $("#links").replaceWith(list);
+        obj.bind();
+    }
 
+    obj.bind = function(){
+        var createDoc = function(){
+            $t("create doc");
+            $(this).click(createDoc);
+        };
+        $("#new_doc").click(createDoc);
     }
 
     function makeItem(id, text){

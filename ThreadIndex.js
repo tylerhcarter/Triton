@@ -87,6 +87,11 @@ var ThreadIndex = (function(localStorage, thread_key){
 
             var current = threads[i];
             var thread = encoder.restore(current.id);
+            if(thread == false){
+                //obj.deleteIndex(current.id);
+                console.log("False")
+                continue;
+            }
 
             if(current.title != thread.getTitle()){
                 threads[i].title = thread.getTitle();

@@ -61,6 +61,7 @@
                 var thread = editor.current();
                 var encoder = editor.getEncoder();
                 var index = editor.getIndex();
+                var manager = editor.getManager();
 
                 var $t = function(message){
 
@@ -75,7 +76,8 @@
                             editor.createPost();
                         },
                         "create doc" : function(){
-                            var thread = manager.createThread();
+                            var thread = manager.createThread("Test");
+                            thread.createPost("test");
                             location.hash = thread.getID();
                             editor.loadThread(location.hash.substr(1));
                             editor.draw();
@@ -125,9 +127,12 @@
                    $t("create post");
                 });
 
-                $("#new_doc").click(function(){
+                var createDoc = function(){
                     $t("create doc");
-                })
+                    $(this).click(createDoc);
+                };
+                $("#new_doc").click(createDoc);
+                $("#new_doc").click(function(){console.log("X")});
 
                 $("#delete_doc").click(function(){
                     $t("delete doc");
