@@ -6,6 +6,7 @@ var TritonEditor = (function(window){
     var encoder;
     var index;
     var manager;
+    var slider;
 
     // Initializes the Editor
     obj.init = function(){
@@ -22,6 +23,8 @@ var TritonEditor = (function(window){
 
         // Create the sidebar
         sidebar = TritonSidebar(obj);
+
+        //slider = TritonSlider(obj);
 
         // Get the current thread
         thread = getCurrentThread();
@@ -44,7 +47,9 @@ var TritonEditor = (function(window){
         TritonNav(sidebar).init();
         sidebar.init();
         
-
+        //slider.init();
+        //var sync = TritonSync(window);
+        //sync.start(obj)
     }
 
     obj.setThread = function(newThread){
@@ -65,6 +70,10 @@ var TritonEditor = (function(window){
         }else{
             return false;
         }
+    }
+
+    obj.getManager = function(){
+        return manager;
     }
 
     obj.getEncoder = function(){
@@ -104,7 +113,15 @@ var TritonEditor = (function(window){
 
     // Draws the HTML
     // Note: The sidebar needs to be redrawn as well
-    obj.draw = function(){
+    obj.draw = function(bindEvents, callback){
+
+        if(typeof bindEvents == "undefined"){
+            bindEvents = true;
+        }
+
+        if(typeof callback != "function"){
+            callback = function(){};
+        }
 
         var posts = thread.getPosts();
         var l = posts.length;
@@ -129,8 +146,12 @@ var TritonEditor = (function(window){
             $(post).appendTo(div);
         }
         $("#posts").replaceWith(div);
-        ui.init();
+        if(bindEvents == true){
+            ui.init();
+        }
         sidebar.draw();
+        //slider.draw();
+        callback();
     }
 
     obj.createPost = function(){

@@ -16,6 +16,7 @@
         <script src="TritonKUI.js"></script>
         <script src="TritonEditor.js"></script>
         <script src="ThreadManager.js"></script>
+        <script src="ThreadSlider.js"></script>
     </head>
     <body>
         <div id="dev">
@@ -74,8 +75,10 @@
                             editor.createPost();
                         },
                         "create doc" : function(){
-                            location.hash = "new";
-                            location.reload(true);
+                            var thread = manager.createThread();
+                            location.hash = thread.getID();
+                            editor.loadThread(location.hash.substr(1));
+                            editor.draw();
                         },
                         "delete doc" : function(){
                             index.deleteIndex(thread.getID())

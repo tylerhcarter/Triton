@@ -6,6 +6,7 @@ var TritonKUI = (function(editor){
     };
 
     var openPost = function(){
+        $(this).unbind("click");
         var thread = editor.current();
         
         // Grab information about the post
@@ -13,7 +14,7 @@ var TritonKUI = (function(editor){
        var post = thread.getPost(id);
 
        // Replace it with a text area
-       $(this).replaceWith("<section id=\"" + id + "\"><textarea>"+post.post_content.plain+"</textarea></section>");
+       $(this).html("<textarea>"+post.post_content.plain+"</textarea>");
 
        // Focus the Textarea upon creation and set the blur event
        $('textarea').focus();
