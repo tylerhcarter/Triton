@@ -5,17 +5,19 @@ var TritonEditor = (function(window){
     var sidebar;
     var encoder;
     var index;
+    index = ThreadIndex(window.localStorage);
+
     var manager;
+    manager = window.ThreadManager(window.localStorage);
+    
     var slider;
+
+    var notifier = window.Notifier();
 
     // Initializes the Editor
     obj.init = function(){
-
-        index = ThreadIndex(window.localStorage);
+        
         index.init();
-
-        // Create the Thread Manager
-        manager = window.ThreadManager(window.localStorage);
         manager.init();
 
         // Create the user interface
@@ -23,11 +25,12 @@ var TritonEditor = (function(window){
 
         // Create the sidebar
         sidebar = TritonSidebar(obj);
-
-        //slider = TritonSlider(obj);
-
+        notifier.register(sidebar);
+        
         // Get the current thread
         thread = getCurrentThread();
+
+        // Check if a thread is selected
         if(thread != false){
 
             // Check if there are no items
@@ -35,10 +38,15 @@ var TritonEditor = (function(window){
                 thread.createPost("(Click to Edit)");
             }
 
-            // Draw the Window
-            obj.draw();
+
+        }else{
+
+            // Welcome Screen
 
         }
+
+        // Draw the Window
+        obj.draw();
 
         // Initialize the UI
         ui.init();
@@ -46,10 +54,27 @@ var TritonEditor = (function(window){
         // Draw the Sidebar
         TritonNav(sidebar).init();
         sidebar.init();
-        
-        //slider.init();
-        //var sync = TritonSync(window);
-        //sync.start(obj)
+    }
+
+    // Draws the HTML
+    obj.draw = function(bindEvents, callback){
+
+        if(typeof bindEvents == "undefined"){
+            bindEvents = true;
+        }
+
+        // Notify the other modules that something has changed
+        notifier.notify("draw", obj);
+
+        // Allows for disabling the default UI
+        // TODO: This should really be triggered by the posts module
+        if(bindEvents == true){
+            ui.init();
+        }
+
+        if(typeof callback == "function"){
+            callback();
+        }
     }
 
     obj.setThread = function(newThread){
@@ -111,49 +136,60 @@ var TritonEditor = (function(window){
 
     });
 
-    // Draws the HTML
-    // Note: The sidebar needs to be redrawn as well
-    obj.draw = function(bindEvents, callback){
+    // Controls the displaying of posts
+    // TODO: Move to separate file
+    var posts = (function(editor){
 
-        if(typeof bindEvents == "undefined"){
-            bindEvents = true;
+        var obj = {};
+        var thread = false;
+        obj.draw = function(editor){
+
+            thread = editor.current();
+
+            if(editor.current()){
+                drawPosts();
+            }else{
+                drawWelcome();
+            }
         }
 
-        if(typeof callback != "function"){
-            callback = function(){};
-        }
+        function drawPosts(){
+            var posts = thread.getPosts();
+            var l = posts.length;
 
-        var posts = thread.getPosts();
-        var l = posts.length;
+            var div = $("<div />",{
+                "id" : "posts"
+            });
 
-        var div = $("<div />",{
-            "id" : "posts"
-        });
+            // Add the title
+            $("<header />", {
+               "html": thread.getTitle(),
+               "id" : "title"
+            }).appendTo(div);
 
-        // Add the title
-        $("<header />", {
-           "html": thread.getTitle(),
-           "id" : "title"
-        }).appendTo(div);
-        
-        // Add each post
-        for(var i=0; i<l; i++){
-            var current = posts[i];
-            var post = $("<section />", {
-                "html" : current.post_content.html,
-                "id" : current.post_id
-            })
-            $(post).appendTo(div);
-        }
-        $("#posts").replaceWith(div);
-        if(bindEvents == true){
-            ui.init();
-        }
-        sidebar.draw();
-        //slider.draw();
-        callback();
-    }
+            // Add each post
+            for(var i=0; i<l; i++){
+                var current = posts[i];
+                var post = $("<section />", {
+                    "html" : current.post_content.html,
+                    "id" : current.post_id
+                })
+                $(post).appendTo(div);
+            }
+            $("#posts").replaceWith(div);
+        };
 
+        function drawWelcome(){
+            // TODO: Create
+        };
+
+        return obj;
+    })();
+    notifier.register(posts);
+
+
+    // Creates a new post on a thread
+    // TODO: Move tot he KUI 
     obj.createPost = function(){
 
         // Leave any currently open textareas

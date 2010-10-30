@@ -43,3 +43,25 @@ window.generateUUID = (function(){
             return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
         }
 })();
+
+window.Notifier = (function(){
+
+        var obj = {};
+        var nodes = [];
+
+        obj.register = function(node){
+            nodes.push(node);
+        }
+
+        obj.notify = function(method, val){
+            var len = nodes.length;
+            for(var i = 0; i < len; i++){
+                if(typeof nodes[i][method] == "function"){
+                    nodes[i][method](val);
+                }
+            }
+        }
+
+        return obj;
+
+});
