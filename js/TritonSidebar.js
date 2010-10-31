@@ -124,26 +124,27 @@ var TritonSidebar = (function(editor){
         var draw = function(){
             var encoder = window.Encoder(window.localStorage);
 
-            $("#document-list").html("");
-
             var index = editor.getIndex();
             index.refresh();
 
+            // Check if a thread is active
             var currentThread = editor.current();
-            var currentID;
+            var currentID = false;
             if(currentThread != false){
                 currentID = currentThread.getID();
-            }else{
-                currentID = false;
             }
             
+            // Reset the list
+            $("#document-list").html("");
 
+            // Output each document into the list
             var threads = index.getIndex();
             var len = threads.length;
             for(var i=0; i < len; i++){
                 var obj = threads[i];
                 if(obj != false){
 
+                    // Highlight the current thread
                     if(obj.id == currentID){
                         $("#document-list").append("<li class=\"active\"><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
                     }else{
@@ -152,6 +153,7 @@ var TritonSidebar = (function(editor){
                 }
             }
 
+            // If the user clicks on a document, switch to it
             $("#document-list a").click(function(){
                location.hash = $(this).attr("href");
                editor.loadThread($(this).attr("href").substr(1));
@@ -159,9 +161,7 @@ var TritonSidebar = (function(editor){
             });
             
         }
-
-
-
+        
         return obj;
 
     })();
@@ -172,6 +172,15 @@ var TritonSidebar = (function(editor){
 window.TritonNav = (function(sidebar){
     var obj = {};
     var editor = false;
+    
+    var binds = {
+        "new_doc": function(){
+            $t("create doc");
+        },
+        "delete_doc" : function(){
+            $t("delete doc");
+        }
+    }
 
     obj.init = function(){
         sidebar.register.register(obj);
@@ -197,14 +206,9 @@ window.TritonNav = (function(sidebar){
         $("#links").replaceWith(list);
     }
 
-    var binds = {
-        "new_doc": function(){
-            $t("create doc");
-        },
-        "delete_doc" : function(){
-            $t("delete doc");
-        }
-
+    obj.update = function(editorObj){
+        editor = editorObj;
+        obj.draw();
     }
 
     function makeItem(id, text){
@@ -221,11 +225,6 @@ window.TritonNav = (function(sidebar){
 
         $(button).appendTo(item);
         return item;
-    }
-
-    obj.update = function(editorObj){
-        editor = editorObj;
-        obj.draw();
     }
 
     return obj;
