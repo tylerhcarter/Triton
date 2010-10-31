@@ -41,19 +41,21 @@ window.Triton.TritonEditor = (function(window){
         index.init();
         manager.init();
 
+        // Get the current thread
+        thread = loadCurrentThread();
+
         // Create UI Object
         ui = $t.TritonKUI(obj);
 
         // Create Sidebar Object
         sidebar = $t.TritonSidebar(obj);
         $t.TritonNav(sidebar).init();
+        sidebar.init();
+
+        // Register objects to be notified upon changes
         notifier.register(sidebar);
-        
         notifier.register(posts);
         
-        // Get the current thread
-        thread = loadCurrentThread();
-
         // Draw the Window
         obj.draw();
     }
@@ -95,8 +97,15 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
-    obj.getThread = function(){ return thread; }
-    obj.current = function(){ return thread; }
+    obj.getThread = function(){
+        if(typeof thread == "undefined"){
+            return false;
+        }else{
+            return thread;
+        }
+        
+    }
+    obj.current = function(){ return obj.getThread(); }
     obj.loadThread = function(id){
         thread = manager.getThread(id);
     }

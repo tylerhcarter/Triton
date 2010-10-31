@@ -7,6 +7,31 @@ window.Triton.TritonSidebar = (function(editor){
             overview.init();
         }
         documents.init();
+
+        bindNav();
+    }
+
+    function bindNav(){
+        
+        var openNav = function(){
+            $("nav").animate({"right": "0px"});
+            $("#wash").show()
+            $("#logo").unbind("click");
+            $("#logo").click(closeNav);
+            $("#wash").click(closeNav);
+        }
+
+        var closeNav = function(){
+            $("nav").animate({"right": "-320px"});
+            $("#wash").hide()
+            $("#logo").unbind("click");
+            $("#logo").click(openNav);
+        }
+        $("#logo").click(openNav);
+
+        if(editor.current() == false){
+            $("#logo").click();
+        }
     }
 
     obj.draw = function(){
