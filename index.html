@@ -83,7 +83,23 @@
                             editor.draw();
                         },
                         "delete doc" : function(){
-                            index.deleteIndex(thread.getID())
+                            
+                            // Delete the Post
+                            index.deleteIndex(editor.current().getID())
+
+                            // Move back a post
+                            var threads = index.getIndex();
+
+                            if(threads.length > 0){
+                                var last = threads[threads.length - 1].id;
+                                location.hash = last;
+                                editor.loadThread(last);
+                                editor.draw();
+                            }else{
+                                location.hash = "";
+                                editor.clearThread();
+                                editor.draw();
+                            }
                         },
                         "delete docs" : function(){
                             index.deleteAll();
@@ -125,18 +141,6 @@
 
                 $("#create_new").click(function(){
                    $t("create post");
-                });
-
-                var createDoc = function(){
-                    $t("create doc");
-                    $(this).click(createDoc);
-                };
-                $("#new_doc").click(createDoc);
-                $("#new_doc").click(function(){console.log("X")});
-
-                $("#delete_doc").click(function(){
-                    $t("delete doc");
-                    return false;
                 });
 
                 

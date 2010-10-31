@@ -204,6 +204,11 @@ window.TritonNav = (function(sidebar){
             $(this).click(createDoc);
         };
         $("#new_doc").click(createDoc);
+
+        $("#delete_doc").click(function(){
+            $t("delete doc");
+            return false;
+        });
     }
 
     function makeItem(id, text){

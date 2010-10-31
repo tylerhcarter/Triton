@@ -81,6 +81,11 @@ var TritonEditor = (function(window){
         thread = newThread;
     }
 
+    obj.clearThread = function(){
+        thread = false;
+    }
+
+
     obj.loadThread = function(id){
         thread = manager.getThread(id);
     }
@@ -180,7 +185,11 @@ var TritonEditor = (function(window){
         };
 
         function drawWelcome(){
-            // TODO: Create
+            var div = $("<div />",{
+                "id" : "posts",
+                "html" : "No Posts Current Active"
+            });
+            $("#posts").replaceWith(div);
         };
 
         return obj;
