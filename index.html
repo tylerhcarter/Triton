@@ -76,7 +76,7 @@
                         },
                         "create post" : function(){
                             $('textarea').blur();
-                            var id = thread.createPost("");
+                            var id = editor.current().createPost("");
 
                             // Display the box and focus it
                             editor.draw();

@@ -207,6 +207,9 @@ window.Triton.TritonNav = (function(sidebar){
         },
         "delete_doc" : function(){
             $t("delete doc");
+        },
+        "new_post" : function(){
+            $t("create post");
         }
     }
 
