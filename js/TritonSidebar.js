@@ -122,10 +122,6 @@ var TritonSidebar = (function(editor){
         }
 
         var draw = function(){
-            var encoder = window.Encoder(window.localStorage);
-
-            var index = editor.getIndex();
-            index.refresh();
 
             // Check if a thread is active
             var currentThread = editor.current();
@@ -133,25 +129,34 @@ var TritonSidebar = (function(editor){
             if(currentThread != false){
                 currentID = currentThread.getID();
             }
-            
-            // Reset the list
-            $("#document-list").html("");
 
-            // Output each document into the list
+            // Get the threads
+            var index = editor.getIndex();
+            index.refresh();
             var threads = index.getIndex();
+            
+            // Output each document into a list
+            var list = $("<ul />", {
+                "id" : "document-list"
+            });
+
             var len = threads.length;
             for(var i=0; i < len; i++){
                 var obj = threads[i];
-                if(obj != false){
+                
+                assert(obj != false, "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (Obj was False)");
+                assert(typeof obj.id != "undefined", "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No ID Property)");
+                assert(typeof obj.title != "undefined", "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No Title Property)");
 
-                    // Highlight the current thread
-                    if(obj.id == currentID){
-                        $("#document-list").append("<li class=\"active\"><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
-                    }else{
-                        $("#document-list").append("<li><a href=\"#"+obj.id+"\">" + obj.title + "</a></li>")
-                    }
+                // Highlight the current thread
+                if(obj.id == currentID){
+                    $(makeItem(obj, true)).appendTo(list);
+                }else{
+                    $(makeItem(obj, false)).appendTo(list);
                 }
             }
+
+            $("#document-list").replaceWith(list);
 
             // If the user clicks on a document, switch to it
             $("#document-list a").click(function(){
@@ -161,6 +166,26 @@ var TritonSidebar = (function(editor){
             });
             
         }
+
+        function makeItem(obj, active){
+
+            if(typeof active == undefined){
+                active = false;
+            }
+
+            var item = $("<li>");
+            if(active == true){
+                $(item).addClass("active");
+            }
+
+            $("<a />", {
+                "href" : "#" + obj.id,
+                "text" : obj.title
+            }).appendTo(item);
+
+            return item;
+
+        }
         
         return obj;
 
@@ -168,6 +193,9 @@ var TritonSidebar = (function(editor){
 
     return obj;
 });
+
+
+
 
 window.TritonNav = (function(sidebar){
     var obj = {};

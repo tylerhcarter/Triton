@@ -1,3 +1,13 @@
+function assert(testPassed, testName){
+    if(testPassed == false){
+        if(typeof testName == "undefined"){
+            console.log("Test Failed");
+        }else{
+            console.log("Test [" + testName + "] Failed");
+        }
+    }
+}
+
 function pp(obj, indent)
 {
   var result = "";

@@ -3,57 +3,39 @@ var TritonEditor = (function(window){
     var ui;
     var thread;
     var sidebar;
-    var encoder;
+
+    // Construct base objects
+    assert(typeof ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
     var index;
     index = ThreadIndex(window.localStorage);
 
+    assert(typeof ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
     var manager;
-    manager = window.ThreadManager(window.localStorage);
-    
-    var slider;
+    manager = ThreadManager(window.localStorage);
 
-    var notifier = window.Notifier();
+    assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
+    var notifier = Notifier();
 
     // Initializes the Editor
     obj.init = function(){
-        
+
+        // Initialize the thread system
         index.init();
         manager.init();
 
-        // Create the user interface
+        // Create UI Object
         ui = TritonKUI(obj);
 
-        // Create the sidebar
+        // Create Sidebar Object
         sidebar = TritonSidebar(obj);
+        TritonNav(sidebar).init();
         notifier.register(sidebar);
         
         // Get the current thread
         thread = getCurrentThread();
 
-        // Check if a thread is selected
-        if(thread != false){
-
-            // Check if there are no items
-            if(thread.count() == 0){
-                thread.createPost("(Click to Edit)");
-            }
-
-
-        }else{
-
-            // Welcome Screen
-
-        }
-
         // Draw the Window
         obj.draw();
-
-        // Initialize the UI
-        ui.init();
-
-        // Draw the Sidebar
-        TritonNav(sidebar).init();
-        sidebar.init();
     }
 
     // Draws the HTML
@@ -77,19 +59,6 @@ var TritonEditor = (function(window){
         }
     }
 
-    obj.setThread = function(newThread){
-        thread = newThread;
-    }
-
-    obj.clearThread = function(){
-        thread = false;
-    }
-
-
-    obj.loadThread = function(id){
-        thread = manager.getThread(id);
-    }
-
     obj.getThread = function(){
         return thread;
     }
@@ -100,6 +69,18 @@ var TritonEditor = (function(window){
         }else{
             return false;
         }
+    }
+
+    obj.setThread = function(newThread){
+        thread = newThread;
+    }
+
+    obj.loadThread = function(id){
+        thread = manager.getThread(id);
+    }
+
+    obj.clearThread = function(){
+        thread = false;
     }
 
     obj.getManager = function(){
@@ -117,23 +98,23 @@ var TritonEditor = (function(window){
     var getCurrentThread = (function(){
 
         var thread;
-        var post_key = window.location.hash.substr(1);
+        var hash = window.location.hash.substr(1);
 
         // Check if a thread has already been saved
-        if(post_key == "new"){
+        if(hash == "new"){
 
             // If not, create one
             thread = manager.createThread();
             location.hash = thread.getID();
 
-        }else if(typeof window.localStorage.getItem(post_key) != "string"){
+        }else if(typeof window.localStorage.getItem(hash) != "string"){
 
             return false;
 
         }else{
 
             // Retrieve the saved thread
-            thread = manager.getThread(post_key);
+            thread = manager.getThread(hash);
 
         }
 
