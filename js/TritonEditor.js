@@ -32,7 +32,7 @@ var TritonEditor = (function(window){
         notifier.register(sidebar);
         
         // Get the current thread
-        thread = getCurrentThread();
+        thread = loadCurrentThread();
 
         // Draw the Window
         obj.draw();
@@ -95,32 +95,19 @@ var TritonEditor = (function(window){
         return manager.getIndex();
     }
 
-    var getCurrentThread = (function(){
+    function loadCurrentThread(){
 
-        var thread;
+        // Get the current post ID
         var hash = window.location.hash.substr(1);
 
-        // Check if a thread has already been saved
-        if(hash == "new"){
-
-            // If not, create one
-            thread = manager.createThread();
-            location.hash = thread.getID();
-
-        }else if(typeof window.localStorage.getItem(hash) != "string"){
-
-            return false;
-
+        // Check if a thread with this ID exists
+        if(typeof window.localStorage.getItem(hash) == "string"){
+            return manager.getThread(hash);
         }else{
-
-            // Retrieve the saved thread
-            thread = manager.getThread(hash);
-
+            return false;
         }
-
-        return thread;
-
-    });
+        
+    }
 
     // Controls the displaying of posts
     // TODO: Move to separate file
