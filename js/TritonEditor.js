@@ -77,44 +77,11 @@ window.Triton.TritonEditor = (function(window){
         if(typeof callback == "function"){
             callback();
         }
+
+        return true;
     }
 
-    obj.getThread = function(){
-        return thread;
-    }
-
-    obj.current = function(){
-        if(typeof thread.getID == "function"){
-            return thread;
-        }else{
-            return false;
-        }
-    }
-
-    obj.setThread = function(newThread){
-        thread = newThread;
-    }
-
-    obj.loadThread = function(id){
-        thread = manager.getThread(id);
-    }
-
-    obj.clearThread = function(){
-        thread = false;
-    }
-
-    obj.getManager = function(){
-        return manager;
-    }
-
-    obj.getEncoder = function(){
-        return manager.getEncoder();
-    }
-
-    obj.getIndex = function(){
-        return manager.getIndex();
-    }
-
+    
     function loadCurrentThread(){
 
         // Get the current post ID
@@ -126,8 +93,24 @@ window.Triton.TritonEditor = (function(window){
         }else{
             return false;
         }
-        
     }
+
+    obj.getThread = function(){ return thread; }
+    obj.current = function(){ return thread; }
+    obj.loadThread = function(id){
+        thread = manager.getThread(id);
+    }
+    obj.setThread = function(newThread){
+        thread = newThread;
+    }
+    obj.clearThread = function(){
+        thread = false;
+    }
+
+    // Accessors
+    obj.getManager = function(){ return manager;}
+    obj.getEncoder = function(){ return manager.getEncoder();}
+    obj.getIndex = function(){ return manager.getIndex();}
     
     return obj;
 });
