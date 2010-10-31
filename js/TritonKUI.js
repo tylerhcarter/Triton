@@ -73,7 +73,7 @@ window.Triton.TritonKUI = (function(editor){
         $("section").click(openPost);
         $(document).unbind("keypress");
         $(document).bind("keypress", "n", function(){
-            editor.createPost();
+            $t("create post");
             return false;
         })
 
