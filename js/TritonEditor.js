@@ -16,6 +16,9 @@ var TritonEditor = (function(window){
     assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
     var notifier = Notifier();
 
+    assert(typeof TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
+    var posts = TritonPosts();
+
     // Initializes the Editor
     obj.init = function(){
 
@@ -30,6 +33,8 @@ var TritonEditor = (function(window){
         sidebar = TritonSidebar(obj);
         TritonNav(sidebar).init();
         notifier.register(sidebar);
+        
+        notifier.register(posts);
         
         // Get the current thread
         thread = loadCurrentThread();
@@ -108,61 +113,6 @@ var TritonEditor = (function(window){
         }
         
     }
-
-    // Controls the displaying of posts
-    // TODO: Move to separate file
-    var posts = (function(editor){
-
-        var obj = {};
-        var thread = false;
-        obj.draw = function(editor){
-
-            thread = editor.current();
-
-            if(editor.current()){
-                drawPosts();
-            }else{
-                drawWelcome();
-            }
-        }
-
-        function drawPosts(){
-            var posts = thread.getPosts();
-            var l = posts.length;
-
-            var div = $("<div />",{
-                "id" : "posts"
-            });
-
-            // Add the title
-            $("<header />", {
-               "html": thread.getTitle(),
-               "id" : "title"
-            }).appendTo(div);
-
-            // Add each post
-            for(var i=0; i<l; i++){
-                var current = posts[i];
-                var post = $("<section />", {
-                    "html" : current.post_content.html,
-                    "id" : current.post_id
-                })
-                $(post).appendTo(div);
-            }
-            $("#posts").replaceWith(div);
-        };
-
-        function drawWelcome(){
-            var div = $("<div />",{
-                "id" : "posts",
-                "html" : "No Posts Current Active"
-            });
-            $("#posts").replaceWith(div);
-        };
-
-        return obj;
-    })();
-    notifier.register(posts);
 
 
     // Creates a new post on a thread
