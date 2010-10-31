@@ -1,4 +1,4 @@
-var TritonSync = (function(window){
+window.Triton.TritonSync = (function(window){
     var obj = {};
 
     var console = window.console;

@@ -1,23 +1,38 @@
-var TritonEditor = (function(window){
+window.Triton.TritonEditor = (function(window){
     var obj = {};
     var ui;
     var thread;
     var sidebar;
+    var $t = window.Triton;
 
     // Construct base objects
-    assert(typeof ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
+    assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
     var index;
-    index = ThreadIndex(window.localStorage);
+    index = $t.ThreadIndex(window.localStorage);
 
-    assert(typeof ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
+    assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
     var manager;
-    manager = ThreadManager(window.localStorage);
+    manager = $t.ThreadManager(window.localStorage);
 
     assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
     var notifier = Notifier();
 
-    assert(typeof TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
-    var posts = TritonPosts();
+    assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
+    var posts = $t.TritonPosts();
+
+    // Check for other depedant objects
+    var requiredObjs = [
+        "Thread",
+        "Encoder",
+        "ThreadIndex",
+        "ThreadManager",
+        "TritonKUI",
+        "TritonSidebar"
+    ];
+    var len = requiredObjs.length;
+    for(var i = 0; i < len; i++){
+        assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+    }
 
     // Initializes the Editor
     obj.init = function(){
@@ -27,11 +42,11 @@ var TritonEditor = (function(window){
         manager.init();
 
         // Create UI Object
-        ui = TritonKUI(obj);
+        ui = $t.TritonKUI(obj);
 
         // Create Sidebar Object
-        sidebar = TritonSidebar(obj);
-        TritonNav(sidebar).init();
+        sidebar = $t.TritonSidebar(obj);
+        $t.TritonNav(sidebar).init();
         notifier.register(sidebar);
         
         notifier.register(posts);
@@ -113,25 +128,6 @@ var TritonEditor = (function(window){
         }
         
     }
-
-
-    // Creates a new post on a thread
-    // TODO: Move tot he KUI 
-    obj.createPost = function(){
-
-        // Leave any currently open textareas
-        $('textarea').blur();
-
-        // Create the new post and save
-        var id = thread.createPost("");
-
-        // Redraw the window
-        obj.draw();
-
-        // Select the new textarea
-        $("#" + id).click();
-    }
-
     
     return obj;
 });

@@ -1,4 +1,4 @@
-var Thread = (function(data, encoder){
+window.Triton.Thread = (function(data, encoder){
 
    var obj = {};
    

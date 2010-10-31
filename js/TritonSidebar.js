@@ -1,4 +1,4 @@
-var TritonSidebar = (function(editor){
+window.Triton.TritonSidebar = (function(editor){
     var obj = {};
 
     obj.init = function(){
@@ -197,7 +197,7 @@ var TritonSidebar = (function(editor){
 
 
 
-window.TritonNav = (function(sidebar){
+window.Triton.TritonNav = (function(sidebar){
     var obj = {};
     var editor = false;
     

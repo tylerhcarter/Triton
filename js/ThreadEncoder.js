@@ -1,4 +1,4 @@
-var Encoder = (function(localStorage){
+window.Triton.Encoder = (function(localStorage){
 
     var obj = {};
 
@@ -10,7 +10,7 @@ var Encoder = (function(localStorage){
             "thread_posts" : []
         };
 
-        return window.Thread(baseObj, obj);
+        return window.Triton.Thread(baseObj, obj);
 
     }
 
@@ -19,7 +19,7 @@ var Encoder = (function(localStorage){
         if(baseObj == false){
             return false;
         }else{
-            return window.Thread(baseObj, obj);
+            return window.Triton.Thread(baseObj, obj);
         }
     }
 

@@ -9,6 +9,7 @@
         <script src="js/json.js"></script>
         <script src="js/autogrow.js"></script>
         <script src="js/hotkeys.js"></script>
+        <script src="js/Triton.js"></script>
         <script src="js/Thread.js"></script>
         <script src="js/ThreadEncoder.js"></script>
         <script src="js/ThreadIndex.js"></script>
@@ -57,7 +58,7 @@
                 var post_key = window.location.hash.substr(1);
                 
                 // Start up the editor
-                var editor = TritonEditor(window);
+                var editor = window.Triton.TritonEditor(window);
                 editor.init();
                 var thread = editor.current();
                 var encoder = editor.getEncoder();
@@ -74,7 +75,13 @@
                             editor.draw();
                         },
                         "create post" : function(){
-                            editor.createPost();
+                            $('textarea').blur();
+                            var id = thread.createPost("");
+
+                            // Display the box and focus it
+                            editor.draw();
+                            $("#" + id).click();
+
                         },
                         "create doc" : function(){
                             var thread = manager.createThread("Test");

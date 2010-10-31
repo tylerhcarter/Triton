@@ -1,11 +1,11 @@
-var ThreadIndex = (function(localStorage, thread_key){
+window.Triton.ThreadIndex = (function(localStorage, thread_key){
     var obj = {};
 
     if(typeof thread_key == "undefined"){
         thread_key = "thread_index"
     }
     
-    var encoder = window.Encoder(localStorage);
+    var encoder = window.Triton.Encoder(localStorage);
 
     var data;
     

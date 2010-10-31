@@ -1,4 +1,4 @@
-var TritonSlider = (function(editor){
+window.Triton.TritonSlider = (function(editor){
 
    var obj = {};
 

@@ -1,5 +1,4 @@
-// Controls the displaying of posts
-window.TritonPosts = (function(){
+window.Triton.TritonPosts = (function(){
 
         var obj = {};
         var thread = false;
