@@ -195,30 +195,32 @@ window.TritonNav = (function(sidebar){
         }
 
         $("#links").replaceWith(list);
-        obj.bind();
     }
 
-    obj.bind = function(){
-        var createDoc = function(){
+    var binds = {
+        "new_doc": function(){
             $t("create doc");
-            $(this).click(createDoc);
-        };
-        $("#new_doc").click(createDoc);
-
-        $("#delete_doc").click(function(){
+        },
+        "delete_doc" : function(){
             $t("delete doc");
-            return false;
-        });
+        }
+
     }
 
     function makeItem(id, text){
-        var e = $("<li />");
-        $("<a />", {
+        var item = $("<li />");
+        var button = $("<a />", {
             "id" : id,
             "text" : text
-        }).appendTo(e);
+        });
 
-        return e;
+        // If a bind exists for this button, set it
+        if(typeof binds[id] == "function"){
+            $(button).click(binds[id]);
+        }
+
+        $(button).appendTo(item);
+        return item;
     }
 
     obj.update = function(editorObj){
