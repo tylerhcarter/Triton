@@ -1,4 +1,4 @@
-window.Triton.ThreadManager = (function(localStorage){
+window.Triton.ThreadManager = (function(localStorage, editor){
     var obj = {};
     var index;
     var encoder;
@@ -14,7 +14,7 @@ window.Triton.ThreadManager = (function(localStorage){
         index.init();
 
         // Create the Encoder
-        encoder = window.Triton.Encoder(localStorage);
+        encoder = window.Triton.Encoder(localStorage, editor);
 
     }
 

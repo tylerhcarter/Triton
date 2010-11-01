@@ -1,42 +1,44 @@
 window.Triton.TritonEditor = (function(window){
     var obj = {};
-    var ui;
-    var thread;
-    var sidebar;
+    var index, manager, notifier, posts, thread, ui, sidebar, keywords;
+
     var $t = window.Triton;
 
-    // Construct base objects
-    assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
-    var index;
-    index = $t.ThreadIndex(window.localStorage);
+    function constructor(){
+        
+        // Construct base objects
+        assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
+        index = $t.ThreadIndex(window.localStorage);
 
-    assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
-    var manager;
-    manager = $t.ThreadManager(window.localStorage);
+        assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
+        manager = $t.ThreadManager(window.localStorage, obj);
 
-    assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
-    var notifier = Notifier();
+        assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
+        notifier = Notifier();
 
-    assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
-    var posts = $t.TritonPosts();
+        assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
+        posts = $t.TritonPosts();
 
-    // Check for other depedant objects
-    var requiredObjs = [
-        "Thread",
-        "Encoder",
-        "ThreadIndex",
-        "ThreadManager",
-        "TritonKUI",
-        "TritonSidebar"
-    ];
-    var len = requiredObjs.length;
-    for(var i = 0; i < len; i++){
-        assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+        // Check for other depedant objects
+        var requiredObjs = [
+            "Thread",
+            "Encoder",
+            "ThreadIndex",
+            "ThreadManager",
+            "TritonKUI",
+            "TritonSidebar",
+            "TritonKeywords"
+        ];
+        var len = requiredObjs.length;
+        for(var i = 0; i < len; i++){
+            assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+        }
     }
 
     // Initializes the Editor
     obj.init = function(){
-
+        constructor();
+        
         // Initialize the thread system
         index.init();
         manager.init();
@@ -51,6 +53,8 @@ window.Triton.TritonEditor = (function(window){
         sidebar = $t.TritonSidebar(obj);
         $t.TritonNav(sidebar).init();
         sidebar.init();
+
+        keywords = $t.TritonKeywords(obj);
 
         // Register objects to be notified upon changes
         notifier.register(sidebar);
@@ -120,6 +124,7 @@ window.Triton.TritonEditor = (function(window){
     obj.getManager = function(){ return manager;}
     obj.getEncoder = function(){ return manager.getEncoder();}
     obj.getIndex = function(){ return manager.getIndex();}
-    
+    obj.getKeywordParser = function(){ return keywords;}
+
     return obj;
 });

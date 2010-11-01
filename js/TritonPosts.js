@@ -34,8 +34,16 @@ window.Triton.TritonPosts = (function(){
                     "html" : current.post_content.html,
                     "id" : current.post_id
                 })
+
                 $(post).appendTo(div);
             }
+
+            var keywords = thread.keywords.getAll();
+            var len = keywords.length;
+            for(i = 0; i < len; i++){
+                $(div).append("<p>" + keywords[i].name + ": " + keywords[i].definition + "</p>");
+            }
+
             $("#posts").replaceWith(div);
         };
 

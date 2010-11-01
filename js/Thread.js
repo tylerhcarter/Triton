@@ -1,4 +1,4 @@
-window.Triton.Thread = (function(data, encoder){
+window.Triton.Thread = (function(data, encoder, editor){
 
    var obj = {};
    
@@ -29,6 +29,9 @@ window.Triton.Thread = (function(data, encoder){
        };
 
        data.thread_posts.push(newPost);
+
+       var keywords = editor.getKeywordParser();
+       keywords.parse(obj);
        
        save();
        return newPost.post_id;
@@ -60,6 +63,9 @@ window.Triton.Thread = (function(data, encoder){
                     "plain" : plain
                 };
                 //console.log("Item Found (Searched: " + len +")");
+
+                var keywords = editor.getKeywordParser();
+                keywords.parse(obj);
 
                 save();
                 return true;
@@ -125,8 +131,16 @@ window.Triton.Thread = (function(data, encoder){
        var posts = data.thread_posts;
        var len = posts.length;
        for(var i=0; i < len; i++){
+           if(typeof posts[i] == "undefined"){
+               return true;
+           }
+
             if(posts[i].post_id == id){
                 posts.splice(i, 1);
+
+                var keywords = editor.getKeywordParser();
+                keywords.parse(obj);
+
                 save();
             }
         } 
@@ -164,6 +178,56 @@ window.Triton.Thread = (function(data, encoder){
    function save(){
        encoder.sleep(data.thread_id, obj);
    }
+
+   obj.keywords = function(){
+
+     var obj = {};
+
+     if(typeof data.keywords == "undefined"){
+         data.keywords = [];
+     }
+
+     obj.add = function(name, definition){
+        var keyword = {
+            "name" : name,
+            "definition" : definition
+        };
+        data.keywords.push(keyword);
+     };
+
+     obj.update = function(name, newDefinition){
+        var len = data.keywords.length;
+        for(var i = 0; i < len; i++){
+            if(data.keywords[i].name == name){
+                data.keywords[i].definition = newDefinition;
+                return true;
+            }
+        }
+        return false;
+     };
+
+     obj.remove = function(name){
+        var len = data.keywords.length;
+        for(var i = 0; i < len; i++){
+            if(data.keywords[i].name == name){
+                data.keywords.splice(i, 1);
+                return true;
+            }
+        }
+        return false;
+     };
+
+     obj.clear = function(){
+         data.keywords = [];
+     }
+
+     obj.getAll = function(){
+         return data.keywords;
+     }
+
+     return obj;
+
+   }();
 
    return obj;
 
