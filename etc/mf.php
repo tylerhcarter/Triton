@@ -1,9 +1,10 @@
 <?php
 header('Content-Type: text/cache-manifest');
 ?>CACHE MANIFEST
-#9
+#10
 ../index.html
 ../css/style.css
+../css/welcome.css
 ../js/lib.js
 ../js/jquery.js
 ../js/json.js
@@ -12,6 +13,8 @@ header('Content-Type: text/cache-manifest');
 ../js/Thread.js
 ../js/ThreadEncoder.js
 ../js/ThreadIndex.js
+../js/Triton.js
+../js/TritonPosts.js
 ../js/TritonSidebar.js
 ../js/TritonKUI.js
 ../js/TritonEditor.js

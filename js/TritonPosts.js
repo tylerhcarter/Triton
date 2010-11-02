@@ -14,6 +14,7 @@ window.Triton.TritonPosts = (function(){
         }
 
         function drawPosts(){
+            $("#welcome").hide();
             var posts = thread.getPosts();
             var l = posts.length;
 
@@ -44,15 +45,21 @@ window.Triton.TritonPosts = (function(){
                 $(div).append("<p>" + keywords[i].name + ": " + keywords[i].definition + "</p>");
             }
 
+            $("<div />", {
+                "class" : "bottomWash",
+                "html" : "&nbsp;"
+            }).appendTo(div);
+
+            
             $("#posts").replaceWith(div);
         };
 
         function drawWelcome(){
             var div = $("<div />",{
-                "id" : "posts",
-                "html" : "No Posts Current Active"
+                "id" : "posts"
             });
             $("#posts").replaceWith(div);
+            $("#welcome").show();
         };
 
         return obj;

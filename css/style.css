@@ -27,6 +27,10 @@ section h4{
     padding: 0;
 }
 
+.bottomWash{
+    height: 300px;
+}
+
 #logo{
     cursor: pointer;
 }
