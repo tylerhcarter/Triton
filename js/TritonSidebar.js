@@ -30,7 +30,7 @@ window.Triton.TritonSidebar = (function(editor){
         $("#logo").click(openNav);
 
         if(editor.current() == false){
-            $("#logo").click();
+            //$("#logo").click();
         }
     }
 
