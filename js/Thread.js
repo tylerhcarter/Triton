@@ -93,6 +93,9 @@ window.Triton.Thread = (function(data, encoder){
        var regX = /\n/gi ;
        html = html.replace(regX, "<br /> \n");
 
+       // Indent 2 spaces
+       html = html.replace(/\s{2}/gmi, "&nbsp;&nbsp;");
+
 
        return html;
    }
