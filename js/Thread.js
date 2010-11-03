@@ -128,6 +128,10 @@ window.Triton.Thread = (function(data, encoder){
        var posts = data.thread_posts;
        var len = posts.length;
        for(var i=0; i < len; i++){
+           if(typeof posts[i] == "undefined"){
+               continue;
+           }
+
             if(posts[i].post_id == id){
                 posts.splice(i, 1);
                 save();
