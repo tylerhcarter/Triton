@@ -1,26 +1,29 @@
 window.Triton.TritonEditor = (function(window){
     var obj = {};
-    var ui;
-    var thread;
-    var sidebar;
     var $t = window.Triton;
+    var index,
+        manager,
+        notifier,
+        posts,
+        ui,
+        thread,
+        sidebar;
 
     // Construct base objects
+    assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
+    notifier = Notifier();
+
     assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
-    var index;
     index = $t.ThreadIndex(window.localStorage);
 
     assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
-    var manager;
     manager = $t.ThreadManager(window.localStorage);
 
-    assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
-    var notifier = Notifier();
-
     assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
-    var posts = $t.TritonPosts();
+    posts = $t.TritonPosts();
 
-    // Check for other depedant objects
+    // Check for other depedant objects 
+    // (These objects are initialized later due to dependencies)
     var requiredObjs = [
         "Thread",
         "Encoder",
@@ -84,7 +87,7 @@ window.Triton.TritonEditor = (function(window){
     }
     obj.redraw = function(){ obj.draw(); }
 
-    
+    // Loads the current thread from memory based on the URL fragment
     function loadCurrentThread(){
 
         // Get the current post ID
@@ -98,6 +101,7 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
+    // Returns the current thread object
     obj.getThread = function(){
         if(typeof thread == "undefined"){
             return false;
@@ -107,6 +111,7 @@ window.Triton.TritonEditor = (function(window){
         
     }
     obj.current = function(){ return obj.getThread(); }
+
     obj.loadThread = function(id){
         thread = manager.getThread(id);
     }
@@ -117,17 +122,17 @@ window.Triton.TritonEditor = (function(window){
         thread = false;
     }
 
-    // Accessors
+    // Thread System Accessors
     obj.getManager = function(){ return manager;}
     obj.getEncoder = function(){ return manager.getEncoder();}
     obj.getIndex = function(){ return manager.getIndex();}
 
-    // Commands
-
+    // Reloads the page
     obj.reload = function(){
         location.reload(true);
     }
 
+    // Creates a new post on the current thread
     obj.createPost = function(){
         $('textarea').blur();
         var id = obj.current().createPost("");
@@ -137,6 +142,7 @@ window.Triton.TritonEditor = (function(window){
         $("#" + id).click();
     }
 
+    // Creates a new thread
     obj.createDocument = function(){
         var thread = manager.createThread("Test");
         thread.createPost("test");
@@ -145,6 +151,7 @@ window.Triton.TritonEditor = (function(window){
         obj.draw();
     }
 
+    // Deletes the current thread and focuses the last thread
     obj.deleteDocument = function(){
         // Delete the Post
         index.deleteIndex(obj.current().getID())
