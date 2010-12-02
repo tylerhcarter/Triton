@@ -92,6 +92,10 @@ window.Triton.Thread = (function(data, encoder){
        // Change newlines to <br>
        var regX = /\n/gi ;
        html = html.replace(regX, "<br /> \n");
+       
+       // Take what's left and process it as Markdown
+       var converter = new Showdown.converter();
+       html = converter.makeHtml(html);
 
        return html;
    }
