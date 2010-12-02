@@ -111,8 +111,7 @@ window.Triton.Thread = (function(data, encoder){
             var newtext = lines.join('\n');
 
             if(title[0].length < 130){
-
-                return title[0];
+                return SimpleMD.process(title[0], {no_p_wrap:true});
 
             }else{
 

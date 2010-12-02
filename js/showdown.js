@@ -72,7 +72,7 @@ var Showdown = {};
 // Wraps all "globals" so that the only thing
 // exposed is makeHtml().
 //
-Showdown.converter = function() {
+Showdown.converter = function(_options) {
 
 //
 // Globals:
@@ -87,6 +87,7 @@ var g_html_blocks;
 // (see _ProcessListItems() for details):
 var g_list_level = 0;
 
+var options = this.options = (_options || {});
 
 this.makeHtml = function(text) {
 //
@@ -1058,15 +1059,16 @@ var _FormParagraphs = function(text) {
 
 		// if this is an HTML marker, copy it
 		if (str.search(/~K(\d+)K/g) >= 0) {
-			grafsOut.push(str);
+				grafsOut.push(str);
 		}
 		else if (str.search(/\S/) >= 0) {
-			str = _RunSpanGamut(str);
-			str = str.replace(/^([ \t]*)/g,"<p>");
-			str += "</p>"
-			grafsOut.push(str);
-		}
+				str = _RunSpanGamut(str);
 
+				str = str.replace(/^([ \t]*)/g,"<p>");
+				str += "</p>";
+
+				grafsOut.push(str);
+		}
 	}
 
 	//
