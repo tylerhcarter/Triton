@@ -1,7 +1,6 @@
 <?php
 header('Content-Type: text/cache-manifest');
 ?>CACHE MANIFEST
-#10
 ../index.html
 ../css/style.css
 ../css/welcome.css
