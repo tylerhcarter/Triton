@@ -27,7 +27,12 @@ window.Triton.TritonKUI = (function(editor){
        // Text Editor Keybindings
         $('textarea').bind('keydown', 'ctrl+return', function(){
             editor.createPost();
-        })
+        });
+
+		$('textarea').keydown(function(ev) {
+			if (ev.which == 27)
+				closePost();
+		});
     }
 
     var closePost = function(){
@@ -75,7 +80,7 @@ window.Triton.TritonKUI = (function(editor){
         $(document).bind("keypress", "n", function(){
             editor.createPost();
             return false;
-        })
+        });
 
         var bind = function(){
 
