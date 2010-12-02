@@ -22,12 +22,6 @@
         <script src="js/ThreadSlider.js"></script>
     </head>
     <body>
-        <div id="dev">
-            <form>
-            <input type="submit" id="dev-button">
-            <input type="text" id="dev-box">
-            </form>
-        </div>
         <div id="wash">&nbsp;</div>
         <nav>
             <div id="advanced">
@@ -60,16 +54,22 @@
         <script>
             (function(){
                 
-                // Start the editor
+                // Initialize Triton
                 var editor = window.Triton.TritonEditor(window);
                 editor.init();
+
+                // Create the Command Line Interface
+
+                // Get Globals
                 var thread = editor.current();
                 var encoder = editor.getEncoder();
                 var index = editor.getIndex();
                 var manager = editor.getManager();
 
+                // Define Command Functions
                 var $t = function(message){
 
+                    // System Commands
                     var commands = {
                         "reload" : function(){
                             location.reload(true);
@@ -117,8 +117,10 @@
                         }
                     }
 
+                    // Check if more than one argument has been passed
                     if(arguments.length > 1){
 
+                        // If so, call each command separatly
                         var len = arguments.length;
                         for(var i=0; i < len; i++){
                             $t(arguments[i])
@@ -126,6 +128,8 @@
 
                         console.log(len + " commands executed.");
                     }else{
+
+                        // Run the command if it exists
                         if(typeof commands[message] == "function"){
                             console.log(message);
                             commands[message]();
@@ -133,17 +137,10 @@
                         }else{
                             return false;
                         }
+                        
                     }                    
                 }
                 window.$t = $t;
-
-                $("#dev-button").click(function(){
-                    var text = $("#dev-box").val();
-                    var commands = text.split(",");
-                    $t.apply(null, commands);
-                    $("#dev-box").val("");
-                    return false;
-                })
 
             })();
 
