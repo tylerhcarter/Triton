@@ -53,97 +53,10 @@
         </div>
         <script>
             (function(){
-                
                 // Initialize Triton
                 var editor = window.Triton.TritonEditor(window);
                 editor.init();
-
-                // Create the Command Line Interface
-
-                // Get Globals
-                var thread = editor.current();
-                var encoder = editor.getEncoder();
-                var index = editor.getIndex();
-                var manager = editor.getManager();
-
-                // Define Command Functions
-                var $t = function(message){
-
-                    // System Commands
-                    var commands = {
-                        "reload" : function(){
-                            location.reload(true);
-                        },
-                        "redraw" : function(){
-                            editor.draw();
-                        },
-                        "create post" : function(){
-                            $('textarea').blur();
-                            var id = editor.current().createPost("");
-
-                            // Display the box and focus it
-                            editor.draw();
-                            $("#" + id).click();
-
-                        },
-                        "create doc" : function(){
-                            var thread = manager.createThread("Test");
-                            thread.createPost("test");
-                            location.hash = thread.getID();
-                            editor.loadThread(location.hash.substr(1));
-                            editor.draw();
-                        },
-                        "delete doc" : function(){
-                            
-                            // Delete the Post
-                            index.deleteIndex(editor.current().getID())
-
-                            // Move back a post
-                            var threads = index.getIndex();
-
-                            if(threads.length > 0){
-                                var last = threads[threads.length - 1].id;
-                                location.hash = last;
-                                editor.loadThread(last);
-                                editor.draw();
-                            }else{
-                                location.hash = "";
-                                editor.clearThread();
-                                editor.draw();
-                            }
-                        },
-                        "delete docs" : function(){
-                            index.deleteAll();
-                        }
-                    }
-
-                    // Check if more than one argument has been passed
-                    if(arguments.length > 1){
-
-                        // If so, call each command separatly
-                        var len = arguments.length;
-                        for(var i=0; i < len; i++){
-                            $t(arguments[i])
-                        }
-
-                        console.log(len + " commands executed.");
-                    }else{
-
-                        // Run the command if it exists
-                        if(typeof commands[message] == "function"){
-                            console.log(message);
-                            commands[message]();
-                            return true;
-                        }else{
-                            return false;
-                        }
-                        
-                    }                    
-                }
-                window.$t = $t;
-
             })();
-
         </script>
     </body>
 </html>

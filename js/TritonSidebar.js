@@ -228,13 +228,13 @@ window.Triton.TritonNav = (function(sidebar){
     
     var binds = {
         "new_doc": function(){
-            $t("create doc");
+            editor.createDocument();
         },
         "delete_doc" : function(){
-            $t("delete doc");
+            editor.deleteDocument();
         },
         "new_post" : function(){
-            $t("create post");
+            editor.createPost();
         }
     }
 

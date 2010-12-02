@@ -82,6 +82,7 @@ window.Triton.TritonEditor = (function(window){
 
         return true;
     }
+    obj.redraw = function(){ obj.draw(); }
 
     
     function loadCurrentThread(){
@@ -120,6 +121,48 @@ window.Triton.TritonEditor = (function(window){
     obj.getManager = function(){ return manager;}
     obj.getEncoder = function(){ return manager.getEncoder();}
     obj.getIndex = function(){ return manager.getIndex();}
+
+    // Commands
+
+    obj.reload = function(){
+        location.reload(true);
+    }
+
+    obj.createPost = function(){
+        $('textarea').blur();
+        var id = obj.current().createPost("");
+
+        // Display the box and focus it
+        obj.draw();
+        $("#" + id).click();
+    }
+
+    obj.createDocument = function(){
+        var thread = manager.createThread("Test");
+        thread.createPost("test");
+        location.hash = thread.getID();
+        obj.loadThread(location.hash.substr(1));
+        obj.draw();
+    }
+
+    obj.deleteDocument = function(){
+        // Delete the Post
+        index.deleteIndex(obj.current().getID())
+
+        // Move back a post
+        var threads = index.getIndex();
+
+        if(threads.length > 0){
+            var last = threads[threads.length - 1].id;
+            location.hash = last;
+            obj.loadThread(last);
+            obj.draw();
+        }else{
+            location.hash = "";
+            obj.clearThread();
+            obj.draw();
+        }
+    }
     
     return obj;
 });
