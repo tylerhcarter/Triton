@@ -62,7 +62,7 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
             if(data[i].id == id){
                 data.splice(i, 1);
                 save();
-                console.log("Deleteing");
+                //console.log("Deleteing");
                 return true;
             }
         }
@@ -89,7 +89,7 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
             var thread = encoder.restore(current.id);
             if(thread == false){
                 //obj.deleteIndex(current.id);
-                console.log("False")
+                //console.log("False")
                 continue;
             }
 
