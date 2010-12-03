@@ -61,6 +61,13 @@ window.Triton.TritonEditor = (function(window){
         
         // Draw the Window
         obj.draw();
+
+        // Display Version Information
+        obj.createAlert("Running Triton v"+ $t.version +" &copy; " + $t.copyright + " " + $t.author + ". Enjoy.", "low");
+        $("<div>", {
+            "class" : "meta",
+            "html" : "v" + $t.version + ". &copy; " + $t.copyright + " " + $t.author
+        }).appendTo("nav > header");
     }
 
     // Draws the HTML
@@ -85,7 +92,7 @@ window.Triton.TritonEditor = (function(window){
 
         return true;
     }
-    obj.redraw = function(){ obj.draw(); }
+    obj.redraw = function(){obj.draw();}
 
     // Loads the current thread from memory based on the URL fragment
     function loadCurrentThread(){
@@ -110,7 +117,7 @@ window.Triton.TritonEditor = (function(window){
         }
         
     }
-    obj.current = function(){ return obj.getThread(); }
+    obj.current = function(){return obj.getThread();}
 
     obj.loadThread = function(id){
         thread = manager.getThread(id);
@@ -123,9 +130,9 @@ window.Triton.TritonEditor = (function(window){
     }
 
     // Thread System Accessors
-    obj.getManager = function(){ return manager;}
-    obj.getEncoder = function(){ return manager.getEncoder();}
-    obj.getIndex = function(){ return manager.getIndex();}
+    obj.getManager = function(){return manager;}
+    obj.getEncoder = function(){return manager.getEncoder();}
+    obj.getIndex = function(){return manager.getIndex();}
 
     // Reloads the page
     obj.reload = function(){
@@ -170,6 +177,37 @@ window.Triton.TritonEditor = (function(window){
             obj.draw();
         }
     }
-    
+
+    // Alerts
+    obj.createAlert = function(message, priority, timeout){
+
+        if(priority != "high" && priority != "medium" && priority != "low"){
+            priority = "medium";
+        }
+
+        if(typeof timeout != "number"){
+            timeout = 5000;
+        }
+
+        var box = $("<div>", {
+            "class" : "alert " + priority,
+            "html" : message,
+            "style" : "display: none"
+        });
+
+        $("body").append(box);
+        $(box).fadeIn('slow');
+
+        setTimeout(obj.clearAlert, timeout);
+
+    }
+
+    obj.clearAlert = function(){
+        $(".alert").fadeOut('slow', function(){
+            $(this).remove();
+        })
+    }
+
+
     return obj;
 });

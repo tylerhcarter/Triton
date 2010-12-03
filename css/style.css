@@ -210,3 +210,25 @@ section.active{
     border: 0;
     width: 90%;
 }
+
+.alert{
+    position: absolute;
+    bottom: 0;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    font-size: 13px;
+    border-bottom: 0px !important;
+}
+.alert.high{
+    border: 1px solid #FF9999;
+    background-color: #FFCCCC;
+}
+.alert.medium{
+    border: 1px solid #FFFF99;
+    background-color: #FFFFCC;
+}
+.alert.low{
+    border: 1px solid #CCFF99;
+    background-color: #CCFFCC;
+}
