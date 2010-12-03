@@ -2,6 +2,10 @@ body{
     font-family: sans-serif;
 }
 
+header, section, nav, footer, article{
+    display: block;
+}
+
 section{
     background-color: #EEEEEF;
     padding: 10px;
@@ -9,6 +13,7 @@ section{
     padding-right: 10px;
     margin: 5px;
     -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     width: 75%;
 }
 
@@ -37,6 +42,7 @@ section h4{
 
 nav{
     -webkit-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1);
     background-color: #9cf;
     border-left: 10px solid #39F;
     position: fixed;
@@ -144,6 +150,7 @@ section.active{
     background-color: white;
     border: 1px solid #EEEEEF;
     -webkit-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
+    -moz-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
     margin: 0;
     padding: 0;
     padding-left: 10px;
