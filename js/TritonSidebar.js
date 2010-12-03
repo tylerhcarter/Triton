@@ -111,10 +111,7 @@ window.Triton.TritonSidebar = (function(editor){
                 var titlesLength = titles.length;
                 for(var i=0; i < titlesLength; i++){
                     $("<li />",{
-                        html: $("<a \>", {
-                            "href" : "#" + titles[i].id,
-                            "text" : titles[i].title
-                        })
+                        html: $("<a \>").attr('href', '#'+titles[i].id).html(titles[i].title)
                     }).appendTo(list);
                 }
 

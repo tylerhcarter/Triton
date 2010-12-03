@@ -92,6 +92,10 @@ window.Triton.Thread = (function(data, encoder){
        // Change newlines to <br>
        var regX = /\n/gi ;
        html = html.replace(regX, "<br /> \n");
+       
+       // Take what's left and process it as Markdown
+       var converter = new Showdown.converter();
+       html = converter.makeHtml(html);
 
        return html;
    }
@@ -107,8 +111,7 @@ window.Triton.Thread = (function(data, encoder){
             var newtext = lines.join('\n');
 
             if(title[0].length < 130){
-
-                return title[0];
+                return SimpleMD.process(title[0], {no_p_wrap:true});
 
             }else{
 
