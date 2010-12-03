@@ -29,10 +29,11 @@ window.Triton.TritonKUI = (function(editor){
             editor.createPost();
         });
 
-		$('textarea').keydown(function(ev) {
-			if (ev.which == 27)
-				closePost();
-		});
+    	$('textarea').keydown(function(ev) {
+            if (ev.which == 27) {
+                closePost.call(ev.target);
+            }
+        });
     }
 
     var closePost = function(){
