@@ -86,12 +86,8 @@ window.Triton.Thread = (function(data, encoder){
             // join the array back into a single string
             var newtext = lines.join('\n');
 
-            html = "<h4>" + title + "</h4>" + newtext;
+            html = "###" + title + "\n" + newtext;
        }
-
-       // Change newlines to <br>
-       var regX = /\n/gi ;
-       html = html.replace(regX, "<br /> \n");
        
        // Take what's left and process it as Markdown
        var converter = new Showdown.converter({slim:true});
