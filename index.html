@@ -54,12 +54,18 @@
             (function(){
                 var cache = window.applicationCache;
                 cache.addEventListener('updateready', function(){
+                    // When the user refreshes, tell them they've updated
+                    window.localStorage.setItem("updated", "yes");
                     alert("New Files Ready. Please Reload");
                 }, false);
-                
+
                 // Initialize Triton
                 var editor = window.Triton.TritonEditor(window);
                 editor.init();
+
+                cache.addEventListener('downloading', function(){
+                    editor.createAlert("Downloading a new update to Triton.");
+                }, false);
             })();
         </script>
     </body>

@@ -83,11 +83,35 @@ window.Triton.TritonEditor = (function(window){
             version += " Dev";
         }
 
-        obj.createAlert("Running Triton " + version + ". Enjoy.", "low");
+        // Check if we've updated
+        if(window.localStorage.getItem("updated") == "yes"){
+            
+            if($t.debug == true){
+                obj.createAlert("You've updated to Triton " + version + ". Built " + $t.updated + " " + $t.updated_time + ". Enjoy.", "low", 10000);
+            }else{
+                obj.createAlert("You've updated to Triton " + version + ". Enjoy.", "low", 10000);
+            }
+
+            window.localStorage.removeItem("updated");
+
+        }else{
+
+            if($t.debug == true){
+                obj.createAlert("Running Triton " + version + ". Built " + $t.updated + " " + $t.updated_time + ". Enjoy.", "low");
+            }else{
+                obj.createAlert("Running Triton " + version + ". Enjoy.", "low");
+            }
+            
+        }
+
         $("<div>", {
             "class" : "meta",
             "html" : "v" + version + " - " + "Build " + $t.updated
         }).appendTo("nav > header");
+
+        
+
+        
     }
 
     // Draws the HTML
