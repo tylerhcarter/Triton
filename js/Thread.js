@@ -118,8 +118,14 @@ window.Triton.Thread = (function(data, encoder){
         var lines = html.split('\n');
 
         if(lines.length != 1){
+            
             // remove one line, starting at the first position
             var title = lines.splice(0,1);
+            if(title[0].indexOf(" ") == 0)
+            {
+                return false;
+            }
+
             // join the array back into a single string
             var newtext = lines.join('\n');
 
@@ -127,7 +133,6 @@ window.Triton.Thread = (function(data, encoder){
                 return SimpleMD.process(title[0], {no_p_wrap:true});
 
             }else{
-
                 return false;
                 
             }
