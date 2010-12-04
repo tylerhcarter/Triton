@@ -72,10 +72,16 @@ window.Triton.TritonKUI = (function(editor){
                 ev.target.selectionEnd = end;
             };
 
-            if (ev.which == 66 && ev.ctrlKey)      // Ctrl+B
+            // Ctrl+B
+            if (ev.which == 66 && ev.ctrlKey){
                 do_surround('**');
-            else if (ev.which == 73 && ev.ctrlKey) // Ctrl+I
+                ev.preventDefault();
+            }
+            // Ctrl+I
+            else if (ev.which == 73 && ev.ctrlKey){
                 do_surround('*');
+                ev.preventDefault();
+            }
         });
     }
 
@@ -93,6 +99,8 @@ window.Triton.TritonKUI = (function(editor){
            // Remove the post
            thread.remove(id);
            editor.draw();
+
+           editor.createDevAlert("Deleting post " + id + ".");
            
            return;
 
@@ -101,7 +109,7 @@ window.Triton.TritonKUI = (function(editor){
            if(thread.modifyPost(id, text) == false){
 
                // If post isn't found, prevent erasing the content
-               alert("Post not found. Changes have not been saved.");
+               editor.createAlert("Post not found. Changes have not been saved.", "high");
            }
            else
            {
@@ -110,6 +118,8 @@ window.Triton.TritonKUI = (function(editor){
                 // Refresh the Post
                 var post = thread.getPost(id);
                 editor.draw();
+
+                editor.createDevAlert("Saving post " + post.post_id + ".", "low");
                 
            }
        }       

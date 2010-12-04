@@ -1,6 +1,7 @@
 <?php
 header('Content-Type: text/cache-manifest');
 ?>CACHE MANIFEST
+#2
 ../index.html
 ../css/style.css
 ../css/welcome.css
@@ -9,6 +10,8 @@ header('Content-Type: text/cache-manifest');
 ../js/json.js
 ../js/autogrow.js
 ../js/hotkeys.js
+../js/showdown.js
+../js/simplemd.js
 ../js/Thread.js
 ../js/ThreadEncoder.js
 ../js/ThreadIndex.js

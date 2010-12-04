@@ -44,6 +44,17 @@ section ul, section ol{
     margin-top: 0;
 }
 
+section pre{
+    font: 12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+    background-color: #F0F7FF;
+    border-top: 1px solid #DEDEDE;
+    border-bottom: 1px solid #DEDEDE;
+    padding: 10px;
+    padding-left: 10px;
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
 .bottomWash{
     height: 300px;
 }
@@ -55,7 +66,7 @@ section ul, section ol{
 nav{
     -webkit-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: -5px -5px 10px rgba(0, 0, 0, 0.1);
-    background-color: #9cf;
+    background-color: #9CF;
     border-left: 10px solid #39F;
     position: fixed;
     right: -320px;
@@ -212,7 +223,7 @@ section.active{
 }
 
 .alert{
-    position: absolute;
+    position: fixed;
     bottom: 0;
     padding: 5px;
     padding-left: 10px;
@@ -229,7 +240,7 @@ section.active{
     background-color: #FFFFCC;
 }
 .alert.low{
-    border: 1px solid #CCFF99;
+    border: 1px solid #99FF99;
     background-color: #CCFFCC;
 }
 

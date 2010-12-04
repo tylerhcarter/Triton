@@ -9,34 +9,49 @@ window.Triton.TritonEditor = (function(window){
         thread,
         sidebar;
 
-    // Construct base objects
-    assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
-    notifier = Notifier();
 
-    assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
-    index = $t.ThreadIndex(window.localStorage);
+    // Loads the base objects
+    obj.load = function(){
 
-    assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
-    manager = $t.ThreadManager(window.localStorage);
+        // Construct base objects
+        assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
+        notifier = Notifier();
 
-    assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
-    posts = $t.TritonPosts();
+        try{
 
-    // Check for other depedant objects 
-    // (These objects are initialized later due to dependencies)
-    var requiredObjs = [
-        "Thread",
-        "Encoder",
-        "ThreadIndex",
-        "ThreadManager",
-        "TritonKUI",
-        "TritonSidebar"
-    ];
-    var len = requiredObjs.length;
-    for(var i = 0; i < len; i++){
-        assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+            assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
+            manager = $t.ThreadManager(window.localStorage);
+
+            assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
+            index = $t.ThreadIndex(window.localStorage);
+
+            assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
+            posts = $t.TritonPosts();
+
+        }catch(e){
+            obj.createAlert("Error: " + e.getMessage(), "high", false)
+            return false;
+        }
+
+        // Check for other depedant objects
+        // (These objects are initialized later due to dependencies)
+        var requiredObjs = [
+            "Thread",
+            "Encoder",
+            "ThreadIndex",
+            "ThreadManager",
+            "TritonKUI",
+            "TritonSidebar"
+        ];
+        var len = requiredObjs.length;
+        for(var i = 0; i < len; i++){
+            assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+        }
+
+        return true;
+
     }
-
+    
     // Initializes the Editor
     obj.init = function(){
 
@@ -63,10 +78,15 @@ window.Triton.TritonEditor = (function(window){
         obj.draw();
 
         // Display Version Information
-        obj.createAlert("Running Triton v"+ $t.version +" &copy; " + $t.copyright + " " + $t.author + ". Enjoy.", "low");
+        var version = $t.version;
+        if($t.debug == true){
+            version += " Dev";
+        }
+
+        obj.createAlert("Running Triton " + version + ". Enjoy.", "low");
         $("<div>", {
             "class" : "meta",
-            "html" : "v" + $t.version + ". &copy; " + $t.copyright + " " + $t.author
+            "html" : "v" + version + " - " + "Build " + $t.updated
         }).appendTo("nav > header");
     }
 
@@ -100,11 +120,17 @@ window.Triton.TritonEditor = (function(window){
         // Get the current post ID
         var hash = window.location.hash.substr(1);
 
-        // Check if a thread with this ID exists
-        if(typeof window.localStorage.getItem(hash) == "string"){
-            return manager.getThread(hash);
-        }else{
-            return false;
+        try{
+            
+            // Check if a thread with this ID exists
+            if(typeof window.localStorage.getItem(hash) == "string"){
+                return manager.getThread(hash);
+            }else{
+                return false;
+            }
+            
+        }catch(e){
+            obj.alert("Could not auto-load thread.", "high");
         }
     }
 
@@ -185,7 +211,7 @@ window.Triton.TritonEditor = (function(window){
             priority = "medium";
         }
 
-        if(typeof timeout != "number"){
+        if(typeof timeout != "number" && timeout != false){
             timeout = 5000;
         }
 
@@ -198,8 +224,16 @@ window.Triton.TritonEditor = (function(window){
         $("body").append(box);
         $(box).fadeIn('slow');
 
-        setTimeout(obj.clearAlert, timeout);
+        if(timeout != false){
+            setTimeout(obj.clearAlert, timeout);
+        }
 
+    }
+
+    obj.createDevAlert = function(message, priority, timeout){
+        if($t.debug == true){
+            obj.createAlert(message, priority, timeout);
+        }
     }
 
     obj.clearAlert = function(){
@@ -208,6 +242,11 @@ window.Triton.TritonEditor = (function(window){
         })
     }
 
-
-    return obj;
+    var status = obj.load();
+    if(status == false){
+        return false;
+    }
+    else{
+        return obj;
+    }
 });
