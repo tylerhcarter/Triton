@@ -72,10 +72,16 @@ window.Triton.TritonKUI = (function(editor){
                 ev.target.selectionEnd = end;
             };
 
-            if (ev.which == 66 && ev.ctrlKey)      // Ctrl+B
+            // Ctrl+B
+            if (ev.which == 66 && ev.ctrlKey){
                 do_surround('**');
-            else if (ev.which == 73 && ev.ctrlKey) // Ctrl+I
+                ev.preventDefault();
+            }
+            // Ctrl+I
+            else if (ev.which == 73 && ev.ctrlKey){
                 do_surround('*');
+                ev.preventDefault();
+            }
         });
     }
 
