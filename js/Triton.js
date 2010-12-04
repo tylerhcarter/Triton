@@ -6,8 +6,13 @@ window.Triton = {
         "Tyler Carter",
         "Lucas Jones"
     ],
-    // @todo: Make updated generated via PHP
-    "updated" : "12.3.2010",
+    "updated" : '<?php echo date("n.j.Y"); ?>',
     "copyright" : "2010",
     "debug" : true
 };
+
+// If PHP has not parsed the file, make the updated date the current date
+if(window.Triton.updated.indexOf("<") == 0){
+    d = new Date();
+    window.Triton.updated = (d.getMonth() + 1) + "." + d.getDate() + "." + d.getFullYear();
+}
