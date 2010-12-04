@@ -26,6 +26,7 @@ window.Triton.Thread = (function(data, encoder){
 
        // Make a New ID
        newPost.post_id = window.generateUUID();
+	   newPost.thread_id = obj.getID();
 
        // Add the Text
        newPost.post_content = {
@@ -84,7 +85,7 @@ window.Triton.Thread = (function(data, encoder){
          var internalRe = /\[(.+?)\]\{(.+?)\}/g;
          return html.replace(internalRe, 
             function(str, text, dest) {
-				var invalid = false, href = '#';
+				var invalid = false, thread_id = data.thread_id, post_id = '';
 
 				var index = window.Triton.ThreadIndex(window.localStorage);
 				index.init();
@@ -93,12 +94,13 @@ window.Triton.Thread = (function(data, encoder){
                 if (dest.charAt(0) == '#') {
 					// Search the current thread for the post with that name
 					var posts = data.thread_posts;
+					dest = dest.substring(1);
 					
 					for (var i = 0; i < posts.length; i++) {
 						var post = posts[i];
 
 						if (post.post_title == dest)
-							href = '#post-' + post.post_id;
+							post_id = post.post_id;
 					}
 				}
 				else {
@@ -107,14 +109,18 @@ window.Triton.Thread = (function(data, encoder){
 						var this_thread = threads[i];
 						
 						if (this_thread.title === dest)
-							href = '#' + this_thread.id;
+							thread_id = this_thread.id;
 					}
 				}
 
-				invalid = href === '#';
+				// URLs take the form THREAD-ID/POST-ID. If no specific post is to be linked
+				// to, the /POST-ID is omitted completely.
 
-				var htmlStr = '<a href="' + href + '"' + (invalid ? 'onclick="return false;" class="invalid_link"' : '') + '>' + text + '</a>';
+				var href = '#' + thread_id;
+				if (post_id != '')
+					href += '/' + post_id;
 
+				var htmlStr = '<a href="' + href + '"' + (invalid ? 'class="invalid_link"' : '') + '>' + text + '</a>';
 				return htmlStr;
             });
    }

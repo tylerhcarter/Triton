@@ -136,6 +136,18 @@ window.Triton.TritonKUI = (function(editor){
             return false;
         });
 
+        // Inter-document links
+        $("section a[href^='#']").click(function(ev) {
+            var href = this.href.split('#')[1].substring(1);
+            var components = href.split('/');
+
+            // Go to the right thread
+            editor.loadThread(components[0]);
+            editor.draw();
+
+            location.hash = href;
+        })
+
         var bind = function(){
 
            var title = $(this).text();

@@ -37,7 +37,7 @@ window.Triton.TritonPosts = (function(){
                 });
 
                 var anchor = $('<a/>', {
-                    "name": 'post-' + current.post_id
+                    "name": current.thread_id + '/' + current.post_id
 		}).appendTo(div);
 		
                 $(post).appendTo(div);

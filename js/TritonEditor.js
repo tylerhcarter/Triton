@@ -119,12 +119,12 @@ window.Triton.TritonEditor = (function(window){
 
         // Get the current post ID
         var hash = window.location.hash.substr(1);
+		var components = hash.split('/');
 
         try{
-            
             // Check if a thread with this ID exists
-            if(typeof window.localStorage.getItem(hash) == "string"){
-                return manager.getThread(hash);
+            if(typeof window.localStorage.getItem(components[0]) == "string"){
+                return manager.getThread(components[0]);
             }else{
                 return false;
             }
