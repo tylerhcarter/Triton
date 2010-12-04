@@ -1,6 +1,10 @@
 window.Triton.ThreadIndex = (function(localStorage, thread_key){
     var obj = {};
 
+    if(typeof localStorage == "undefined"){
+        throw new Error("Unable to access localStorage.");
+    }
+
     if(typeof thread_key == "undefined"){
         thread_key = "thread_index"
     }

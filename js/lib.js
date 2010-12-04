@@ -75,3 +75,15 @@ window.Notifier = (function(){
         return obj;
 
 });
+
+function Error(message){
+
+    var obj = {};
+
+    obj.getMessage = function(){
+        return message;
+    }
+
+    return obj;
+
+}
