@@ -55,6 +55,11 @@
         </div>
         <script>
             (function(){
+                var cache = window.applicationCache;
+                cache.addEventListener('updateready', function(){
+                    alert("New Files Ready. Please Reload");
+                }, false);
+
                 // Initialize Triton
                 var editor = window.Triton.TritonEditor(window);
                 editor.init();
