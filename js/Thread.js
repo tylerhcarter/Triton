@@ -69,11 +69,28 @@ window.Triton.Thread = (function(data, encoder){
         return false;
    }
 
+   function processForInternalLinks(html) {
+        /* Replace Internal Links
+         * Syntax:      [text]{Page Name}
+         *     Links to another document.
+         *            [text]{#Post Title}
+         *    Links to a post in the doc.
+         */
+         var internalRe = /\[(.+?)\]\{(.+?)\}/g;
+         return html.replace(internalRe, 
+            function(str, text, dest) {
+                if (dest.charAt(0) == '#') {
+                }
+            });
+   }
+
    function getHTML(html){
 
-        // Replace Images
-        var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.jpg)/ig;
-        html = html.replace(exp,"<img src='$1'>");
+       // Replace Images
+       var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.jpg)/ig;
+       html = html.replace(exp,"<img src='$1'>");
+
+       html = processForInternalLinks(html);
 
        var title = getTitle(html);
        if(title != false){
