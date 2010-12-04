@@ -36,9 +36,10 @@ window.Triton.TritonPosts = (function(){
                     "id" : current.post_id
                 });
 
-                var slugged = thread.
-                var anchor = $('<a/>, {
-                    "name": 'post-'
+                var anchor = $('<a/>', {
+                    "name": 'post-' + current.post_id
+		}).appendTo(div);
+		
                 $(post).appendTo(div);
             }
 

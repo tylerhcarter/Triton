@@ -232,3 +232,7 @@ section.active{
     border: 1px solid #CCFF99;
     background-color: #CCFFCC;
 }
+
+a.invalid_link{
+	color: #E22;
+}

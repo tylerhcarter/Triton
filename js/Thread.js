@@ -11,6 +11,11 @@ window.Triton.Thread = (function(data, encoder){
        return data.thread_title;
    }
 
+   var _getSlug = function(){
+	   return obj.getTitle().replace(/\W/gi, '-');
+   };
+   obj.getSlug = _getSlug;
+
    obj.getID = function(){
        return data.thread_id;
    }
@@ -79,8 +84,38 @@ window.Triton.Thread = (function(data, encoder){
          var internalRe = /\[(.+?)\]\{(.+?)\}/g;
          return html.replace(internalRe, 
             function(str, text, dest) {
+				var invalid = false, href = '#';
+
+				var index = window.Triton.ThreadIndex(window.localStorage);
+				index.init();
+				var threads = index.getIndex();
+
                 if (dest.charAt(0) == '#') {
-                }
+					// Search the current thread for the post with that name
+					var posts = data.thread_posts;
+					
+					for (var i = 0; i < posts.length; i++) {
+						var post = posts[i];
+
+						if (post.post_title == dest)
+							href = '#post-' + post.post_id;
+					}
+				}
+				else {
+					// Search the thread list for that thread's GUID
+					for (var i = 0; i < threads.length; i++) {
+						var this_thread = threads[i];
+						
+						if (this_thread.title === dest)
+							href = '#' + this_thread.id;
+					}
+				}
+
+				invalid = href === '#';
+
+				var htmlStr = '<a href="' + href + '"' + (invalid ? 'onclick="return false;" class="invalid_link"' : '') + '>' + text + '</a>';
+
+				return htmlStr;
             });
    }
 
