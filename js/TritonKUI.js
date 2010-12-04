@@ -49,6 +49,8 @@ window.Triton.TritonKUI = (function(editor){
            // Remove the post
            thread.remove(id);
            editor.draw();
+
+           editor.createDevAlert("Deleting post " + id + ".");
            
            return;
 
@@ -57,7 +59,7 @@ window.Triton.TritonKUI = (function(editor){
            if(thread.modifyPost(id, text) == false){
 
                // If post isn't found, prevent erasing the content
-               alert("Post not found. Changes have not been saved.");
+               editor.createAlert("Post not found. Changes have not been saved.", "high");
            }
            else
            {
@@ -66,6 +68,8 @@ window.Triton.TritonKUI = (function(editor){
                 // Refresh the Post
                 var post = thread.getPost(id);
                 editor.draw();
+
+                editor.createDevAlert("Saving post " + post.post_id + ".", "low");
                 
            }
        }       

@@ -3,6 +3,10 @@ window.Triton.ThreadManager = (function(localStorage){
     var index;
     var encoder;
 
+    if(typeof localStorage == "undefined"){
+        throw new Error("Unable to access localStorage.");
+    }
+
     // Accessors
     obj.getIndex = function(){ return index; }
     obj.getEncoder = function(){ return encoder; }
