@@ -29,10 +29,54 @@ window.Triton.TritonKUI = (function(editor){
             editor.createPost();
         });
 
-		$('textarea').keydown(function(ev) {
-			if (ev.which == 27)
-				closePost();
-		});
+    	$('textarea').keydown(function(ev) {
+            if (ev.which == 27) {
+                closePost.call(ev.target);
+            }
+        });
+
+        // Text formatting shortcuts
+        $('textarea').keydown(function(ev) {
+            var do_surround = function(str, inside) {
+                var text  = $(ev.target).val();
+                var start = ev.target.selectionStart;
+                var end   = ev.target.selectionEnd;
+
+                // If there's already text selected, surround that with appropriate formatting
+                if (ev.target.selectionEnd - start != 0) {
+                    var preSelection  = text.substring(0, start);
+                    var selected      = text.substring(start, end);
+                    var postSelection = text.substring(end);
+
+                    text = preSelection + str + selected + str + postSelection;
+
+                    // Restore selection accounting for new formatting marks.
+                    start += str.length;
+                    end = start + selected.length;
+                }
+                // Otherwise, stick some new text in.
+                else {
+                    var real_inside = inside || 'text';
+                    var to_insert = str + real_inside + str;
+    
+                    text = text.substring(0, start) + to_insert + text.substring(start);
+
+                    // Position the cursor inside - e.g. **|text** - | is the cursor.
+                    start  = start + str.length;
+                    // Only select the stuff inside e.g. **<text>**.
+                    end    = start + real_inside.length;
+                }
+
+                $(ev.target).val(text);
+                ev.target.selectionStart = start;
+                ev.target.selectionEnd = end;
+            };
+
+            if (ev.which == 66 && ev.ctrlKey)      // Ctrl+B
+                do_surround('**');
+            else if (ev.which == 73 && ev.ctrlKey) // Ctrl+I
+                do_surround('*');
+        });
     }
 
     var closePost = function(){

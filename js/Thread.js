@@ -90,7 +90,7 @@ window.Triton.Thread = (function(data, encoder){
        }
        
        // Take what's left and process it as Markdown
-       var converter = new Showdown.converter();
+       var converter = new Showdown.converter({slim:true});
        html = converter.makeHtml(html);
 
        return html;

@@ -87,7 +87,7 @@ var g_html_blocks;
 // (see _ProcessListItems() for details):
 var g_list_level = 0;
 
-var options = this.options = (_options || {});
+var options = (_options || {});
 
 this.makeHtml = function(text) {
 //
@@ -1064,8 +1064,10 @@ var _FormParagraphs = function(text) {
 		else if (str.search(/\S/) >= 0) {
 				str = _RunSpanGamut(str);
 
-				str = str.replace(/^([ \t]*)/g,"<p>");
-				str += "</p>";
+				if (!options.slim) {
+					str = str.replace(/^([ \t]*)/g,"<p>");
+					str += "</p>";
+				}
 
 				grafsOut.push(str);
 		}
