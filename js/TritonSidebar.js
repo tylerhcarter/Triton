@@ -83,7 +83,7 @@ window.Triton.TritonSidebar = (function(editor){
             var titles = [];
             var thread = editor.current();
             
-            var posts = thread.getPosts();
+            var posts = thread.posts.getAll();
             var postsLength = posts.length;
             for(var i=0; i < postsLength; i++){
                 if(posts[i].post_title != "" && posts[i].post_title != null){

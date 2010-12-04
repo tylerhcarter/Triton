@@ -97,8 +97,8 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
                 continue;
             }
 
-            if(current.title != thread.getTitle()){
-                threads[i].title = thread.getTitle();
+            if(current.title != thread.title.get()){
+                threads[i].title = thread.title.get();
             }
 
         }
