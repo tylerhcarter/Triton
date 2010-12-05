@@ -8,6 +8,7 @@ header, section, nav, footer, article{
 
 section{
     background-color: #EEEEEF;
+    border: 1px solid #E0E0E0;
     padding: 10px;
     padding-left: 10px;
     padding-right: 10px;
