@@ -150,7 +150,62 @@ window.Triton.TritonKUI = (function(editor){
                 $('body').animate({scrollTop: $('#'+components[1]).position().top}, 'slow');
 
             location.hash = href;
-        })
+        });
+
+        // Keyboard navigation
+        $(document).keydown(function(ev) {
+            // First, check the focus isn't actually in a text field
+            if (document.activeElement != document.body)
+                return true;
+
+            // --- Navigation functions ---
+            // Up = 38, Down = 40
+            var initialSelection = function() {
+                ev.preventDefault();
+
+                if (!$('.selected').length) {
+                    $('section:first').addClass('selected');
+                    return true;
+                }
+                return false;
+            };
+
+            if (ev.which == 38) {
+                if (initialSelection()) return false;
+
+                var before = $('section.selected').removeClass('selected').prevAll('section');
+                $('section.selected').removeClass('selected');
+
+                if (before.length)
+                    before.eq(0).addClass('selected');
+                else
+                    $('section:last').addClass('selected');
+            }
+            else if (ev.which == 40) {
+                if (initialSelection()) return false;
+
+                var after = $('section.selected').nextAll('section');
+                $('section.selected').removeClass('selected');
+                console.log(after);
+
+                if (after.length)
+                    after.eq(0).addClass('selected');
+                else
+                    $('section:first').addClass('selected');
+            }
+            
+            // --- Manipulation ---
+            else if (ev.which == 46) { // Del
+                thread.posts.remove($('section.selected').attr('id'));
+                editor.draw();
+
+                ev.preventDefault();
+            }
+            else if (ev.which == 13) { // Return
+                openPost.call($('section.selected')[0]);
+                ev.preventDefault();
+            }
+        });
 
         var bind = function(){
 

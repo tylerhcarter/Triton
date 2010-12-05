@@ -18,6 +18,10 @@ section{
     width: 75%;
 }
 
+section.selected {
+    background: #FFEFCC;
+}
+
 section h1{
     color: #666;
     margin: 0;
