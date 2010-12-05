@@ -113,13 +113,15 @@ window.Triton.TritonSidebar = (function(editor){
 					var title_id = titles[i].id;
 
 					// stupid closure workaround (title_id remains constant)
+					// Generates a click handler which animates the transition between
+					// posts.
 					var genClick = function(id) {
 						return (function(ev) {
 							var targetHash = '#' + id;
 							var element = $(targetHash);
 
 							$('body,html').animate(
-								{scrollTop: element.position().top},
+								{ scrollTop: element.position().top },
 								{
 									duration: 'slow',
 									complete: function() {
@@ -251,7 +253,10 @@ window.Triton.TritonNav = (function(sidebar){
         },
         "new_post" : function(){
             editor.createPost();
-        }
+        },
+		"dump": function() {
+			editor.dumpDocument();
+		}
     }
 
     obj.init = function(){
@@ -266,6 +271,7 @@ window.Triton.TritonNav = (function(sidebar){
 
         // Make Basic Menu Items
         $(makeItem("new_doc", "New Document")).appendTo(list);
+		$(makeItem("dump", "Export")).appendTo(list);
 
         // Make Per-Thread Items (if a thread is open)
         if(editor.current()){

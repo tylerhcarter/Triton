@@ -228,6 +228,45 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
+	obj.dumpDocument = function() {
+		var exported = JSON.stringify(index.getIndex());
+		var layer;
+
+		if ($('#export').length)
+			return $('#export_contents').val(exported);
+
+		layer = $('<div/>')
+			.attr('id', 'export')
+			.css('position', 'absolute')
+			.css('left', '30%')
+			.css('width', '40%')
+			.css('z-index', '10000')
+			.css('border', 'solid 3px #39F')
+			.css('padding', '18px')
+			.css('top', '5%')
+			.css('background-color', '#FFF')
+			.append($('<div/>').text('Export').css('font-size', '1.5em'))
+			.append($('<br/>'))
+			.append($('<div/>').text('Copy the following text:'))
+			.append($('<textarea/>')
+						.attr('id', 'export_contents')
+						.css('width', '100%')
+						.css('min-height', '150px')
+						.css('margin-top', '5px')
+						.css('font-family', 'monospace')
+						.val(exported))
+			.append($('<div/>')
+						.css('text-align', 'right')
+						.append($('<button/>')
+									.text('Close')
+									.click(function() {
+										layer.remove();
+									})))
+			.appendTo(document.body)
+			.show('slow');
+	};
+
+
     // Alerts
     obj.createAlert = function(message, priority, timeout){
 
