@@ -11,7 +11,7 @@ window.Triton.TritonKUI = (function(editor){
         
         // Grab information about the post
        var id = $(this).attr("id");
-       var post = thread.getPost(id);
+       var post = thread.posts.get(id);
 
        // Replace it with a text area
        $(this).html("<textarea>"+post.post_content.plain+"</textarea>");
@@ -97,7 +97,7 @@ window.Triton.TritonKUI = (function(editor){
        if(text == ""){
 
            // Remove the post
-           thread.remove(id);
+           thread.posts.remove(id);
            editor.draw();
 
            editor.createDevAlert("Deleting post " + id + ".");
@@ -106,7 +106,7 @@ window.Triton.TritonKUI = (function(editor){
 
        }else{
            // Otherwise, Save the post
-           if(thread.modifyPost(id, text) == false){
+           if(thread.posts.modify(id, text) == false){
 
                // If post isn't found, prevent erasing the content
                editor.createAlert("Post not found. Changes have not been saved.", "high");
@@ -116,7 +116,7 @@ window.Triton.TritonKUI = (function(editor){
                 $('textarea').unbind('keydown');
 
                 // Refresh the Post
-                var post = thread.getPost(id);
+                var post = thread.posts.get(id);
                 editor.draw();
 
                 editor.createDevAlert("Saving post " + post.post_id + ".", "low");
@@ -138,12 +138,16 @@ window.Triton.TritonKUI = (function(editor){
 
         // Inter-document links
         $("section a[href^='#']").click(function(ev) {
-            var href = this.href.split('#')[1].substring(1);
+            var href = this.href.split('#')[1];
             var components = href.split('/');
 
             // Go to the right thread
             editor.loadThread(components[0]);
             editor.draw();
+
+            // Now to correct post
+            if (components.length > 1)
+                $('body').animate({scrollTop: $('#'+components[1]).position().top}, 'slow');
 
             location.hash = href;
         })
@@ -165,7 +169,7 @@ window.Triton.TritonKUI = (function(editor){
            $("#title input").blur(function(){
 
                var title = $("#title input").val();
-               thread.modifyTitle(title);
+               thread.title.set(title);
                var header = $("<header />", {
                   "id" : "title",
                   "html" : title

@@ -1,7 +1,8 @@
 <?php
 header('Content-Type: text/cache-manifest');
 ?>CACHE MANIFEST
-#2
+#<?php echo filemtime(__FILE__); ?>
+
 ../index.html
 ../css/style.css
 ../css/welcome.css

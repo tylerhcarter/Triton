@@ -15,7 +15,7 @@ window.Triton.TritonPosts = (function(){
 
         function drawPosts(){
             $("#welcome").hide();
-            var posts = thread.getPosts();
+            var posts = thread.posts.getAll();
             var l = posts.length;
 
             var div = $("<div />",{
@@ -24,7 +24,7 @@ window.Triton.TritonPosts = (function(){
 
             // Add the title
             $("<header />", {
-               "html": thread.getTitle(),
+               "html": thread.title.get(),
                "id" : "title"
             }).appendTo(div);
 

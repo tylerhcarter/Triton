@@ -83,7 +83,7 @@ window.Triton.TritonSidebar = (function(editor){
             var titles = [];
             var thread = editor.current();
             
-            var posts = thread.getPosts();
+            var posts = thread.posts.getAll();
             var postsLength = posts.length;
             for(var i=0; i < postsLength; i++){
                 if(posts[i].post_title != "" && posts[i].post_title != null){
@@ -110,8 +110,27 @@ window.Triton.TritonSidebar = (function(editor){
 
                 var titlesLength = titles.length;
                 for(var i=0; i < titlesLength; i++){
+					var title_id = titles[i].id;
+
+					// stupid closure workaround (title_id remains constant)
+					var genClick = function(id) {
+						return (function(ev) {
+							var targetHash = '#' + id;
+							var element = $(targetHash);
+
+							$('body,html').animate(
+								{scrollTop: element.position().top},
+								{
+									duration: 'slow',
+									complete: function() {
+										location.hash = thread.getID() + '/' + id;
+									}
+								});
+						});
+					};
+
                     $("<li />",{
-                        html: $("<a \>").attr('href', '#'+titles[i].id).html(titles[i].title)
+                        html: $("<a \>").click(genClick(titles[i].id)).html(titles[i].title)
                     }).appendTo(list);
                 }
 
