@@ -1,5 +1,6 @@
 body {
     background-color: white;
+    font-size: 1em;
 }
 
 nav, footer, article, .alert {
@@ -7,7 +8,7 @@ nav, footer, article, .alert {
 }
 
 #posts header {
-    font-size: 32pt;
+    font-size: 1.5em;
 }
 
 section {
@@ -21,4 +22,8 @@ section {
 
     border-bottom: solid 1px #333;
     width: 100%;
+}
+
+section a:after {
+    content: " [" attr(href) "]";
 }
