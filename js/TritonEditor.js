@@ -228,9 +228,16 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
+    function _showDialog(div) {
+        $('.page_dialog').hide('slow', function() {
+            $('.page_dialog').remove();
+        });
+        $(div).addClass('page_dialog').appendTo(document.body).show('slow');
+    }
+
 	// Export functionality. Allows document to be exported into many
 	// different formats.
-	
+
 	obj.exporters = {
 		json: function(threads) {
 				  return JSON.stringify(threads);
@@ -259,7 +266,7 @@ window.Triton.TritonEditor = (function(window){
 
 	obj.exportCurrent = function(format) {
 		return obj.exporters[format || 'json'](manager.getAll());
-	}
+	};
 
 	obj.dumpDocument = function(format) {
 		// Find all documents
@@ -288,11 +295,12 @@ window.Triton.TritonEditor = (function(window){
         // Now, generate the main DIV containing the exported text
 		layer = $('<div/>')
 			.attr('id', 'export')
-			.append($('<div/>').text('Export').css('font-size', '1.5em'))
+			.append($('<div/>').text('Export').addClass('dialog_title'))
 			.append($('<br/>'))
 			.append($('<div/>').text('Copy the following text:'))
 			.append($('<textarea/>')
 						.attr('id', 'export_contents')
+                        .addClass('dump_area')
 						.val(exported))
             .append($('<div/>')
                         .css('float', 'left')
@@ -302,11 +310,83 @@ window.Triton.TritonEditor = (function(window){
 						.append($('<button/>')
 									.text('Close')
 									.click(function() {
-										layer.remove();
-									})))
-			.appendTo(document.body)
-			.show('slow');
+                                        layer.hide('slow', function() {
+                                            layer.remove();
+                                        });
+									})));
+
+        _showDialog(layer);
 	};
+
+    // Import. It's kinda the opposite of export.
+    obj.importers = {
+        json: function(input) {
+                  var threads = $.parseJSON(input);
+                  var newThreadId;
+                  
+                  for (var i = 0; i < threads.length; i++) {
+                      var original = threads[i];
+                      var thread = manager.createThread();
+                      thread.title.set(original.thread_title);
+                      newThreadId = thread.getID();
+
+                      var posts = original.thread_posts;
+                      for (var j = 0; j < posts.length; j++) {
+                          var post = thread.posts.create('');
+                          thread.posts.modify(post, posts[j].post_content.plain);
+                      }
+                  }
+
+                  // Load last thread imported
+                  location.hash = newThreadId;
+                  obj.loadThread(newThreadId.substr(1));
+              }
+    };
+    obj.importers.json.displayName = 'JSON';
+
+    obj.importToDocument = function(input, format) {
+        obj.importers[format || 'json'](input);
+    };
+
+    obj.importDisplay = function(input, format) {
+        // First: generate the dialog
+
+        // Generate the format selection box
+        var formatSelection = $('<select/>').attr('id', 'import_format');
+        for (var importer in obj.importers) {
+            if (obj.importers.hasOwnProperty(importer)) {
+                var caption = obj.importers[importer].displayName;
+                var element = $('<option/>').attr('value', importer).text(caption);
+                formatSelection.append(element);
+            }
+        }
+        
+        // Now the DIV
+        var layer = $('<div/>')
+            .attr('id', 'import')
+            .append($('<div/>').addClass('dialog_title').text('Import'))
+            .append($('<div/>').text('Select the appropriate format, paste in your document, and click OK to import.'))
+            .append($('<br/>'))
+            .append($('<table/>')
+                        .css('width', '100%')
+                        .append($('<tr/>').append($('<td>Format: </td>'))
+                            .append($('<td/>').append(formatSelection)))
+                        .append($('<tr/>').append($('<td>Contents: </td>'))
+                            .append($('<td/>')
+                                .append($('<textarea/>').attr('id', 'import_contents').addClass('dump_area'))))
+                        .append($('<tr/>').append($('<td/>'))
+                            .append($('<td/>')
+                                .append($('<button>Import</button>').click(function(ev) {
+                                        obj.importToDocument($('#import_contents').val(), $('#import_format').val());
+                                    }))
+                                .append($('<button>Close</button>').click(function(ev) {
+                                        $('#import').hide('slow', function() {
+                                            $('#import').remove();
+                                        });
+                                })))));
+
+        _showDialog(layer);
+    }
 
     // Alerts
     obj.createAlert = function(message, priority, timeout){

@@ -252,7 +252,7 @@ a.invalid_link{
 }
 
 
-#export {
+.page_dialog {
     position: absolute;
     left: 30%;
     width: 40%;
@@ -263,9 +263,20 @@ a.invalid_link{
     background-color: #FFF;
     display: none;
 }
-#export_contents {
+.dialog_title {
+    font-size: 1.5em;
+}
+
+.dump_area {
     width: 100%;
     min-height: 150px;
     margin-top: 5px;
     font-family: monospace;
+    border: solid 1px black;
+}
+
+td {
+    vertical-align: top;
+    margin: 3px;
+    padding: 6px;
 }

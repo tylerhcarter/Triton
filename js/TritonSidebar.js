@@ -256,7 +256,10 @@ window.Triton.TritonNav = (function(sidebar){
         },
 		"dump": function() {
 			editor.dumpDocument();
-		}
+		},
+        "import_display": function() {
+            editor.importDisplay();
+        }
     }
 
     obj.init = function(){
@@ -272,6 +275,7 @@ window.Triton.TritonNav = (function(sidebar){
         // Make Basic Menu Items
         $(makeItem("new_doc", "New Document")).appendTo(list);
 		$(makeItem("dump", "Export")).appendTo(list);
+        $(makeItem("import_display", "Import")).appendTo(list);
 
         // Make Per-Thread Items (if a thread is open)
         if(editor.current()){
