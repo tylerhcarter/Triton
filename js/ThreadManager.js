@@ -56,5 +56,18 @@ window.Triton.ThreadManager = (function(localStorage){
         
     }
 
+    obj.getAll = function(){
+
+        var indexData = index.getIndex();
+        var threads = [];
+
+        var len = indexData.length;
+        for(var i = 0; i < len; i++){
+            threads.push(obj.getThread(indexData[i].id).returnData());
+        }
+
+        return threads;
+    }
+
     return obj;
 });
