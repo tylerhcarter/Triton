@@ -46,7 +46,7 @@ section ul, section ol{
 }
 
 section pre{
-    font: 12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+    font: 12px Monaco,Consolas,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
     background-color: #F0F7FF;
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #DEDEDE;
