@@ -232,15 +232,24 @@ window.Triton.TritonEditor = (function(window){
 	// different formats.
 	
 	obj.exporters = {
-		json: function(posts) {
-				  return JSON.stringify(posts);
+		json: function(threads) {
+				  return JSON.stringify(threads);
               },
-        html: function(posts) {
+        html: function(threads) {
                   var all_html = '';
-                  for (var i = 0; i < posts.length; i++) {
-                      all_html += posts[i].post_content.html;
-                  }
+
+                  for (var i = 0; i < threads.length; i++) {
+                      var thread = threads[i];
+                      var posts = thread.thread_posts;
+
+                      all_html += '<h1 id="' + thread.thread_id + '">' + thread.thread_title + '</h1>';
+    
+                      for (var j = 0; j < posts.length; j++) {
+                          all_html += posts[j].post_content.html;
+                      }
                   
+                  }
+
                   return all_html;
               }
 	};
