@@ -248,3 +248,22 @@ section.active{
 a.invalid_link{
 	color: #E22;
 }
+
+
+#export {
+    position: absolute;
+    left: 30%;
+    width: 40%;
+    z-index: 9999;
+    border: solid 3px #39F;
+    padding: 18px;
+    top: 5%;
+    background-color: #FFF;
+    display: none;
+}
+#export_contents {
+    width: 100%;
+    min-height: 150px;
+    margin-top: 5px;
+    font-family: monospace;
+}
