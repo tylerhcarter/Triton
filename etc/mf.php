@@ -23,3 +23,5 @@ header('Content-Type: text/cache-manifest');
 ../js/TritonEditor.js
 ../js/ThreadSlider.js
 ../js/ThreadManager.js
+../images/logo.png
+../images/favicon.ico

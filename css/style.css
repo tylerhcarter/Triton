@@ -62,6 +62,7 @@ section pre{
 
 #logo{
     cursor: pointer;
+    text-align: left;
 }
 
 nav{
@@ -83,12 +84,13 @@ nav{
 nav header{
     color: white;
     font-size: 40px;
-    padding-bottom: 10px;
+    padding-bottom: 20px;
 }
 
 nav header .meta{
     font-size: 12px;
-    padding-left: 3px;
+    padding-left: 35px;
+    text-align: left
 }
 
 nav ul{

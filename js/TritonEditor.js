@@ -249,7 +249,7 @@ window.Triton.TritonEditor = (function(window){
 
 
 	obj.exportCurrent = function(format) {
-		return obj.exporters[format || 'json'](obj.current().posts.getAll());
+		return obj.exporters[format || 'json'](manager.getAll());
 	}
 
 	obj.dumpDocument = function(format) {
@@ -298,7 +298,6 @@ window.Triton.TritonEditor = (function(window){
 			.appendTo(document.body)
 			.show('slow');
 	};
-
 
     // Alerts
     obj.createAlert = function(message, priority, timeout){
