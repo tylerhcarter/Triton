@@ -339,7 +339,8 @@ window.Triton.TritonEditor = (function(window){
 
                   // Load last thread imported
                   location.hash = newThreadId;
-                  obj.loadThread(newThreadId.substr(1));
+                  obj.loadThread(newThreadId);
+                  obj.draw();
               }
     };
     obj.importers.json.displayName = 'JSON';
@@ -360,6 +361,13 @@ window.Triton.TritonEditor = (function(window){
                 formatSelection.append(element);
             }
         }
+
+        // Crash 'n' burn
+        var hideDestroyImport = function() {
+            $('#import').hide('slow', function() {
+                $('#import').remove();
+            });
+        };
         
         // Now the DIV
         var layer = $('<div/>')
@@ -378,11 +386,10 @@ window.Triton.TritonEditor = (function(window){
                             .append($('<td/>')
                                 .append($('<button>Import</button>').click(function(ev) {
                                         obj.importToDocument($('#import_contents').val(), $('#import_format').val());
+                                        hideDestroyImport();
                                     }))
                                 .append($('<button>Close</button>').click(function(ev) {
-                                        $('#import').hide('slow', function() {
-                                            $('#import').remove();
-                                        });
+                                        hideDestroyImport();
                                 })))));
 
         _showDialog(layer);
