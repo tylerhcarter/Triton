@@ -1,5 +1,5 @@
 window.Triton = {
-    "version" : "0.5",
+    "version" : "0.6",
     "author" : "Tyler Carter",
     "repository" : "http://github.com/chacha/Triton",
     "contributors" : [
