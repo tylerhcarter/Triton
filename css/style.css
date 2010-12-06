@@ -77,6 +77,8 @@ section pre{
     -webkit-border-top-right-radius: 0px;
     -webkit-border-bottom-right-radius: 0px;
     width: 220px;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
 
 nav{
@@ -174,6 +176,10 @@ nav ul #view_docs:before{
 
 nav ul #delete_doc:before{
     content: url("../images/delete_doc.png");
+}
+
+nav ul #import_display:before{
+    content: url("../images/import.png");
 }
 
 nav ul #dump:before{

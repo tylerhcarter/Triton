@@ -282,12 +282,12 @@ window.Triton.TritonNav = (function(sidebar){
         }
         $(makeItem("view_docs", "View Documents")).appendTo(list);
 
-        $("<div>", {
-            "class" : "break"
-        }).appendTo(list);
-
         // Make Per-Thread Items (if a thread is open)
         if(editor.current()){
+            $("<div>", {
+                "class" : "break"
+            }).appendTo(list);
+            
             $(makeItem("new_post", "Add Post")).appendTo(list);
         }
 
