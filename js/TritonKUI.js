@@ -186,7 +186,6 @@ window.Triton.TritonKUI = (function(editor){
 
                 var after = $('section.selected').nextAll('section');
                 $('section.selected').removeClass('selected');
-                console.log(after);
 
                 if (after.length)
                     after.eq(0).addClass('selected');
