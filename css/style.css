@@ -125,12 +125,11 @@ nav ul a{
 
 nav ul#links{
     border: 5px solid rgba(255,255,255,.7);
-    width: 190px;
+    width: 215px;
     background-color: #9CF;
-    margin-left: 30px;
     padding: 5px;
     padding-left: 0px;
-    padding-right: 10px;
+    padding-right: 20px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-top-right-radius: 0px;

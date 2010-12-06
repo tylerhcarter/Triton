@@ -28,5 +28,6 @@ header('Content-Type: text/cache-manifest');
 ../images/create_doc.png
 ../images/create_post.png
 ../images/delete_doc.png
+../images/import.png
 ../images/export.png
 ../images/view_docs.png
