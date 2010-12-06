@@ -131,6 +131,7 @@ window.Triton.TritonKUI = (function(editor){
         $("section").unbind("click");
         $("section").click(openPost);
         $(document).unbind("keypress");
+        $(document).unbind("keydown");
         $(document).bind("keypress", "n", function(){
             editor.createPost();
             return false;
@@ -187,6 +188,8 @@ window.Triton.TritonKUI = (function(editor){
                 var after = $('section.selected').nextAll('section');
                 $('section.selected').removeClass('selected');
                 console.log(after);
+
+                console.log(after.length);
 
                 if (after.length)
                     after.eq(0).addClass('selected');
