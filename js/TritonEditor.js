@@ -408,17 +408,16 @@ window.Triton.TritonEditor = (function(window){
         }
 
         var box = $("<div>", {
-			"id": 'alert-' + window.generateUUID(),
+            "id": 'alert-' + window.generateUUID(),
             "class" : "alert " + priority,
             "html" : message,
             "style" : "display: none"
         });
 
         $("body").append(box);
-
-		var offset = ($('.alert').length - 1) * (box.height() * 1.75);
-		var newBottom = parseInt(box.css('bottom'), 10) + offset;
-		box.css('bottom', newBottom + 'px');
+        var offset = ($('.alert').length - 1) * (box.height() * 1.75);
+        var newBottom = parseInt(box.css('bottom'), 10) + offset;
+        box.css('bottom', newBottom + 'px');
 
         $(box).fadeIn('slow');
 
@@ -435,18 +434,17 @@ window.Triton.TritonEditor = (function(window){
     }
 
     obj.clearAlert = function(id){
-		return (function() {
-			$('#' + id).addClass('fading_out');
-	        $("#" + id).fadeOut('slow', function(){
-    	        $(this).remove();
-				$('.alert:not(.fading_out)').each(function (i, x) {
-					x = $(x);
-
-					var newBottom = parseInt(x.css('bottom'), 10) - x.height();
-					x.css('bottom', newBottom + 'px');
-				});
-        	});
-		});
+	return (function() {
+            $('#' + id).addClass('fading_out');
+            $("#" + id).fadeOut('slow', function(){
+                $(this).remove();
+                $('.alert:not(.fading_out)').each(function (i, x) {
+                    x = $(x);
+                    var newBottom = parseInt(x.css('bottom'), 10) - x.height();
+                    x.css('bottom', newBottom + 'px');
+                });
+            });
+        });
     }
 
     var status = obj.load();

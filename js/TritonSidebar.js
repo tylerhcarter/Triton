@@ -266,9 +266,9 @@ window.Triton.TritonNav = (function(sidebar){
         "new_post" : function(){
             editor.createPost();
         },
-		"dump": function() {
-			editor.dumpDocument();
-		},
+        "dump": function() {
+                editor.dumpDocument();
+        },
         "import_display": function() {
             editor.importDisplay();
         }
