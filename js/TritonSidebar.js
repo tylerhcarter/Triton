@@ -248,6 +248,9 @@ window.Triton.TritonNav = (function(sidebar){
         "new_doc": function(){
             editor.createDocument();
         },
+        "view_docs": function(){
+            $("#logo").click();
+        },
         "delete_doc" : function(){
             editor.deleteDocument();
         },
@@ -271,15 +274,25 @@ window.Triton.TritonNav = (function(sidebar){
 
         // Make Basic Menu Items
         $(makeItem("new_doc", "New Document")).appendTo(list);
-		$(makeItem("dump", "Export")).appendTo(list);
+        if(editor.current()){
+            $(makeItem("delete_doc", "Delete Document")).appendTo(list);
+        }
+        $(makeItem("view_docs", "View Documents")).appendTo(list);
+
+        $("<div>", {
+            "class" : "break"
+        }).appendTo(list);
 
         // Make Per-Thread Items (if a thread is open)
         if(editor.current()){
-
-            $(makeItem("new_post", "New Post")).appendTo(list);
-            $(makeItem("delete_doc", "Delete Document")).appendTo(list);
-            
+            $(makeItem("new_post", "Add Post")).appendTo(list);
         }
+
+        $("<div>", {
+            "class" : "break"
+        }).appendTo(list);
+
+        $(makeItem("dump", "Export")).appendTo(list);
 
         $("#links").replaceWith(list);
     }
