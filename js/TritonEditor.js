@@ -228,44 +228,172 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
-    obj.dumpDocument = function() {
-            var exported = JSON.stringify(manager.getAll());
-            var layer;
+    function _showDialog(div) {
+        $('.page_dialog').hide('slow', function() {
+            $('.page_dialog').remove();
+        });
+        $(div).addClass('page_dialog').appendTo(document.body).show('slow');
+    }
 
-            if ($('#export').length)
-                    return $('#export_contents').val(exported);
+	// Export functionality. Allows document to be exported into many
+	// different formats.
 
-            layer = $('<div/>')
-                    .attr('id', 'export')
-                    .css('position', 'absolute')
-                    .css('left', '30%')
-                    .css('width', '40%')
-                    .css('z-index', '10000')
-                    .css('border', 'solid 3px #39F')
-                    .css('padding', '18px')
-                    .css('top', '5%')
-                    .css('background-color', '#FFF')
-                    .append($('<div/>').text('Export').css('font-size', '1.5em'))
-                    .append($('<br/>'))
-                    .append($('<div/>').text('Copy the following text:'))
-                    .append($('<textarea/>')
-                                            .attr('id', 'export_contents')
-                                            .css('width', '100%')
-                                            .css('min-height', '150px')
-                                            .css('margin-top', '5px')
-                                            .css('font-family', 'monospace')
-                                            .val(exported))
-                    .append($('<div/>')
-                                            .css('text-align', 'right')
-                                            .append($('<button/>')
-                                                                    .text('Close')
-                                                                    .click(function() {
-                                                                            layer.remove();
-                                                                    })))
-                    .appendTo(document.body)
-                    .show('slow');
+	obj.exporters = {
+		json: function(threads) {
+				  return JSON.stringify(threads);
+              },
+        html: function(threads) {
+                  var all_html = '';
+
+                  for (var i = 0; i < threads.length; i++) {
+                      var thread = threads[i];
+                      var posts = thread.thread_posts;
+
+                      all_html += '<h1 id="' + thread.thread_id + '">' + thread.thread_title + '</h1>';
+    
+                      for (var j = 0; j < posts.length; j++) {
+                          all_html += posts[j].post_content.html;
+                      }
+                  
+                  }
+
+                  return all_html;
+              }
+	};
+    obj.exporters.json.displayName = 'JSON';
+    obj.exporters.html.displayName = 'HTML';
+
+
+	obj.exportCurrent = function(format) {
+		return obj.exporters[format || 'json'](manager.getAll());
+	};
+
+	obj.dumpDocument = function(format) {
+		// Find all documents
+		var exported = obj.exportCurrent(format || 'json');
+		var layer;
+
+        // If we have, in fact, already shown the dialog, just re-export!
+		if ($('#export').length)
+			return $('#export_contents').val(exported);
+
+        // First, generate the format selection box
+        var formatSelection = $('<select/>').attr('id', 'export_format');
+        for (var exporter in obj.exporters) {
+            if (obj.exporters.hasOwnProperty(exporter)) {
+                var caption = obj.exporters[exporter].displayName;
+                var element = $('<option/>').attr('value', exporter).text(caption);
+                formatSelection.append(element);
+            }
+        }
+        // It has to re-export the document every time it changes
+        formatSelection.bind('change', function (ev) {
+            obj.dumpDocument($(this).val());
+        });
+
+
+        // Now, generate the main DIV containing the exported text
+		layer = $('<div/>')
+			.attr('id', 'export')
+			.append($('<div/>').text('Export').addClass('dialog_title'))
+			.append($('<br/>'))
+			.append($('<div/>').text('Copy the following text:'))
+			.append($('<textarea/>')
+						.attr('id', 'export_contents')
+                        .addClass('dump_area')
+						.val(exported))
+            .append($('<div/>')
+                        .css('float', 'left')
+                        .append(formatSelection))
+			.append($('<div/>')
+						.css('float', 'right')
+						.append($('<button/>')
+									.text('Close')
+									.click(function() {
+                                        layer.hide('slow', function() {
+                                            layer.remove();
+                                        });
+									})));
+
+        _showDialog(layer);
+	};
+
+    // Import. It's kinda the opposite of export.
+    obj.importers = {
+        json: function(input) {
+                  var threads = $.parseJSON(input);
+                  var newThreadId;
+                  
+                  for (var i = 0; i < threads.length; i++) {
+                      var original = threads[i];
+                      var thread = manager.createThread();
+                      thread.title.set(original.thread_title);
+                      newThreadId = thread.getID();
+
+                      var posts = original.thread_posts;
+                      for (var j = 0; j < posts.length; j++) {
+                          var post = thread.posts.create('');
+                          thread.posts.modify(post, posts[j].post_content.plain);
+                      }
+                  }
+
+                  // Load last thread imported
+                  location.hash = newThreadId;
+                  obj.loadThread(newThreadId);
+                  obj.draw();
+              }
+    };
+    obj.importers.json.displayName = 'JSON';
+
+    obj.importToDocument = function(input, format) {
+        obj.importers[format || 'json'](input);
     };
 
+    obj.importDisplay = function(input, format) {
+        // First: generate the dialog
+
+        // Generate the format selection box
+        var formatSelection = $('<select/>').attr('id', 'import_format');
+        for (var importer in obj.importers) {
+            if (obj.importers.hasOwnProperty(importer)) {
+                var caption = obj.importers[importer].displayName;
+                var element = $('<option/>').attr('value', importer).text(caption);
+                formatSelection.append(element);
+            }
+        }
+
+        // Crash 'n' burn
+        var hideDestroyImport = function() {
+            $('#import').hide('slow', function() {
+                $('#import').remove();
+            });
+        };
+        
+        // Now the DIV
+        var layer = $('<div/>')
+            .attr('id', 'import')
+            .append($('<div/>').addClass('dialog_title').text('Import'))
+            .append($('<div/>').text('Select the appropriate format, paste in your document, and click OK to import.'))
+            .append($('<br/>'))
+            .append($('<table/>')
+                        .css('width', '100%')
+                        .append($('<tr/>').append($('<td>Format: </td>'))
+                            .append($('<td/>').append(formatSelection)))
+                        .append($('<tr/>').append($('<td>Contents: </td>'))
+                            .append($('<td/>')
+                                .append($('<textarea/>').attr('id', 'import_contents').addClass('dump_area'))))
+                        .append($('<tr/>').append($('<td/>'))
+                            .append($('<td/>')
+                                .append($('<button>Import</button>').click(function(ev) {
+                                        obj.importToDocument($('#import_contents').val(), $('#import_format').val());
+                                        hideDestroyImport();
+                                    }))
+                                .append($('<button>Close</button>').click(function(ev) {
+                                        hideDestroyImport();
+                                })))));
+
+        _showDialog(layer);
+    }
 
     // Alerts
     obj.createAlert = function(message, priority, timeout){

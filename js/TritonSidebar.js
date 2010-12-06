@@ -259,7 +259,10 @@ window.Triton.TritonNav = (function(sidebar){
         },
 		"dump": function() {
 			editor.dumpDocument();
-		}
+		},
+        "import_display": function() {
+            editor.importDisplay();
+        }
     }
 
     obj.init = function(){
@@ -292,6 +295,7 @@ window.Triton.TritonNav = (function(sidebar){
             "class" : "break"
         }).appendTo(list);
 
+        $(makeItem("import_display", "Import")).appendTo(list);
         $(makeItem("dump", "Export")).appendTo(list);
 
         $("#links").replaceWith(list);

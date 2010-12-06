@@ -1,0 +1,29 @@
+body {
+    background-color: white;
+    font-size: 1em;
+}
+
+nav, footer, article, .alert {
+    display: none;
+}
+
+#posts header {
+    font-size: 1.5em;
+}
+
+section {
+    font-family: serif;
+    font-size: 1.2em;
+
+    border: none;
+    border-radius: 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+
+    border-bottom: solid 1px #333;
+    width: 100%;
+}
+
+section a:after {
+    content: " [" attr(href) "]";
+}

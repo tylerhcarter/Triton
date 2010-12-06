@@ -18,6 +18,10 @@ section{
     width: 75%;
 }
 
+section.selected {
+    background: #FFEFCC;
+}
+
 section h1{
     color: #666;
     margin: 0;
@@ -46,7 +50,7 @@ section ul, section ol{
 }
 
 section pre{
-    font: 12px Monaco,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
+    font: 12px Monaco,Consolas,"Courier New","DejaVu Sans Mono","Bitstream Vera Sans Mono",monospace;
     background-color: #F0F7FF;
     border-top: 1px solid #DEDEDE;
     border-bottom: 1px solid #DEDEDE;
@@ -342,29 +346,31 @@ a.invalid_link{
 	color: #E22;
 }
 
-.documents_button{
-    background: #222 url(/images/alert-overlay.png) repeat-x;
-    display: inline-block;
-    padding: 5px 10px 6px;
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-    line-height: 1;
-    font-size: 23px;
-    padding-left: 10px;
-    padding-right: 10px;
+.page_dialog {
     position: absolute;
-    bottom: 20px;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    -moz-box-shadow: 0 1px 3px #999;
-    -webkit-box-shadow: 0 1px 3px #999;
-    text-shadow: 0 -1px 1px #222;
-    border-bottom: 1px solid #222;
-    position: relative;
-    cursor: pointer;
-    -moz-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    text-shadow: 0 -1px 1px rgba(0,0,0,0.25);
-    border-bottom: 1px solid rgba(0,0,0,0.25);
+    left: 30%;
+    width: 40%;
+    z-index: 9999;
+    border: solid 3px #39F;
+    padding: 18px;
+    top: 5%;
+    background-color: #FFF;
+    display: none;
+}
+.dialog_title {
+    font-size: 1.5em;
+}
+
+.dump_area {
+    width: 100%;
+    min-height: 150px;
+    margin-top: 5px;
+    font-family: monospace;
+    border: solid 1px black;
+}
+
+td {
+    vertical-align: top;
+    margin: 3px;
+    padding: 6px;
 }
