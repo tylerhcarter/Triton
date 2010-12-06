@@ -151,6 +151,7 @@ nav ul#links a{
 }
 
 nav ul#links a:hover{
+    color: #7EBDFC;
     background-color:#CCE6FF;
 }
 
