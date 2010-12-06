@@ -25,3 +25,9 @@ header('Content-Type: text/cache-manifest');
 ../js/ThreadManager.js
 ../images/logo.png
 ../images/favicon.ico
+../images/create_doc.png
+../images/create_post.png
+../images/delete_doc.png
+../images/import.png
+../images/export.png
+../images/view_docs.png

@@ -193,7 +193,7 @@ window.Triton.Thread = (function(data, encoder){
    }
 
    function getHTML(html){
-
+       var lines;
        // Replace Images
        var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|]\.jpg)/ig;
        html = html.replace(exp,"<img src='$1'>");
@@ -203,7 +203,7 @@ window.Triton.Thread = (function(data, encoder){
        var title = getTitle(html);
        if(title != false){
            // break the textblock into an array of lines
-            var lines = html.split('\n');
+            lines = html.split('\n');
 
             // remove one line, starting at the first position
             lines.splice(0,1);
@@ -213,6 +213,16 @@ window.Triton.Thread = (function(data, encoder){
 
             html = "###" + title + "\n" + newtext;
        }
+
+       // Add 2 spaces to the end of all lines with text
+       lines = html.split('\n');
+
+       var num = lines.length;
+       for(var i = 0; i < num; i++){
+           lines[i] = lines[i] + "  ";
+       }
+
+       html = lines.join('\n');
        
        // Take what's left and process it as Markdown
        var converter = new Showdown.converter();

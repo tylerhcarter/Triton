@@ -67,7 +67,22 @@
 
                 cache.addEventListener('downloading', function(){
                     editor.createAlert("Downloading a new update to Triton.");
+
+                    $("<div>", {
+                        "id" : "downloading",
+                        "css" : {
+                            "position" : "absolute",
+                            "top": "10%",
+                            "left": "40%"
+                        }
+                    }).appendTo("body");
+
                 }, false);
+
+                cache.addEventListener('progress', function(ev){
+                    $("#downloading").text("Currently at: " + ev.loaded + " of " + ev.total);
+                }, false);
+                
             })();
         </script>
     </body>

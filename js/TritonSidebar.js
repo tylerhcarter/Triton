@@ -176,6 +176,7 @@ window.Triton.TritonSidebar = (function(editor){
             // Get the threads
             var index = editor.getIndex();
             index.refresh();
+            
             var threads = index.getIndex();
             
             // Output each document into a list
@@ -207,7 +208,6 @@ window.Triton.TritonSidebar = (function(editor){
                editor.loadThread($(this).attr("href").substr(1));
                editor.draw();
             });
-            
         }
 
         function makeItem(obj, active){
@@ -248,6 +248,9 @@ window.Triton.TritonNav = (function(sidebar){
         "new_doc": function(){
             editor.createDocument();
         },
+        "view_docs": function(){
+            $("#logo").click();
+        },
         "delete_doc" : function(){
             editor.deleteDocument();
         },
@@ -274,16 +277,26 @@ window.Triton.TritonNav = (function(sidebar){
 
         // Make Basic Menu Items
         $(makeItem("new_doc", "New Document")).appendTo(list);
-		$(makeItem("dump", "Export")).appendTo(list);
-        $(makeItem("import_display", "Import")).appendTo(list);
+        if(editor.current()){
+            $(makeItem("delete_doc", "Delete Document")).appendTo(list);
+        }
+        $(makeItem("view_docs", "View Documents")).appendTo(list);
 
         // Make Per-Thread Items (if a thread is open)
         if(editor.current()){
-
-            $(makeItem("new_post", "New Post")).appendTo(list);
-            $(makeItem("delete_doc", "Delete Document")).appendTo(list);
+            $("<div>", {
+                "class" : "break"
+            }).appendTo(list);
             
+            $(makeItem("new_post", "Add Post")).appendTo(list);
         }
+
+        $("<div>", {
+            "class" : "break"
+        }).appendTo(list);
+
+        $(makeItem("import_display", "Import")).appendTo(list);
+        $(makeItem("dump", "Export")).appendTo(list);
 
         $("#links").replaceWith(list);
     }

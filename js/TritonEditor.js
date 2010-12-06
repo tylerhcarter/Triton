@@ -210,14 +210,15 @@ window.Triton.TritonEditor = (function(window){
 
     // Deletes the current thread and focuses the last thread
     obj.deleteDocument = function(){
+        
         // Delete the Post
-        index.deleteIndex(obj.current().getID())
+        manager.removeThread(obj.current().getID());
 
         // Move back a post
         var threads = index.getIndex();
 
         if(threads.length > 0){
-            var last = threads[threads.length - 1].id;
+            var last = threads[0].id;
             location.hash = last;
             obj.loadThread(last);
             obj.draw();
