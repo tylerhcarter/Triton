@@ -176,6 +176,7 @@ window.Triton.TritonSidebar = (function(editor){
             // Get the threads
             var index = editor.getIndex();
             index.refresh();
+            
             var threads = index.getIndex();
             
             // Output each document into a list
@@ -207,7 +208,6 @@ window.Triton.TritonSidebar = (function(editor){
                editor.loadThread($(this).attr("href").substr(1));
                editor.draw();
             });
-            
         }
 
         function makeItem(obj, active){
