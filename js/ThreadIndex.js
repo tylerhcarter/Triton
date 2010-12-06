@@ -101,6 +101,10 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
                 threads[i].title = thread.title.get();
             }
 
+            if(current.post_count != thread.posts.count()){
+                current.post_count = thread.posts.count()
+            }
+
         }
 
         data = threads;

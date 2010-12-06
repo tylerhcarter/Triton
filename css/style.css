@@ -289,8 +289,42 @@ section.active{
 #document-list {
 }
 
-#document-list .active a{
-    font-weight: bold;
+#document-list li{
+    cursor: pointer;
+    padding: 2px;
+    margin-left: -10px;
+    padding-left: 10px;
+    clear: both;
+    height: 60px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+#document-list li img{
+    float: left;
+}
+
+#document-list li:hover{
+    background-color: #CCE6FF;
+}
+
+#documents-list li a{
+    display: block;
+}
+
+#document-list .active{
+    background-color: #CCE6FF;
+}
+
+#document-list .title{
+    display: block;
+    line-height: 20px;
+}
+
+#document-list .date, #document-list .count{
+    display: block;
+    font-size: 11px;
+    color: #999;
 }
 
 #actions{

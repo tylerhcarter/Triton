@@ -221,9 +221,18 @@ window.Triton.TritonSidebar = (function(editor){
                 $(item).addClass("active");
             }
 
+            var html = "<img src=\"images/document.png\"><span class=\"title\">" + obj.title + "</span>\n\
+                        <span class=\"date\">Updated 12-6-2010</span>";
+
+            if(obj.post_count == 1){
+                html += "<span class=\"count\">Contains " + obj.post_count + " post</span>";
+            }else{
+                html += "<span class=\"count\">Contains " + obj.post_count + " posts</span>";
+            }
+
             $("<a />", {
                 "href" : "#" + obj.id,
-                "text" : obj.title
+                "html" : html
             }).appendTo(item);
 
             return item;

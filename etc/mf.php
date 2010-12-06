@@ -30,4 +30,5 @@ header('Content-Type: text/cache-manifest');
 ../images/delete_doc.png
 ../images/import.png
 ../images/export.png
+../images/document.png
 ../images/view_docs.png
