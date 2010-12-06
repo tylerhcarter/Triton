@@ -207,6 +207,16 @@ window.Triton.TritonKUI = (function(editor){
                 openPost.call($('section.selected')[0]);
                 ev.preventDefault();
             }
+			
+			// --- Other ---
+			else if (ev.which == 27) { // Escape, closes dialogs
+				$('.page_dialog').hide('slow', function() {
+					$('.page_dialog').remove();
+				});
+			}
+			else if (ev.which == 223) { // `
+				editor.createAlert('Test alert.', 'high', 5000);
+			}
         });
 
         var bind = function(){

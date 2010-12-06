@@ -403,21 +403,27 @@ window.Triton.TritonEditor = (function(window){
             priority = "medium";
         }
 
-        if(typeof timeout != "number" && timeout != false){
+        if(typeof timeout != "number" && timeout !== false){
             timeout = 5000;
         }
 
         var box = $("<div>", {
+			"id": 'alert-' + window.generateUUID(),
             "class" : "alert " + priority,
             "html" : message,
             "style" : "display: none"
         });
 
         $("body").append(box);
+
+		var offset = ($('.alert').length - 1) * (box.height() * 1.75);
+		var newBottom = parseInt(box.css('bottom'), 10) + offset;
+		box.css('bottom', newBottom + 'px');
+
         $(box).fadeIn('slow');
 
         if(timeout != false){
-            setTimeout(obj.clearAlert, timeout);
+            setTimeout(obj.clearAlert(box.attr('id')), timeout);
         }
 
     }
@@ -428,10 +434,19 @@ window.Triton.TritonEditor = (function(window){
         }
     }
 
-    obj.clearAlert = function(){
-        $(".alert").fadeOut('slow', function(){
-            $(this).remove();
-        })
+    obj.clearAlert = function(id){
+		return (function() {
+			$('#' + id).addClass('fading_out');
+	        $("#" + id).fadeOut('slow', function(){
+    	        $(this).remove();
+				$('.alert:not(.fading_out)').each(function (i, x) {
+					x = $(x);
+
+					var newBottom = parseInt(x.css('bottom'), 10) - x.height();
+					x.css('bottom', newBottom + 'px');
+				});
+        	});
+		});
     }
 
     var status = obj.load();
