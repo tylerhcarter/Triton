@@ -115,8 +115,6 @@ window.Triton.Parser = (function(window){
                     var posts = currentThread.posts.getAll();
                     dest = dest.substring(1);
 
-                    console.log(posts.length);
-
                     for (var i = 0; i < posts.length; i++) {
                         var post = posts[i];
 
