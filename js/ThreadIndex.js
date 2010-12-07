@@ -92,8 +92,7 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
             var current = threads[i];
             var thread = encoder.restore(current.id);
             if(thread == false){
-                //obj.deleteIndex(current.id);
-                //console.log("False")
+                obj.deleteIndex(current.id);
                 continue;
             }
 
