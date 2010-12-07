@@ -1,6 +1,7 @@
 window.Triton.TritonEditor = (function(window){
     var obj = {};
     var $t = window.Triton;
+    $t.editor = obj;
     var index,
         manager,
         notifier,

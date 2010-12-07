@@ -50,22 +50,22 @@ window.Triton.Thread = (function(data, encoder){
                     var html = text;
                     var plain = text;
 
-                    var title = getTitle(html);
+                    var title = getTitle(text);
                     if(title != false){
                         posts[i].post_title = title
                     }else{
                         posts[i].post_title = "";
                     }
 
-                    html = getHTML(html);
+                    html = window.Triton.Parser.parse(html);
 
                     posts[i].post_content = {
                         "html" : html,
                         "plain" : plain
                     };
 
-					// Temporary!
-					posts[i].thread_id = obj.getID();
+                    // Temporary!
+                    posts[i].thread_id = obj.getID();
 
                     save();
                     return true;
@@ -150,7 +150,7 @@ window.Triton.Thread = (function(data, encoder){
          *    Links to a post in the doc.
          */
          var internalRe = /\[(.+?)\]\{(.+?)\}/g;
-         return html.replace(internalRe, 
+         return html.replace(internalRe,
             function(str, text, dest) {
 				var invalid = false, thread_id = data.thread_id, post_id = '';
 
@@ -162,7 +162,7 @@ window.Triton.Thread = (function(data, encoder){
 					// Search the current thread for the post with that name
 					var posts = data.thread_posts;
 					dest = dest.substring(1);
-					
+
 					for (var i = 0; i < posts.length; i++) {
 						var post = posts[i];
 
@@ -174,7 +174,7 @@ window.Triton.Thread = (function(data, encoder){
 					// Search the thread list for that thread's GUID
 					for (var i = 0; i < threads.length; i++) {
 						var this_thread = threads[i];
-						
+
 						if (this_thread.title === dest)
 							thread_id = this_thread.id;
 					}
