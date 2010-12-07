@@ -9,6 +9,7 @@ window.Triton.TritonSidebar = (function(editor){
         documents.init();
 
         bindNav();
+        window.Triton.menuOpen = false;
     }
 
     function bindNav(){
@@ -19,6 +20,7 @@ window.Triton.TritonSidebar = (function(editor){
             $("#logo").unbind("click");
             $("#logo").click(closeNav);
             $("#wash").click(closeNav);
+            window.Triton.menuOpen = true;
         }
 
         var closeNav = function(){
@@ -26,6 +28,7 @@ window.Triton.TritonSidebar = (function(editor){
             $("#wash").hide()
             $("#logo").unbind("click");
             $("#logo").click(openNav);
+            window.Triton.menuOpen = false;
         }
         $("#logo").click(openNav);
 
