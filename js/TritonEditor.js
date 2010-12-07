@@ -216,6 +216,7 @@ window.Triton.TritonEditor = (function(window){
         manager.removeThread(obj.current().getID());
 
         // Move back a post
+        index.refresh();
         var threads = index.getIndex();
 
         if(threads.length > 0){
