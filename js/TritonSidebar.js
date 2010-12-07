@@ -141,14 +141,15 @@ window.Triton.TritonSidebar = (function(editor){
 
                 $(list).appendTo(html);
 
-                $("#overview").replaceWith(html);
+                $("#overview").replaceWith(html).show();
 
             }
             else
             {
                 $("#overview").replaceWith($("<div />", {
                     "id" : "overview"
-                }));
+                }))
+                $("#overview").hide();
             }
         }
 

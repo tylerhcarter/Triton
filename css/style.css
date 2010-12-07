@@ -22,6 +22,7 @@ section.selected, #document-list li.selected {
     background: #FFEFCC;
 }
 
+
 section h1{
     color: #666;
     margin: 0;
@@ -240,10 +241,24 @@ section.active{
     border: 2px solid #39f;
 }
 
+#overview{
+    border: 5px solid rgba(255,255,255,.7);
+    width: 215px;
+    background-color: #9CF;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 20px;
+    margin-top: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+
 #overview header{
     font-size: 13px;
     font-weight: bold;
-    padding-top: 10px;
+    padding-top: 2px;
     padding-bottom: 2px;
 }
 
