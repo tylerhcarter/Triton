@@ -173,9 +173,16 @@ window.Triton.TritonKUI = (function(editor){
 
             var initialNavSelection = function() {
                 ev.preventDefault();
-                console.log("init");
+                
                 if (!$('#document-list li.selected').length) {
-                    $('#document-list li:first').addClass('selected');
+                    if(!$('#document-list li.active').length){
+                        $('#document-list li:first').addClass('selected');
+                    }else{
+                        $('#document-list li.active').addClass('selected');
+
+                        // Current doc is already highlighted
+                        return false;
+                    }
                     return true;
                 }
                 return false;
@@ -231,7 +238,7 @@ window.Triton.TritonKUI = (function(editor){
             var menuNav = {
                 "up" : function(){
                     if (initialNavSelection()) return false;
-                    console.log("up");
+                    
                     var before = $('#document-list li.selected').removeClass('selected').prevAll('li');
                     $('#document-list li.selected').removeClass('selected');
 
@@ -245,7 +252,7 @@ window.Triton.TritonKUI = (function(editor){
 
                 "down" : function(){
                     if (initialNavSelection()) return false;
-                    console.log("down");
+                    
                     var after = $('#document-list li.selected').nextAll('li');
                     $('li.selected').removeClass('selected');
 
