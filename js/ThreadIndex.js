@@ -99,6 +99,14 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
             if(current.title != thread.title.get()){
                 threads[i].title = thread.title.get();
             }
+            
+            if(typeof thread.getUpdated() === "undefined"){
+                thread.touch();
+            }
+
+            if(current.updated != thread.getUpdated()){
+                current.updated = thread.getUpdated();
+            }
 
             if(current.post_count != thread.posts.count()){
                 current.post_count = thread.posts.count()

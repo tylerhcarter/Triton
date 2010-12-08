@@ -9,7 +9,8 @@ window.Triton = {
     "updated" : '<?php echo date("n.j.Y"); ?>',
     "updated_time" : '<?php echo date("G:i:s"); ?>',
     "copyright" : "2010",
-    "debug" : true
+    "debug" : true,
+    "compact" : false
 };
 
 // If PHP has not parsed the file, make the updated date the current date

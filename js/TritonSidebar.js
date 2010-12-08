@@ -212,6 +212,8 @@ window.Triton.TritonSidebar = (function(editor){
                editor.loadThread($(this).attr("href").substr(1));
                editor.draw();
             });
+
+            $("#document-list span.date").timeago();
         }
 
         function makeItem(obj, active){
@@ -226,7 +228,8 @@ window.Triton.TritonSidebar = (function(editor){
             }
 
             var html = "<img src=\"images/document.png\"><span class=\"title\">" + obj.title + "</span>\n\
-                        <span class=\"date\">Updated 12-6-2010</span>";
+                        <span class=\"date\" title=\""+obj.updated+"\">"+obj.updated+"</span>";
+
 
             if(obj.post_count == 1){
                 html += "<span class=\"count\">Contains " + obj.post_count + " post</span>";
@@ -312,6 +315,17 @@ window.Triton.TritonNav = (function(sidebar){
         $(makeItem("dump", "Export")).appendTo(list);
 
         $("#links").replaceWith(list);
+
+        if(window.Triton.compact == true){
+            $(".menu-button a").unbind("click");
+            $(".menu-button").show();
+            $(".menu-button a").click(function(){
+                $("#links").toggle();
+                return false;
+            });
+        }else{
+            $(".menu-button").hide();
+        }
     }
 
     obj.update = function(editorObj){
@@ -325,6 +339,10 @@ window.Triton.TritonNav = (function(sidebar){
             "id" : id,
             "text" : text
         });
+
+        if(window.Triton.compact == true){
+            $(button).text("");
+        }
 
         // If a bind exists for this button, set it
         if(typeof binds[id] == "function"){

@@ -5,6 +5,7 @@ header('Content-Type: text/cache-manifest');
 
 ../index.html
 ../css/style.css
+../css/compact.css
 ../css/print.css
 ../css/welcome.css
 ../js/lib.js
@@ -35,3 +36,10 @@ header('Content-Type: text/cache-manifest');
 ../images/export.png
 ../images/document.png
 ../images/view_docs.png
+../images/create_doc_compact.png
+../images/create_post_compact.png
+../images/delete_doc_compact.png
+../images/import_compact.png
+../images/export_compact.png
+../images/document_compact.png
+../images/view_docs_compact.png

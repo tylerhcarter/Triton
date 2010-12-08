@@ -1,0 +1,81 @@
+.compact nav > header{
+    display: none;
+}
+
+.compact nav ul#links{
+    /*width: 75px;
+    margin-left: 130px;*/
+    margin-top: 10px;
+    padding-left: 3px;
+}
+
+.compact nav ul#links a{
+    position: static;
+    display: inline;
+    height: auto;
+    padding: 5px;
+    margin: 0;
+    width: auto;
+}
+
+.compact nav ul#links li{
+    display: inline;
+}
+
+.compact #links a:before{
+    position: static;
+}
+
+.compact #links .break{
+    display: none;
+}
+
+.compact nav ul #new_doc{
+    content: url("../images/create_doc_compact.png");
+}
+
+.compact nav ul #new_post{
+    content: url("../images/create_post_compact.png");
+}
+
+.compact nav ul #view_docs{
+    content: url("../images/view_docs_compact.png");
+}
+
+.compact nav ul #delete_doc{
+    content: url("../images/delete_doc_compact.png");
+}
+
+.compact nav ul #import_display{
+    content: url("../images/import_compact.png");
+}
+
+.compact nav ul #dump{
+    content: url("../images/export_compact.png");
+}
+
+.compact #overview{
+    max-height: 80%;
+}
+
+.compact .menu-button{
+    display: none;
+    border: 5px solid rgba(255,255,255,.7);
+    width: 90px;
+    margin-left: 130px;
+    background-color: #9CF;
+    padding: 5px;
+    padding-left: 10px;
+    padding-right: 0px;
+    margin-top: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-border-top-right-radius: 0px;
+    -webkit-border-bottom-right-radius: 0px;
+}
+
+.compact .menu-button a{
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+}

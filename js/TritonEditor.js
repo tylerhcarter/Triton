@@ -111,7 +111,9 @@ window.Triton.TritonEditor = (function(window){
         }).appendTo("nav > header");
 
         
-
+        if($t.compact == true){
+            $("body").addClass("compact");
+        }
         
     }
 

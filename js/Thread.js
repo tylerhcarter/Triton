@@ -7,6 +7,15 @@ window.Triton.Thread = (function(data, encoder){
        return data.thread_id;
    }
 
+   obj.touch = function(){
+       data.updated = getTimestamp();
+       save();
+   }
+
+   obj.getUpdated = function(){
+       return data.updated;
+   }
+
    // Title
    obj.title = {
        "set" : function(text){
@@ -31,6 +40,9 @@ window.Triton.Thread = (function(data, encoder){
                "html" : text,
                "plain" : text
            };
+
+           data.updated = getTimestamp();
+           newPost.updated = getTimestamp();
 
            data.thread_posts.push(newPost);
 
@@ -63,6 +75,9 @@ window.Triton.Thread = (function(data, encoder){
                         "html" : html,
                         "plain" : plain
                     };
+
+                    data.updated = getTimestamp();
+                    posts[i].updated = getTimestamp();
 
                     // Temporary!
                     posts[i].thread_id = obj.getID();
@@ -139,7 +154,20 @@ window.Triton.Thread = (function(data, encoder){
    obj.modifyTitle = t("title.set", obj.title.set);
    obj.getTitle = t("title.get", obj.title.get);
 
-   
+   function getTimestamp(){
+       var d = new Date();
+       return ISODateString(d);
+   }
+
+   function ISODateString(d){
+     function pad(n){return n<10 ? '0'+n : n}
+     return d.getUTCFullYear()+'-'
+          + pad(d.getUTCMonth()+1)+'-'
+          + pad(d.getUTCDate())+'T'
+          + pad(d.getUTCHours())+':'
+          + pad(d.getUTCMinutes())+':'
+          + pad(d.getUTCSeconds())+'Z'
+  }
 
 
    function processForInternalLinks(html) {

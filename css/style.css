@@ -247,12 +247,15 @@ section.active{
     background-color: #9CF;
     padding: 5px;
     padding-left: 10px;
-    padding-right: 20px;
+    padding-right: 0px;
     margin-top: 10px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     -webkit-border-top-right-radius: 0px;
     -webkit-border-bottom-right-radius: 0px;
+    max-height: 20%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 #overview header{
@@ -263,6 +266,7 @@ section.active{
 }
 
 #overview ul{
+    
     padding: 0;
     margin: 0;
     font-size: 13px;
