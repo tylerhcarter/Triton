@@ -5,6 +5,7 @@ header('Content-Type: text/cache-manifest');
 
 ../index.html
 ../css/style.css
+../css/print.css
 ../css/welcome.css
 ../js/lib.js
 ../js/jquery.js
@@ -15,6 +16,7 @@ header('Content-Type: text/cache-manifest');
 ../js/simplemd.js
 ../js/Thread.js
 ../js/ThreadEncoder.js
+../js/Parser.js
 ../js/ThreadIndex.js
 ../js/Triton.js
 ../js/TritonPosts.js
@@ -23,6 +25,7 @@ header('Content-Type: text/cache-manifest');
 ../js/TritonEditor.js
 ../js/ThreadSlider.js
 ../js/ThreadManager.js
+../js/timeago.js
 ../images/logo.png
 ../images/favicon.ico
 ../images/create_doc.png
