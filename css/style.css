@@ -1,5 +1,7 @@
-body{
-    font-family: sans-serif;
+body, textarea{
+    font-family: Verdana, Arial, sans-serif;
+    font-size: 12px;
+    line-height: 18px;
 }
 
 header, section, nav, footer, article{
@@ -22,14 +24,9 @@ section.selected, #document-list li.selected {
     background: #FFEFCC;
 }
 
-
-section h1{
-    color: #666;
-    margin: 0;
-}
-
 section p{
     margin-top: 0;
+    line-height: 19px;
 }
 
 section textarea{
@@ -38,10 +35,10 @@ section textarea{
 }
 
 section h3{
-    font-family: Arial;
     margin: 0;
-    margin-bottom: 10px;
+    margin-bottom: 5px;
     padding: 0;
+    font-family: 'Trebuchet Ms';
     font-size: 15px;
 }
 
@@ -200,20 +197,21 @@ nav ul#links .break{
     margin: 0;
     padding: 0;
     padding-left: 7px;
-    padding-bottom: 4px;
-    font-family: Georgia;
+    padding-bottom: 5px;
+    font-family: 'Trebuchet MS';
     font-weight: bold;
     font-size: 18px;
 }
 
-#title{
-    font-family: Georgia;
+#title, #title input{
+    font-family: 'Trebuchet MS';
+    font-weight: bold;
+    font-size: 18px;
 }
 
 #title input{
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    font-family: Georgia;
     width: 76%;
     border: 0;
     outline: 0;
@@ -221,15 +219,8 @@ nav ul#links .break{
     padding: 0;
     margin: 0;
     margin-left: -1px;
-    font-weight: bold;
-    font-size: 15px;
     border: 1px solid #39F;
     padding: 5px;
-}
-
-#posts, textarea{
-    font-family: Helvetica,  arial, sans-serif;
-    font-size: 13px;
 }
 
 textarea{
@@ -247,8 +238,10 @@ section.active{
 }
 
 #overview{
+    display: none;
     border: 5px solid rgba(255,255,255,.7);
-    width: 215px;
+    border-right: 0;
+    width: 220px;
     background-color: #9CF;
     padding: 5px;
     padding-left: 10px;
@@ -261,6 +254,8 @@ section.active{
     max-height: 20%;
     overflow-y: auto;
     overflow-x: hidden;
+
+    font-family: 'Trebuchet Ms';
 }
 
 #overview header{
@@ -283,7 +278,14 @@ section.active{
 }
 
 #overview-list li{
-    padding-bottom: 3px;
+    padding-bottom: 1px;
+    margin-left: -10px;
+    padding-left: 10px;
+    padding-top: 2px;
+}
+
+#overview-list li:hover{
+    background-color: #CCE6FF;
 }
 
 #advanced{
@@ -299,7 +301,6 @@ section.active{
 
 #documents{
     background-color: white;
-    border: 1px solid #EEEEEF;
     -webkit-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: -1px 5px 10px rgba(0, 0, 0, 0.1);
     margin: 0;
@@ -342,22 +343,23 @@ section.active{
 }
 
 #document-list .title{
-    font-family: 'Georgia';
+    font-family: 'Trebuchet MS';
+    font-size: 1.3em;
     display: block;
     line-height: 20px;
     overflow: hidden;
 }
 
 #document-list .title.small{
-    padding-top: 4px;
-    font-size: 13px;
-    line-height: 15px;
+    font-size: 1.1em;
+    line-height: 1.2em;
     height: 30px;
 }
 
 #document-list .date, #document-list .count{
     display: block;
-    font-size: 11px;
+    font-size: .9em;
+    line-height: 1.4em;
     color: #999;
 }
 
@@ -375,22 +377,6 @@ section.active{
     z-index: 1;
     top:0;
     left: 0;
-}
-
-#dev{
-    display: none;
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    background-color: white;
-    border: 1px solid #CCC;
-    width: 100%;
-    height: 25px;
-}
-
-#dev-box{
-    border: 0;
-    width: 90%;
 }
 
 .alert{

@@ -55,6 +55,7 @@
 }
 
 .compact #overview{
+    display: block;
     max-height: 80%;
 }
 

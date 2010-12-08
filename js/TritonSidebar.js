@@ -228,7 +228,7 @@ window.Triton.TritonSidebar = (function(editor){
             }
 
             var title, classes;
-            if(obj.title.length > 50){
+            if(obj.title.length > 30){
                 classes = "small";
             }
 
