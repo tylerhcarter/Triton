@@ -3,11 +3,17 @@ header('Content-Type: text/cache-manifest');
 ?>CACHE MANIFEST
 #<?php echo filemtime(__FILE__); ?>
 
+
+# documents
 ../index.html
+
+#css
 ../css/style.css
 ../css/compact.css
 ../css/print.css
 ../css/welcome.css
+
+#js
 ../js/lib.js
 ../js/jquery.js
 ../js/json.js
@@ -27,6 +33,8 @@ header('Content-Type: text/cache-manifest');
 ../js/ThreadSlider.js
 ../js/ThreadManager.js
 ../js/timeago.js
+
+# images
 ../images/logo.png
 ../images/favicon.ico
 ../images/create_doc.png
@@ -41,5 +49,4 @@ header('Content-Type: text/cache-manifest');
 ../images/delete_doc_compact.png
 ../images/import_compact.png
 ../images/export_compact.png
-../images/document_compact.png
 ../images/view_docs_compact.png
