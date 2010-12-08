@@ -38,10 +38,11 @@ section textarea{
 }
 
 section h3{
+    font-family: Arial;
     margin: 0;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     padding: 0;
-    font-size: 16px;
+    font-size: 15px;
 }
 
 section ul, section ol{
@@ -200,15 +201,19 @@ nav ul#links .break{
     padding: 0;
     padding-left: 7px;
     padding-bottom: 4px;
-    font-family: arial;
+    font-family: Georgia;
     font-weight: bold;
-    font-size: 15px;
+    font-size: 18px;
+}
+
+#title{
+    font-family: Georgia;
 }
 
 #title input{
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
-    font-family: arial;
+    font-family: Georgia;
     width: 76%;
     border: 0;
     outline: 0;
@@ -223,8 +228,8 @@ nav ul#links .break{
 }
 
 #posts, textarea{
-    font-family: arial;
-    font-size: 15px;
+    font-family: Helvetica,  arial, sans-serif;
+    font-size: 13px;
 }
 
 textarea{
@@ -337,8 +342,17 @@ section.active{
 }
 
 #document-list .title{
+    font-family: 'Georgia';
     display: block;
     line-height: 20px;
+    overflow: hidden;
+}
+
+#document-list .title.small{
+    padding-top: 4px;
+    font-size: 13px;
+    line-height: 15px;
+    height: 30px;
 }
 
 #document-list .date, #document-list .count{

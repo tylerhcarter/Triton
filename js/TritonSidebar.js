@@ -227,7 +227,18 @@ window.Triton.TritonSidebar = (function(editor){
                 $(item).addClass("active");
             }
 
-            var html = "<img src=\"images/document.png\"><span class=\"title\">" + obj.title + "</span>\n\
+            var title, classes;
+            if(obj.title.length > 50){
+                classes = "small";
+            }
+
+            if(obj.title.length > 120){
+                title = obj.title.substr(0,70) + "...";
+            }else{
+                title = obj.title;
+            }
+
+            var html = "<img src=\"images/document.png\"><span class=\"title "+ classes +"\">" + title + "</span>\n\
                         <span class=\"date\" title=\""+obj.updated+"\">"+obj.updated+"</span>";
 
 
