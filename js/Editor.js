@@ -213,6 +213,11 @@ window.Triton.Editor = (function(window){
 
         "destroy" : function(){
 
+            var status = confirm("Do you really want to delete this thread?");
+            if(status == false){
+                return false;
+            }
+
             // Delete the Post
             manager.removeThread(obj.current().getID());
 
