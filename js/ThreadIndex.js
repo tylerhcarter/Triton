@@ -1,4 +1,4 @@
-window.Triton.ThreadIndex = (function(localStorage, thread_key){
+window.Triton.ThreadIndex = (function(storage, thread_key){
     var obj = {};
 
     if(typeof localStorage == "undefined"){
@@ -9,7 +9,7 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
         thread_key = "thread_index"
     }
     
-    var encoder = window.Triton.Encoder(localStorage);
+    var encoder = window.Triton.Encoder(storage);
 
     var data;
     
@@ -29,17 +29,16 @@ window.Triton.ThreadIndex = (function(localStorage, thread_key){
     }
 
     function load(){
-        var value = localStorage.getItem(thread_key);
-        if(value){
-            data = window.JSON.parse(value);
-        }else{
+        data = storage.load(thread_key);
+        
+        if(!data){
             data = [];
+            save();
         }
-        save();
     }
 
     function save(){
-        localStorage.setItem(thread_key, window.JSON.stringify(data));
+        storage.save(thread_key, data);
     }
 
     obj.getIndex = function(){

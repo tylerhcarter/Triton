@@ -8,7 +8,8 @@ window.Triton.Editor = (function(window){
         posts,
         ui,
         thread,
-        sidebar;
+        sidebar,
+        storage;
 
 
     // Loads the base objects
@@ -19,12 +20,16 @@ window.Triton.Editor = (function(window){
         notifier = Notifier();
 
         try{
+            assert(typeof $t.Storage != "undefined", "Editor.js->Editor(); Storage class not found.")
+            storage = $t.Storage(window);
 
+            assert(typeof $t.Encoder != "undefined", "Editor.js->Editor(); Encoder class not found.");
+            assert(typeof $t.ThreadIndex != "undefined", "Editor.js->Editor(); ThreadIndex class not found.");
             assert(typeof $t.ThreadManager != "undefined", "Editor.js->Editor(); ThreadManager class not found.")
-            manager = $t.ThreadManager(window.localStorage);
+            manager = $t.ThreadManager(storage);
+            manager.init();
 
-            assert(typeof $t.ThreadIndex != "undefined", "Editor.js->Editor(); ThreadIndex class not found.")
-            index = $t.ThreadIndex(window.localStorage);
+            index = manager.getIndex();
 
             assert(typeof $t.Posts != "undefined", "Editor.js->Editor(); Posts class not found.");
             posts = $t.Posts();
@@ -42,7 +47,7 @@ window.Triton.Editor = (function(window){
             "ThreadIndex",
             "ThreadManager",
             "KUI",
-            "TritonSidebar"
+            "Sidebar"
         ];
         var len = requiredObjs.length;
         for(var i = 0; i < len; i++){
@@ -55,10 +60,6 @@ window.Triton.Editor = (function(window){
     
     // Initializes the Editor
     obj.init = function(){
-
-        // Initialize the thread system
-        index.init();
-        manager.init();
 
         // Get the current thread
         thread = loadCurrentThread();

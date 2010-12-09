@@ -1,4 +1,4 @@
-window.Triton.Encoder = (function(localStorage){
+window.Triton.Encoder = (function(storage){
 
     var obj = {};
 
@@ -16,7 +16,7 @@ window.Triton.Encoder = (function(localStorage){
 
     obj.load = function(key){
 
-        var result = localStorage.getItem(key)
+        var result = storage.load(key);
 
         // Check if the thread exists
         if(!result){
@@ -25,7 +25,6 @@ window.Triton.Encoder = (function(localStorage){
             
         }else{
 
-            result = JSON.parse(result);
             return window.Triton.Thread(result, obj);
             
         }
@@ -35,15 +34,13 @@ window.Triton.Encoder = (function(localStorage){
     obj.save = function(key, thread){
 
         var threadData = thread.returnData();
-        var threadString = JSON.stringify(threadData);
-
-        localStorage.setItem(key, threadString);
+        storage.save(key, threadData);
 
     }
 
     obj.remove = function(key){
 
-        localStorage.removeItem(key);
+        storage.remove(key);
         
     }
 
