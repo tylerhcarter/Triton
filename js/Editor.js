@@ -203,14 +203,21 @@ window.Triton.Editor = (function(window){
     }
 
     obj.openDoc = {
+
+        // Creates a new document and opens it
         "create" : function(){
             var thread = manager.createThread("Test");
             thread.createPost("test");
             location.hash = thread.getID();
-            obj.loadThread(location.hash.substr(1));
+            obj.openDoc.open(thread.getID());
+        },
+
+        "open" : function(id){
+            obj.loadThread(id);
             obj.draw();
         },
 
+        // Deletes the current thread
         "destroy" : function(){
 
             var status = confirm("Do you really want to delete this thread?");
