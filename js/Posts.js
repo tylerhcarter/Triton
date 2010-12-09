@@ -1,4 +1,4 @@
-window.Triton.TritonPosts = (function(){
+window.Triton.Posts = (function(){
 
         var obj = {};
         var thread = false;

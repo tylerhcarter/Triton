@@ -1,4 +1,4 @@
-window.Triton.TritonKUI = (function(editor){
+window.Triton.KUI = (function(editor){
     var obj = {};
 
     obj.init = function(){

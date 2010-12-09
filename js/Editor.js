@@ -1,4 +1,4 @@
-window.Triton.TritonEditor = (function(window){
+window.Triton.Editor = (function(window){
     var obj = {};
     var $t = window.Triton;
     $t.editor = obj;
@@ -15,19 +15,19 @@ window.Triton.TritonEditor = (function(window){
     obj.load = function(){
 
         // Construct base objects
-        assert(typeof Notifier != "undefined", "TritonEditor.js->TritonEditor(); Notifier not found.")
+        assert(typeof Notifier != "undefined", "Editor.js->Editor(); Notifier not found.")
         notifier = Notifier();
 
         try{
 
-            assert(typeof $t.ThreadManager != "undefined", "TritonEditor.js->TritonEditor(); ThreadManager not found.")
+            assert(typeof $t.ThreadManager != "undefined", "Editor.js->Editor(); ThreadManager class not found.")
             manager = $t.ThreadManager(window.localStorage);
 
-            assert(typeof $t.ThreadIndex != "undefined", "TritonEditor.js->TritonEditor(); ThreadIndex not found.")
+            assert(typeof $t.ThreadIndex != "undefined", "Editor.js->Editor(); ThreadIndex class not found.")
             index = $t.ThreadIndex(window.localStorage);
 
-            assert(typeof $t.TritonPosts != "undefined", "TritonEditor.js->TritonEditor(); TritonPosts not found.");
-            posts = $t.TritonPosts();
+            assert(typeof $t.Posts != "undefined", "Editor.js->Editor(); Posts class not found.");
+            posts = $t.Posts();
 
         }catch(e){
             obj.createAlert("Error: " + e.getMessage(), "high", false)
@@ -41,12 +41,12 @@ window.Triton.TritonEditor = (function(window){
             "Encoder",
             "ThreadIndex",
             "ThreadManager",
-            "TritonKUI",
+            "KUI",
             "TritonSidebar"
         ];
         var len = requiredObjs.length;
         for(var i = 0; i < len; i++){
-            assert(typeof $t[requiredObjs[i]] != "undefined", "TritonEditor.js->TritonEditor(); "+ requiredObjs[i] +" not found.");
+            assert(typeof $t[requiredObjs[i]] != "undefined", "Editor.js->Editor();6 "+ requiredObjs[i] +" not found.");
         }
 
         return true;
@@ -64,10 +64,10 @@ window.Triton.TritonEditor = (function(window){
         thread = loadCurrentThread();
 
         // Create UI Object
-        ui = $t.TritonKUI(obj);
+        ui = $t.KUI(obj);
 
         // Create Sidebar Object
-        sidebar = $t.TritonSidebar(obj);
+        sidebar = $t.Sidebar(obj);
         $t.TritonNav(sidebar).init();
         sidebar.init();
 
@@ -202,36 +202,69 @@ window.Triton.TritonEditor = (function(window){
         $("#" + id).click();
     }
 
-    // Creates a new thread
-    obj.createDocument = function(){
-        var thread = manager.createThread("Test");
-        thread.createPost("test");
-        location.hash = thread.getID();
-        obj.loadThread(location.hash.substr(1));
-        obj.draw();
-    }
-
-    // Deletes the current thread and focuses the last thread
-    obj.deleteDocument = function(){
-        
-        // Delete the Post
-        manager.removeThread(obj.current().getID());
-
-        // Move back a post
-        index.refresh();
-        var threads = index.getIndex();
-
-        if(threads.length > 0){
-            var last = threads[0].id;
-            location.hash = last;
-            obj.loadThread(last);
+    obj.openDoc = {
+        "create" : function(){
+            var thread = manager.createThread("Test");
+            thread.createPost("test");
+            location.hash = thread.getID();
+            obj.loadThread(location.hash.substr(1));
             obj.draw();
-        }else{
-            location.hash = "";
-            obj.clearThread();
-            obj.draw();
+        },
+
+        "destroy" : function(){
+
+            // Delete the Post
+            manager.removeThread(obj.current().getID());
+
+            // Move back a post
+            index.refresh();
+            var threads = index.getIndex();
+
+            if(threads.length > 0){
+                var last = threads[0].id;
+                location.hash = last;
+                obj.loadThread(last);
+                obj.draw();
+            }else{
+                location.hash = "";
+                obj.clearThread();
+                obj.draw();
+            }
         }
     }
+
+    // Aliases
+    obj.createDocument = obj.openDoc.create;
+    obj.deleteDocument = obj.openDoc.destroy;
+
+    obj.nav = (function(){
+
+            var openNav = function(){
+                $("nav").animate({"right": "0px"});
+                $("#wash").show()
+                $("#logo").unbind("click");
+                $("#logo").click(closeNav);
+                $("#wash").click(closeNav);
+                window.Triton.menuOpen = true;
+            }
+
+            var closeNav = function(){
+                $("nav").animate({"right": "-320px"});
+                $("#wash").hide()
+                $("#logo").unbind("click");
+                $("#logo").click(openNav);
+                window.Triton.menuOpen = false;
+            }
+            
+            $("#logo").click(openNav);
+            $t.menuOpen = false;
+
+            return {
+                "open" : openNav,
+                "close" : closeNav
+            };
+            
+    })();
 
     function _showDialog(div) {
         $('.page_dialog').hide('slow', function() {
@@ -400,56 +433,65 @@ window.Triton.TritonEditor = (function(window){
         _showDialog(layer);
     }
 
-    // Alerts
-    obj.createAlert = function(message, priority, timeout){
+    obj.alerts = {
 
-        if(priority != "high" && priority != "medium" && priority != "low"){
-            priority = "medium";
-        }
+        "create" : function(message, priority, timeout){
 
-        if(typeof timeout != "number" && timeout !== false){
-            timeout = 5000;
-        }
+            if(priority != "high" && priority != "medium" && priority != "low"){
+                priority = "medium";
+            }
 
-        var box = $("<div>", {
-            "id": 'alert-' + window.generateUUID(),
-            "class" : "alert " + priority,
-            "html" : message,
-            "style" : "display: none"
-        });
+            if(typeof timeout != "number" && timeout !== false){
+                timeout = 5000;
+            }
 
-        $("body").append(box);
-        var offset = ($('.alert').length - 1) * (box.height() * 1.75);
-        var newBottom = parseInt(box.css('bottom'), 10) + offset;
-        box.css('bottom', newBottom + 'px');
-
-        $(box).fadeIn('slow');
-
-        if(timeout != false){
-            setTimeout(obj.clearAlert(box.attr('id')), timeout);
-        }
-
-    }
-
-    obj.createDevAlert = function(message, priority, timeout){
-        if($t.debug == true){
-            obj.createAlert(message, priority, timeout);
-        }
-    }
-
-    obj.clearAlert = function(id){
-	return (function() {
-            $('#' + id).addClass('fading_out');
-            $("#" + id).fadeOut('slow', function(){
-                $(this).remove();
-                $('.alert:not(.fading_out)').each(function (i, x) {
-                    x = $(x);
-                    var newBottom = parseInt(x.css('bottom'), 10) - x.height();
-                    x.css('bottom', newBottom + 'px');
-                });
+            var box = $("<div>", {
+                "id": 'alert-' + window.generateUUID(),
+                "class" : "alert " + priority,
+                "html" : message,
+                "style" : "display: none"
             });
-        });
-    }
+
+            $("body").append(box);
+            var offset = ($('.alert').length - 1) * (box.height() * 1.75);
+            var newBottom = parseInt(box.css('bottom'), 10) + offset;
+            box.css('bottom', newBottom + 'px');
+
+            $(box).fadeIn('slow');
+
+            if(timeout != false){
+                setTimeout(obj.alerts.clear(box.attr('id')), timeout);
+            }
+
+        },
+
+
+        "createDev" : function(message, priority, timeout){
+            if($t.debug == true){
+                obj.alerts.create(message, priority, timeout);
+            }
+        },
+
+        "clear" : function(id){
+            return (function() {
+                $('#' + id).addClass('fading_out');
+                $("#" + id).fadeOut('slow', function(){
+                    $(this).remove();
+                    $('.alert:not(.fading_out)').each(function (i, x) {
+                        x = $(x);
+                        var newBottom = parseInt(x.css('bottom'), 10) - x.height();
+                        x.css('bottom', newBottom + 'px');
+                    });
+                });
+          });
+        }
+
+    };
+
+    // Aliases
+    obj.createAlert = obj.alerts.create;
+    obj.createDevAlert = obj.alerts.createDev;
+    obj.clearAlert = obj.alerts.clear;
 
     var status = obj.load();
     if(status == false){
