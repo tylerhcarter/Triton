@@ -18,13 +18,13 @@
         <script src="js/hotkeys.js"></script>
         <script src="js/Triton.js"></script>
         <script src="js/Thread.js"></script>
-        <script src="js/ThreadEncoder.js"></script>
+        <script src="js/Encoder.js"></script>
         <script src="js/Parser.js"></script>
         <script src="js/ThreadIndex.js"></script>
-        <script src="js/TritonSidebar.js"></script>
-        <script src="js/TritonKUI.js"></script>
-        <script src="js/TritonEditor.js"></script>
-        <script src="js/TritonPosts.js"></script>
+        <script src="js/Sidebar.js"></script>
+        <script src="js/KUI.js"></script>
+        <script src="js/Editor.js"></script>
+        <script src="js/Posts.js"></script>
         <script src="js/ThreadManager.js"></script>
         <script src="js/ThreadSlider.js"></script>
     </head>
@@ -62,7 +62,7 @@
                 }, false);
 
                 // Initialize Triton
-                var editor = window.Triton.TritonEditor(window);
+                var editor = window.Triton.Editor(window);
                 editor.init();
 
                 cache.addEventListener('downloading', function(){

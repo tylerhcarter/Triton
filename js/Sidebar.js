@@ -1,4 +1,4 @@
-window.Triton.TritonSidebar = (function(editor){
+window.Triton.Sidebar = (function(editor){
     var obj = {};
 
     obj.init = function(){
@@ -7,34 +7,6 @@ window.Triton.TritonSidebar = (function(editor){
             overview.init();
         }
         documents.init();
-
-        bindNav();
-        window.Triton.menuOpen = false;
-    }
-
-    function bindNav(){
-        
-        var openNav = function(){
-            $("nav").animate({"right": "0px"});
-            $("#wash").show()
-            $("#logo").unbind("click");
-            $("#logo").click(closeNav);
-            $("#wash").click(closeNav);
-            window.Triton.menuOpen = true;
-        }
-
-        var closeNav = function(){
-            $("nav").animate({"right": "-320px"});
-            $("#wash").hide()
-            $("#logo").unbind("click");
-            $("#logo").click(openNav);
-            window.Triton.menuOpen = false;
-        }
-        $("#logo").click(openNav);
-
-        if(editor.current() == false){
-            //$("#logo").click();
-        }
     }
 
     obj.draw = function(){
@@ -192,9 +164,9 @@ window.Triton.TritonSidebar = (function(editor){
             for(var i=0; i < len; i++){
                 var obj = threads[i];
                 
-                assert(obj != false, "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (Obj was False)");
-                assert(typeof obj.id != "undefined", "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No ID Property)");
-                assert(typeof obj.title != "undefined", "TritonSidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No Title Property)");
+                assert(obj != false, "Sidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (Obj was False)");
+                assert(typeof obj.id != "undefined", "Sidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No ID Property)");
+                assert(typeof obj.title != "undefined", "Sidebar.js->Sidebar->Documents->Draw(); Bad Thread Returned (No Title Property)");
 
                 // Highlight the current thread
                 if(obj.id == currentID){

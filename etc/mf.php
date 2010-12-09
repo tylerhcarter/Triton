@@ -13,7 +13,9 @@ header('Content-Type: text/cache-manifest');
 ../css/print.css
 ../css/welcome.css
 
-#js
+#
+
+#supporting javascript
 ../js/lib.js
 ../js/jquery.js
 ../js/json.js
@@ -21,18 +23,22 @@ header('Content-Type: text/cache-manifest');
 ../js/hotkeys.js
 ../js/showdown.js
 ../js/simplemd.js
+../js/timeago.js
+
+#threads
 ../js/Thread.js
-../js/ThreadEncoder.js
+../js/Encoder.js
 ../js/Parser.js
 ../js/ThreadIndex.js
-../js/Triton.js
-../js/TritonPosts.js
-../js/TritonSidebar.js
-../js/TritonKUI.js
-../js/TritonEditor.js
-../js/ThreadSlider.js
 ../js/ThreadManager.js
-../js/timeago.js
+../js/ThreadSlider.js
+
+#app
+../js/Triton.js
+../js/Posts.js
+../js/Sidebar.js
+../js/KUI.js
+../js/Editor.js
 
 # images
 ../images/logo.png
