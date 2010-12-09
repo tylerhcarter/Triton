@@ -14,33 +14,37 @@ window.Triton.Encoder = (function(localStorage){
 
     }
 
-    obj.restore = function(key){
-        var baseObj = load(key);
-        if(baseObj == false){
-            return false;
+    obj.load = function(key){
+
+        var result = localStorage.getItem(key)
+
+        // Check if the thread exists
+        if(!result){
+
+            return false
+            
         }else{
-            return window.Triton.Thread(baseObj, obj);
+
+            result = JSON.parse(result);
+            return window.Triton.Thread(result, obj);
+            
         }
+        
     }
 
-    obj.sleep = function(key, thread){
-        save(key, thread);
+    obj.save = function(key, thread){
+
+        var threadData = thread.returnData();
+        var threadString = JSON.stringify(threadData);
+
+        localStorage.setItem(key, threadString);
+
     }
 
     obj.remove = function(key){
+
         localStorage.removeItem(key);
-    }
-
-    function load(key){
-        if(localStorage.getItem(key)){
-            return JSON.parse(localStorage.getItem(key));
-        }else{
-            return false;
-        }
-    }
-
-    function save(key, thread){
-        localStorage.setItem(key, JSON.stringify(thread.returnData()));
+        
     }
 
 

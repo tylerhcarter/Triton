@@ -292,7 +292,7 @@ window.Triton.Thread = (function(data, encoder){
    }
 
    function save(){
-       encoder.sleep(data.thread_id, obj);
+       encoder.save(data.thread_id, obj);
    }
 
    return obj;

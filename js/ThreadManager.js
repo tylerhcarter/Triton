@@ -52,7 +52,7 @@ window.Triton.ThreadManager = (function(localStorage){
 
     obj.getThread = function(id){
 
-        return encoder.restore(id);
+        return encoder.load(id);
         
     }
 
