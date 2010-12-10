@@ -113,7 +113,12 @@ window.Triton.Sidebar = (function(editor){
 
                 $(list).appendTo(html);
 
-                $("#overview").replaceWith(html).show();
+                $("#overview").replaceWith(html);
+
+                if(window.Triton.compact == true){
+                    $("#overview").show();
+                }
+                
 
             }
             else
