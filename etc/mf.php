@@ -34,6 +34,7 @@ header('Content-Type: text/cache-manifest');
 ../js/ThreadSlider.js
 
 #app
+../js/Storage.js
 ../js/Triton.js
 ../js/Settings.js
 ../js/Posts.js
