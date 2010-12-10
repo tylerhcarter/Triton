@@ -35,6 +35,7 @@ header('Content-Type: text/cache-manifest');
 
 #app
 ../js/Triton.js
+../js/Settings.js
 ../js/Posts.js
 ../js/Sidebar.js
 ../js/KUI.js

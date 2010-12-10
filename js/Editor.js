@@ -8,7 +8,8 @@ window.Triton.Editor = (function(window){
         posts,
         ui,
         thread,
-        sidebar;
+        sidebar,
+        settings;
 
 
     // Loads the base objects
@@ -29,6 +30,11 @@ window.Triton.Editor = (function(window){
             assert(typeof $t.Posts != "undefined", "Editor.js->Editor(); Posts class not found.");
             posts = $t.Posts();
 
+            assert(typeof $t.Settings != "undefined", "Editor.js->Editor(); Settings class not found.");
+            settings = $t.Settings(window);
+            settings.init();
+            window.Triton.userSettings = settings;
+
         }catch(e){
             obj.createAlert("Error: " + e.getMessage(), "high", false)
             return false;
@@ -42,7 +48,7 @@ window.Triton.Editor = (function(window){
             "ThreadIndex",
             "ThreadManager",
             "KUI",
-            "TritonSidebar"
+            "Sidebar"
         ];
         var len = requiredObjs.length;
         for(var i = 0; i < len; i++){

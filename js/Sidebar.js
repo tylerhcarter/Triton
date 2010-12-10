@@ -186,6 +186,41 @@ window.Triton.Sidebar = (function(editor){
             });
 
             $("#document-list span.date").timeago();
+
+
+            var div = $("<div>", {
+                "class" : "compact-box"
+            });
+            
+            var checkbox = $("<input>", {
+                "type" : "checkbox",
+                "id" : "compact-mode"
+            });
+
+            $(checkbox).change(function(){
+                if($("#compact-mode:Checked").val() != undefined){
+                    window.Triton.userSettings.set("compact", true);
+                }else{
+                    window.Triton.userSettings.set("compact", false);
+                }
+                
+            })
+
+            if(window.Triton.compact == true){
+                $(checkbox).attr("checked", "checked");
+            }
+
+            $(checkbox).appendTo(div);
+            $(div).append("Compact Mode");
+
+            if((".compact-mode").length == 0){
+                $("#advanced").append(div);
+            }else{
+                $(".compact-box").remove();
+                $("#advanced").append(div);
+            }
+            
+
         }
 
         function makeItem(obj, active){
