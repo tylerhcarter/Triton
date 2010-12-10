@@ -18,6 +18,10 @@ window.Triton.Settings = (function(window){
         data[key] = value;
         save();
     }
+
+    obj.get = function(key){
+        return data[key];
+    }
     
     function load(){
         var result = window.localStorage.getItem("settings");

@@ -198,10 +198,17 @@ window.Triton.Sidebar = (function(editor){
             });
 
             $(checkbox).change(function(){
+                var old = window.Triton.userSettings.get("compact");
                 if($("#compact-mode:Checked").val() != undefined){
                     window.Triton.userSettings.set("compact", true);
+                    if(old == false){
+                        window.Triton.editor.reload();
+                    }
                 }else{
                     window.Triton.userSettings.set("compact", false);
+                    if(old == true){
+                        window.Triton.editor.reload();
+                    }
                 }
                 
             })
