@@ -1,11 +1,7 @@
-window.Triton.ThreadManager = (function(localStorage){
+window.Triton.ThreadManager = (function(storage){
     var obj = {};
     var index;
     var encoder;
-
-    if(typeof localStorage == "undefined"){
-        throw new Error("Unable to access localStorage.");
-    }
 
     // Accessors
     obj.getIndex = function(){ return index; }
@@ -14,11 +10,11 @@ window.Triton.ThreadManager = (function(localStorage){
     obj.init = function(){
 
         // Create the Thread Index
-        index = window.Triton.ThreadIndex(localStorage);
+        index = window.Triton.ThreadIndex(storage, "thread_index");
         index.init();
 
         // Create the Encoder
-        encoder = window.Triton.Encoder(localStorage);
+        encoder = window.Triton.Encoder(storage);
 
     }
 
@@ -52,7 +48,7 @@ window.Triton.ThreadManager = (function(localStorage){
 
     obj.getThread = function(id){
 
-        return encoder.restore(id);
+        return encoder.load(id);
         
     }
 

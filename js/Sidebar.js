@@ -355,7 +355,8 @@ window.Triton.TritonNav = (function(sidebar){
         var item = $("<li />");
         var button = $("<a />", {
             "id" : id,
-            "text" : text
+            "text" : text,
+            "title" : text
         });
 
         if(window.Triton.compact == true){

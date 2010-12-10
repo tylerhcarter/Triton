@@ -9,8 +9,8 @@ window.Triton.Editor = (function(window){
         ui,
         thread,
         sidebar,
-        settings;
-
+        settings,
+        storage;
 
     // Loads the base objects
     obj.load = function(){
@@ -20,12 +20,16 @@ window.Triton.Editor = (function(window){
         notifier = Notifier();
 
         try{
+            assert(typeof $t.Storage != "undefined", "Editor.js->Editor(); Storage class not found.")
+            storage = $t.Storage(window);
 
+            assert(typeof $t.Encoder != "undefined", "Editor.js->Editor(); Encoder class not found.");
+            assert(typeof $t.ThreadIndex != "undefined", "Editor.js->Editor(); ThreadIndex class not found.");
             assert(typeof $t.ThreadManager != "undefined", "Editor.js->Editor(); ThreadManager class not found.")
-            manager = $t.ThreadManager(window.localStorage);
+            manager = $t.ThreadManager(storage);
+            manager.init();
 
-            assert(typeof $t.ThreadIndex != "undefined", "Editor.js->Editor(); ThreadIndex class not found.")
-            index = $t.ThreadIndex(window.localStorage);
+            index = manager.getIndex();
 
             assert(typeof $t.Posts != "undefined", "Editor.js->Editor(); Posts class not found.");
             posts = $t.Posts();
@@ -61,10 +65,6 @@ window.Triton.Editor = (function(window){
     
     // Initializes the Editor
     obj.init = function(){
-
-        // Initialize the thread system
-        index.init();
-        manager.init();
 
         // Get the current thread
         thread = loadCurrentThread();
@@ -209,14 +209,21 @@ window.Triton.Editor = (function(window){
     }
 
     obj.openDoc = {
+
+        // Creates a new document and opens it
         "create" : function(){
             var thread = manager.createThread("Test");
             thread.createPost("test");
             location.hash = thread.getID();
-            obj.loadThread(location.hash.substr(1));
+            obj.openDoc.open(thread.getID());
+        },
+
+        "open" : function(id){
+            obj.loadThread(id);
             obj.draw();
         },
 
+        // Deletes the current thread
         "destroy" : function(){
 
             var status = confirm("Do you really want to delete this thread?");

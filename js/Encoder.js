@@ -1,4 +1,4 @@
-window.Triton.Encoder = (function(localStorage){
+window.Triton.Encoder = (function(storage){
 
     var obj = {};
 
@@ -10,37 +10,29 @@ window.Triton.Encoder = (function(localStorage){
             "thread_posts" : []
         };
 
-        return window.Triton.Thread(baseObj, obj);
+        return window.Triton.Thread(baseObj, storage);
 
     }
 
-    obj.restore = function(key){
-        var baseObj = load(key);
-        if(baseObj == false){
-            return false;
-        }else{
-            return window.Triton.Thread(baseObj, obj);
+    obj.load = function(key){
+
+        var result = storage.load(key);
+
+        // Check if the thread exists
+        if(result){
+
+            return window.Triton.Thread(result, storage);
+            
         }
-    }
 
-    obj.sleep = function(key, thread){
-        save(key, thread);
+        return false;
+        
     }
 
     obj.remove = function(key){
-        localStorage.removeItem(key);
-    }
 
-    function load(key){
-        if(localStorage.getItem(key)){
-            return JSON.parse(localStorage.getItem(key));
-        }else{
-            return false;
-        }
-    }
-
-    function save(key, thread){
-        localStorage.setItem(key, JSON.stringify(thread.returnData()));
+        storage.remove(key);
+        
     }
 
 
