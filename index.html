@@ -60,7 +60,13 @@
                 cache.addEventListener('updateready', function(){
                     // When the user refreshes, tell them they've updated
                     window.localStorage.setItem("updated", "yes");
-                    alert("New Files Ready. Please Reload");
+                    window.Triton.editor.reload();
+                }, false);
+
+                cache.addEventListener('chached', function(){
+                    // When the user refreshes, tell them they've updated
+                    window.localStorage.setItem("installed", "yes");
+                    window.Triton.editor.reload();
                 }, false);
 
                 // Initialize Triton
