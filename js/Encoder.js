@@ -10,7 +10,7 @@ window.Triton.Encoder = (function(storage){
             "thread_posts" : []
         };
 
-        return window.Triton.Thread(baseObj, obj);
+        return window.Triton.Thread(baseObj, storage);
 
     }
 
@@ -19,23 +19,14 @@ window.Triton.Encoder = (function(storage){
         var result = storage.load(key);
 
         // Check if the thread exists
-        if(!result){
+        if(result){
 
-            return false
-            
-        }else{
-
-            return window.Triton.Thread(result, obj);
+            return window.Triton.Thread(result, storage);
             
         }
+
+        return false;
         
-    }
-
-    obj.save = function(key, thread){
-
-        var threadData = thread.returnData();
-        storage.save(key, threadData);
-
     }
 
     obj.remove = function(key){

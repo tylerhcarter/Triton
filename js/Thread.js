@@ -1,4 +1,4 @@
-window.Triton.Thread = (function(data, encoder){
+window.Triton.Thread = (function(data, storage){
 
    var obj = {};
    
@@ -292,7 +292,7 @@ window.Triton.Thread = (function(data, encoder){
    }
 
    function save(){
-       encoder.save(data.thread_id, obj);
+       storage.save(data.thread_id, data);
    }
 
    return obj;
