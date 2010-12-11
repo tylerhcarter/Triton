@@ -8,6 +8,10 @@ header, section, nav, footer, article{
     display: block;
 }
 
+#posts{
+    margin-right: 270px;
+}
+
 section{
     background-color: #EEEEEF;
     border: 1px solid #E0E0E0;
@@ -18,7 +22,7 @@ section{
     margin: 5px;
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
-    width: 75%;
+    
 }
 
 section.selected, #document-list li.selected {
@@ -91,7 +95,7 @@ nav{
     padding-top: 0px;
     padding-right: 0;
     height: 100%;
-    min-width: 550px;
+    width: 550px;
     z-index: 2;
 }
 
