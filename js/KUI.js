@@ -223,7 +223,7 @@ window.Triton.KUI = (function(editor){
                 },
 
                 "del" : function(){
-                    thread.posts.remove($('section.selected').attr('id'));
+                    //thread.posts.remove($('section.selected').attr('id'));
                     editor.draw();
 
                     ev.preventDefault();
