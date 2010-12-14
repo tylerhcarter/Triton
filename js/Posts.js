@@ -23,7 +23,7 @@ window.Triton.Posts = (function(){
             });
 
             // Add the title
-            $("<header />", {
+            $("<h1 />", {
                "html": thread.title.get(),
                "id" : "title"
             }).appendTo(div);

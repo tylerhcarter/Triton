@@ -44,7 +44,7 @@ window.Triton.Parser = (function(window){
 
             // join the array back into a single string
             var newtext = lines.join('\n');
-            text = "###" + title + "\n" + newtext;
+            text = "##" + title + "\n" + newtext;
             return text;
        }else{
            return text;

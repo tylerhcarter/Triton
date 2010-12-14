@@ -11,6 +11,7 @@ header('Content-Type: text/cache-manifest');
 ../css/style.css
 ../css/compact.css
 ../css/print.css
+../css/typography.css
 ../css/welcome.css
 
 #

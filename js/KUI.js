@@ -342,7 +342,7 @@ window.Triton.KUI = (function(editor){
 
                var title = $("#title input").val();
                thread.title.set(title);
-               var header = $("<header />", {
+               var header = $("<h1 />", {
                   "id" : "title",
                   "html" : title
                });
