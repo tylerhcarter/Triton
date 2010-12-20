@@ -19,6 +19,10 @@ section{
     
 }
 
+img{
+    border: 0;
+}
+
 section.selected{
     background: #FFEFCC;
 }
