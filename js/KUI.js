@@ -72,6 +72,24 @@ window.Triton.KUI = (function(editor){
                 ev.target.selectionEnd = end;
             };
 
+            var add = function(str) {
+                var text  = $(ev.target).val();
+                var start = ev.target.selectionStart;
+                var end   = ev.target.selectionEnd;
+
+                // Stick new text int
+                var to_insert = str;
+
+                text = text.substring(0, start) + to_insert + text.substring(start);
+
+                start = start + str.length;
+                end = end + str.length;
+
+                $(ev.target).val(text);
+                ev.target.selectionStart = start;
+                ev.target.selectionEnd = end;
+            };
+
             // Ctrl+B
             if (ev.which == 66 && ev.ctrlKey){
                 do_surround('**');
@@ -80,6 +98,11 @@ window.Triton.KUI = (function(editor){
             // Ctrl+I
             else if (ev.which == 73 && ev.ctrlKey){
                 do_surround('*');
+                ev.preventDefault();
+            }
+
+            else if(ev.which == 9){
+                add("    ");
                 ev.preventDefault();
             }
         });
@@ -231,6 +254,10 @@ window.Triton.KUI = (function(editor){
 
                 "enter" : function(){
                     openPost.call($('section.selected')[0]);
+                },
+
+                "left" : function(){
+                    $("#logo").click();
                 }
             };
 
@@ -271,7 +298,13 @@ window.Triton.KUI = (function(editor){
                 "enter" : function(){
                     $("li.selected a").click();
                     $("#logo").click();
+                },
+                
+                "right" : function(){
+                    $("li.selected a").click();
+                    $("#logo").click();
                 }
+
             };
 
             if (ev.which == 38) { // Up Arrow
